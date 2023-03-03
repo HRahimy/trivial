@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-enum CorrectOption { A, B, C, D }
+enum OptionIndex { A, B, C, D }
 
 class QuizQuestion extends Equatable {
   const QuizQuestion({
@@ -8,11 +8,8 @@ class QuizQuestion extends Equatable {
     this.quizId = 0,
     this.sequenceIndex = 0,
     this.question = '',
-    this.optionA = 'A',
-    this.optionB = 'B',
-    this.optionC = 'C',
-    this.optionD = 'D',
-    this.correctOption = CorrectOption.A,
+    this.options = const {},
+    this.correctOption = OptionIndex.A,
     this.points = 0,
   });
 
@@ -20,11 +17,8 @@ class QuizQuestion extends Equatable {
   final int quizId;
   final int sequenceIndex;
   final String question;
-  final String optionA;
-  final String optionB;
-  final String optionC;
-  final String optionD;
-  final CorrectOption correctOption;
+  final Map<OptionIndex, String> options;
+  final OptionIndex correctOption;
   final int points;
 
   @override
@@ -33,10 +27,7 @@ class QuizQuestion extends Equatable {
         quizId,
         sequenceIndex,
         question,
-        optionA,
-        optionB,
-        optionC,
-        optionD,
+        options,
         correctOption,
         points,
       ];
