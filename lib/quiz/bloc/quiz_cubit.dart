@@ -1,22 +1,44 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:formz/formz.dart';
 import 'package:repositories/repositories.dart';
 
 part 'quiz_state.dart';
 
 class QuizCubit extends Cubit<QuizState> {
   QuizCubit({
-    required Quiz quiz,
-    required List<QuizQuestion> quizQuestions,
-  })  : _quiz = quiz,
-        _quizQuestions = quizQuestions,
+    required int quizId,
+    required QuizRepository quizRepository,
+  })  : _quizId = quizId,
+        _repository = quizRepository,
         super(const QuizState());
 
-  /*
-  Keeping quiz and questions parameters here because their values originate from an external data source.
-  The app's functionality also will not affect these objects, they are simply read from the data source.
-  Furthermore, this implementation forces these required parameters to be available for all further functions.
-  */
-  final Quiz _quiz;
-  final List<QuizQuestion> _quizQuestions;
+  final int _quizId;
+  final QuizRepository _repository;
+
+  void loadQuiz() {
+    emit(state.copyWith(
+      status: FormzSubmissionStatus.inProgress,
+    ));
+    try {
+      final Quiz quiz = _repository.getQuiz(_quizId);
+      final List<QuizQuestion> questions = _repository.getQuestions(_quizId);
+      final QuizQuestion firstQuestion =
+          questions.firstWhere((e) => e.sequenceIndex == 1);
+
+      emit(state.copyWith(
+        quiz: quiz,
+        quizQuestions: questions,
+        questionIndex: 1,
+        currentQuestion: firstQuestion,
+        status: FormzSubmissionStatus.success,
+        error: '',
+      ));
+    } catch (e) {
+      emit(state.copyWith(
+        status: FormzSubmissionStatus.failure,
+        error: e.toString(),
+      ));
+    }
+  }
 }
