@@ -2,12 +2,14 @@ part of 'quizzes_cubit.dart';
 
 class QuizzesState extends Equatable {
   const QuizzesState({
-    this.quizzes = const [Quiz(id: 1, name: 'World of Warcraft')],
+    this.quizzes = const [SeedData.wowQuiz],
+    this.questions = SeedData.wowQuestions,
     this.status = FormzSubmissionStatus.initial,
     this.error = '',
   });
 
   final List<Quiz> quizzes;
+  final List<QuizQuestion> questions;
   final FormzSubmissionStatus status;
   final String error;
 

@@ -21,6 +21,16 @@ class QuizQuestion extends Equatable {
   final OptionIndex correctOption;
   final int points;
 
+  static const QuizQuestion empty = QuizQuestion(
+    id: 0,
+    quizId: 0,
+    sequenceIndex: 0,
+    question: '-empty-',
+    options: {},
+    correctOption: OptionIndex.A,
+    points: 0,
+  );
+
   @override
   List<Object> get props => [
         id,
