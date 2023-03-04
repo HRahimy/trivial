@@ -2,29 +2,25 @@ part of 'quiz_cubit.dart';
 
 class QuizState extends Equatable {
   const QuizState({
-    this.quiz = Quiz.empty,
-    this.questions = const [],
+    this.currentQuestion = QuizQuestion.empty,
     this.answers = const {},
     this.score = 0,
     this.questionIndex = 0,
   });
 
-  final Quiz quiz;
-  final List<QuizQuestion> questions;
+  final QuizQuestion currentQuestion;
   final Map<int, OptionIndex> answers;
   final int score;
   final int questionIndex;
 
   QuizState copyWith({
-    Quiz? quiz,
-    List<QuizQuestion>? questions,
+    QuizQuestion? currentQuestion,
     Map<int, OptionIndex>? answers,
     int? score,
     int? questionIndex,
   }) {
     return QuizState(
-      quiz: quiz ?? this.quiz,
-      questions: questions ?? this.questions,
+      currentQuestion: currentQuestion ?? this.currentQuestion,
       answers: answers ?? this.answers,
       score: score ?? this.score,
       questionIndex: questionIndex ?? this.questionIndex,
@@ -32,5 +28,5 @@ class QuizState extends Equatable {
   }
 
   @override
-  List<Object> get props => [quiz, questions, answers, score, questionIndex];
+  List<Object> get props => [currentQuestion, answers, score, questionIndex];
 }
