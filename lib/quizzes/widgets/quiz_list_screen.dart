@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:trivial/common/models/quiz.dart';
+import 'package:formz/formz.dart';
+import 'package:repositories/repositories.dart';
 import 'package:trivial/quizzes/bloc/quizzes_cubit.dart';
 
 class QuizListScreen extends StatelessWidget {
@@ -10,7 +11,9 @@ class QuizListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => QuizzesCubit(),
+      create: (_) => QuizzesCubit(
+        quizRepository: RepositoryProvider.of<QuizRepository>(context),
+      )..loadInitial(),
       child: const Scaffold(
         body: _View(),
       ),
@@ -27,10 +30,18 @@ class _View extends StatelessWidget {
       child: SingleChildScrollView(
         child: BlocBuilder<QuizzesCubit, QuizzesState>(
           builder: (context, state) {
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: state.quizzes.map((e) => _QuizButton(quiz: e)).toList(),
-            );
+            if (state.status == FormzSubmissionStatus.inProgress ||
+                state.status == FormzSubmissionStatus.initial) {
+              return const CircularProgressIndicator();
+            } else if (state.status == FormzSubmissionStatus.failure) {
+              return Text(state.error);
+            } else {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children:
+                    state.quizzes.map((e) => _QuizButton(quiz: e)).toList(),
+              );
+            }
           },
         ),
       ),

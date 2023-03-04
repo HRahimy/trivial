@@ -1,10 +1,21 @@
-import 'package:trivial/common/models/quiz.dart';
-import 'package:trivial/common/models/quiz_question.dart';
+import 'package:repositories/src/models/quiz.dart';
+import 'package:repositories/src/models/quiz_question.dart';
 
 class SeedData {
   static const Quiz wowQuiz = Quiz(
       id: 1, name: 'World of Warcraft', durationInSeconds: 1200 // 20 minutes
       );
+
+  static const Quiz elderScrollsQuiz = Quiz(
+    id: 2,
+    name: 'Elder Scrolls',
+    durationInSeconds: 1200,
+  );
+
+  static const List<Quiz> quizzes = [
+    wowQuiz,
+    elderScrollsQuiz,
+  ];
 
   static const QuizQuestion wowQuestion1 = QuizQuestion(
     id: 1,
