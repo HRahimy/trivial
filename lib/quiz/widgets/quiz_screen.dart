@@ -68,7 +68,8 @@ class _Layout extends StatelessWidget {
 
   final QuizQuestion question;
 
-  Widget optionsGrid() {
+  Widget optionsGrid(BuildContext context) {
+    final cubit = context.read<QuizCubit>();
     return Column(
       children: [
         Expanded(
@@ -77,7 +78,7 @@ class _Layout extends StatelessWidget {
               Expanded(
                 child: Material(
                   child: InkWell(
-                    onTap: () => {},
+                    onTap: () => cubit.selectAnswer(OptionIndex.A),
                     child: Center(
                       child: Text(
                         'A) ${question.options[OptionIndex.A]!}',
@@ -93,7 +94,7 @@ class _Layout extends StatelessWidget {
               Expanded(
                 child: Material(
                   child: InkWell(
-                    onTap: () => {},
+                    onTap: () => cubit.selectAnswer(OptionIndex.B),
                     child: Center(
                       child: Text(
                         'B) ${question.options[OptionIndex.B]!}',
@@ -115,7 +116,7 @@ class _Layout extends StatelessWidget {
               Expanded(
                 child: Material(
                   child: InkWell(
-                    onTap: () => {},
+                    onTap: () => cubit.selectAnswer(OptionIndex.C),
                     child: Center(
                       child: Text(
                         'C) ${question.options[OptionIndex.C]!}',
@@ -131,7 +132,7 @@ class _Layout extends StatelessWidget {
               Expanded(
                 child: Material(
                   child: InkWell(
-                    onTap: () => {},
+                    onTap: () => cubit.selectAnswer(OptionIndex.D),
                     child: Center(
                       child: Text(
                         'D) ${question.options[OptionIndex.D]!}',
@@ -168,7 +169,7 @@ class _Layout extends StatelessWidget {
           height: 0,
         ),
         Expanded(
-          child: optionsGrid(),
+          child: optionsGrid(context),
         ),
       ],
     );

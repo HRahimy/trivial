@@ -41,4 +41,21 @@ class QuizCubit extends Cubit<QuizState> {
       ));
     }
   }
+
+  void selectAnswer(OptionIndex choice) {
+    QuizState newState = state;
+    if (choice == state.currentQuestion.correctOption) {
+      newState = newState.copyWith(
+        score: state.score + state.currentQuestion.points,
+      );
+    }
+    final int newQuestionIndex = state.questionIndex + 1;
+    final newQuestion = state.quizQuestions
+        .firstWhere((element) => element.sequenceIndex == newQuestionIndex);
+    newState = newState.copyWith(
+      questionIndex: newQuestionIndex,
+      currentQuestion: newQuestion,
+    );
+    emit(newState);
+  }
 }
