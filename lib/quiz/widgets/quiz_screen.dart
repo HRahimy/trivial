@@ -52,7 +52,10 @@ class _Body extends StatelessWidget {
           } else if (state.status == FormzSubmissionStatus.failure) {
             return Text(state.error);
           } else {
-            return _Layout(question: state.currentQuestion);
+            return _Layout(
+              score: state.score,
+              question: state.currentQuestion,
+            );
           }
         },
       ),
@@ -63,9 +66,11 @@ class _Body extends StatelessWidget {
 class _Layout extends StatelessWidget {
   const _Layout({
     Key? key,
+    required this.score,
     required this.question,
   }) : super(key: key);
 
+  final int score;
   final QuizQuestion question;
 
   Widget optionsGrid(BuildContext context) {
@@ -153,6 +158,7 @@ class _Layout extends StatelessWidget {
     return Column(
       children: [
         Expanded(
+          flex: 7,
           child: Center(
             child: Text(
               question.question,
@@ -169,6 +175,22 @@ class _Layout extends StatelessWidget {
           height: 0,
         ),
         Expanded(
+          flex: 1,
+          child: Center(
+            child: Text(
+              'Level $score',
+              style: const TextStyle(
+                fontSize: 18,
+              ),
+            ),
+          ),
+        ),
+        const Divider(
+          thickness: 2,
+          height: 0,
+        ),
+        Expanded(
+          flex: 7,
           child: optionsGrid(context),
         ),
       ],
