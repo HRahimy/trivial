@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:repositories/repositories.dart';
@@ -31,32 +32,145 @@ class QuizScreen extends StatelessWidget {
         quizRepository: RepositoryProvider.of<QuizRepository>(context),
       )..loadQuiz(),
       child: const Scaffold(
-        body: _View(),
+        body: _Body(),
       ),
     );
   }
 }
 
-class _View extends StatelessWidget {
-  const _View({Key? key}) : super(key: key);
+class _Body extends StatelessWidget {
+  const _Body({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: SingleChildScrollView(
-        child: BlocBuilder<QuizCubit, QuizState>(
-          builder: (context, state) {
-            if (state.status == FormzSubmissionStatus.inProgress ||
-                state.status == FormzSubmissionStatus.initial) {
-              return const CircularProgressIndicator();
-            } else if (state.status == FormzSubmissionStatus.failure) {
-              return Text(state.error);
-            } else {
-              return Text(state.quiz.name);
-            }
-          },
-        ),
+      child: BlocBuilder<QuizCubit, QuizState>(
+        builder: (context, state) {
+          if (state.status == FormzSubmissionStatus.inProgress ||
+              state.status == FormzSubmissionStatus.initial) {
+            return const CircularProgressIndicator();
+          } else if (state.status == FormzSubmissionStatus.failure) {
+            return Text(state.error);
+          } else {
+            return _Layout(question: state.currentQuestion);
+          }
+        },
       ),
+    );
+  }
+}
+
+class _Layout extends StatelessWidget {
+  const _Layout({
+    Key? key,
+    required this.question,
+  }) : super(key: key);
+
+  final QuizQuestion question;
+
+  Widget optionsGrid() {
+    return Column(
+      children: [
+        Expanded(
+          child: Row(
+            children: [
+              Expanded(
+                child: Material(
+                  child: InkWell(
+                    onTap: () => {},
+                    child: Center(
+                      child: Text(
+                        'A) ${question.options[OptionIndex.A]!}',
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              const VerticalDivider(
+                thickness: 2,
+                width: 1,
+              ),
+              Expanded(
+                child: Material(
+                  child: InkWell(
+                    onTap: () => {},
+                    child: Center(
+                      child: Text(
+                        'B) ${question.options[OptionIndex.B]!}',
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        const Divider(
+          thickness: 1,
+          height: 0,
+        ),
+        Expanded(
+          child: Row(
+            children: [
+              Expanded(
+                child: Material(
+                  child: InkWell(
+                    onTap: () => {},
+                    child: Center(
+                      child: Text(
+                        'C) ${question.options[OptionIndex.C]!}',
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              const VerticalDivider(
+                thickness: 2,
+                width: 1,
+              ),
+              Expanded(
+                child: Material(
+                  child: InkWell(
+                    onTap: () => {},
+                    child: Center(
+                      child: Text(
+                        'D) ${question.options[OptionIndex.D]!}',
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Expanded(
+          child: Center(
+            child: Text(
+              question.question,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+          ),
+        ),
+        const Divider(
+          thickness: 5,
+          height: 0,
+        ),
+        Expanded(
+          child: optionsGrid(),
+        ),
+      ],
     );
   }
 }
