@@ -3,13 +3,13 @@ import 'package:repositories/src/models/quiz_question.dart';
 
 class SeedData {
   static const Quiz wowQuiz = Quiz(
-      id: 1, name: 'World of Warcraft', durationInSeconds: 1200 // 20 minutes
-      );
+    id: 1,
+    name: 'World of Warcraft',
+  );
 
   static const Quiz elderScrollsQuiz = Quiz(
     id: 2,
     name: 'Elder Scrolls',
-    durationInSeconds: 1200,
   );
 
   static const List<Quiz> quizzes = [
