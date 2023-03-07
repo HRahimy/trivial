@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/widgets.dart';
 import 'package:formz/formz.dart';
 import 'package:repositories/repositories.dart';
 
@@ -23,14 +24,11 @@ class QuizCubit extends Cubit<QuizState> {
     try {
       final Quiz quiz = _repository.getQuiz(_quizId);
       final List<QuizQuestion> questions = _repository.getQuestions(_quizId);
-      final QuizQuestion firstQuestion =
-          questions.firstWhere((e) => e.sequenceIndex == 1);
 
       emit(state.copyWith(
         quiz: quiz,
         quizQuestions: questions,
         questionIndex: 1,
-        currentQuestion: firstQuestion,
         status: FormzSubmissionStatus.success,
         error: '',
       ));
@@ -43,19 +41,31 @@ class QuizCubit extends Cubit<QuizState> {
   }
 
   void selectAnswer(OptionIndex choice) {
+    if (state.complete) {
+      return;
+    }
+
+    final int newQuestionIndex = state.questionIndex + 1;
     QuizState newState = state;
     if (choice == state.currentQuestion.correctOption) {
       newState = newState.copyWith(
         score: state.score + state.currentQuestion.points,
       );
     }
-    final int newQuestionIndex = state.questionIndex + 1;
+
+    if (!state.quizQuestions
+        .any((element) => element.sequenceIndex > state.questionIndex)) {
+      emit(newState.copyWith(complete: true));
+      return;
+    }
+
     final newQuestion = state.quizQuestions
         .firstWhere((element) => element.sequenceIndex == newQuestionIndex);
+
     newState = newState.copyWith(
       questionIndex: newQuestionIndex,
-      currentQuestion: newQuestion,
     );
+
     emit(newState);
   }
 }
