@@ -159,15 +159,9 @@ class _OptionsGrid extends StatelessWidget {
               child: Row(
                 children: [
                   Expanded(
-                    child: Material(
-                      child: InkWell(
-                        onTap: () => cubit.selectAnswer(OptionIndex.A),
-                        child: Center(
-                          child: Text(
-                            'A) ${question.options[OptionIndex.A]!}',
-                          ),
-                        ),
-                      ),
+                    child: _OptionButton(
+                      text: 'A) ${question.options[OptionIndex.A]!}',
+                      onTap: () => cubit.selectAnswer(OptionIndex.A),
                     ),
                   ),
                   const VerticalDivider(
@@ -175,15 +169,9 @@ class _OptionsGrid extends StatelessWidget {
                     width: 1,
                   ),
                   Expanded(
-                    child: Material(
-                      child: InkWell(
-                        onTap: () => cubit.selectAnswer(OptionIndex.B),
-                        child: Center(
-                          child: Text(
-                            'B) ${question.options[OptionIndex.B]!}',
-                          ),
-                        ),
-                      ),
+                    child: _OptionButton(
+                      text: 'A) ${question.options[OptionIndex.B]!}',
+                      onTap: () => cubit.selectAnswer(OptionIndex.B),
                     ),
                   ),
                 ],
@@ -197,15 +185,9 @@ class _OptionsGrid extends StatelessWidget {
               child: Row(
                 children: [
                   Expanded(
-                    child: Material(
-                      child: InkWell(
-                        onTap: () => cubit.selectAnswer(OptionIndex.C),
-                        child: Center(
-                          child: Text(
-                            'C) ${question.options[OptionIndex.C]!}',
-                          ),
-                        ),
-                      ),
+                    child: _OptionButton(
+                      text: 'A) ${question.options[OptionIndex.C]!}',
+                      onTap: () => cubit.selectAnswer(OptionIndex.C),
                     ),
                   ),
                   const VerticalDivider(
@@ -213,15 +195,9 @@ class _OptionsGrid extends StatelessWidget {
                     width: 1,
                   ),
                   Expanded(
-                    child: Material(
-                      child: InkWell(
-                        onTap: () => cubit.selectAnswer(OptionIndex.D),
-                        child: Center(
-                          child: Text(
-                            'D) ${question.options[OptionIndex.D]!}',
-                          ),
-                        ),
-                      ),
+                    child: _OptionButton(
+                      text: 'A) ${question.options[OptionIndex.D]!}',
+                      onTap: () => cubit.selectAnswer(OptionIndex.D),
                     ),
                   ),
                 ],
@@ -230,6 +206,28 @@ class _OptionsGrid extends StatelessWidget {
           ],
         );
       },
+    );
+  }
+}
+
+class _OptionButton extends StatelessWidget {
+  const _OptionButton({
+    Key? key,
+    this.onTap,
+    required this.text,
+  }) : super(key: key);
+  final String text;
+  final Function()? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      child: InkWell(
+        onTap: onTap,
+        child: Center(
+          child: Text(text),
+        ),
+      ),
     );
   }
 }
