@@ -76,6 +76,7 @@ class _Layout extends StatelessWidget {
           flex: 7,
           child: _QuestionPanel(),
         ),
+        _Timer(),
         Divider(
           thickness: 5,
           height: 0,
@@ -114,6 +115,59 @@ class _QuestionPanel extends StatelessWidget {
               fontSize: 24,
               fontWeight: FontWeight.w400,
             ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+class _Timer extends StatefulWidget {
+  const _Timer({Key? key}) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() => _TimerState();
+}
+
+class _TimerState extends State<_Timer> with TickerProviderStateMixin {
+  AnimationController? controller;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 15),
+    );
+    controller!.reverse(from: 15);
+    controller!.addStatusListener(listener);
+  }
+
+  @override
+  void dispose() {
+    controller!.dispose();
+    super.dispose();
+  }
+
+  void listener(AnimationStatus status) {
+    if (controller!.isDismissed) {
+      context.read<QuizCubit>().skipQuestion();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocListener<QuizCubit, QuizState>(
+      listenWhen: (previous, current) =>
+          previous.questionIndex != current.questionIndex,
+      listener: (context, state) {
+        controller!.reverse(from: 15);
+      },
+      child: AnimatedBuilder(
+        animation: controller!,
+        builder: (context, child) {
+          return LinearProgressIndicator(
+            value: controller!.value,
           );
         },
       ),
