@@ -45,6 +45,9 @@ class _Body extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: BlocBuilder<QuizCubit, QuizState>(
+        buildWhen: (previous, current) =>
+            previous.status != current.status ||
+            previous.complete != current.complete,
         builder: (context, state) {
           if (state.status == FormzSubmissionStatus.inProgress ||
               state.status == FormzSubmissionStatus.initial) {
@@ -52,10 +55,7 @@ class _Body extends StatelessWidget {
           } else if (state.status == FormzSubmissionStatus.failure) {
             return Text(state.error);
           } else {
-            return _Layout(
-              score: state.score,
-              question: state.currentQuestion,
-            );
+            return const _Layout();
           }
         },
       ),
@@ -66,134 +66,170 @@ class _Body extends StatelessWidget {
 class _Layout extends StatelessWidget {
   const _Layout({
     Key? key,
-    required this.score,
-    required this.question,
   }) : super(key: key);
-
-  final int score;
-  final QuizQuestion question;
-
-  Widget optionsGrid(BuildContext context) {
-    final cubit = context.read<QuizCubit>();
-    return Column(
-      children: [
-        Expanded(
-          child: Row(
-            children: [
-              Expanded(
-                child: Material(
-                  child: InkWell(
-                    onTap: () => cubit.selectAnswer(OptionIndex.A),
-                    child: Center(
-                      child: Text(
-                        'A) ${question.options[OptionIndex.A]!}',
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              const VerticalDivider(
-                thickness: 2,
-                width: 1,
-              ),
-              Expanded(
-                child: Material(
-                  child: InkWell(
-                    onTap: () => cubit.selectAnswer(OptionIndex.B),
-                    child: Center(
-                      child: Text(
-                        'B) ${question.options[OptionIndex.B]!}',
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-        const Divider(
-          thickness: 1,
-          height: 0,
-        ),
-        Expanded(
-          child: Row(
-            children: [
-              Expanded(
-                child: Material(
-                  child: InkWell(
-                    onTap: () => cubit.selectAnswer(OptionIndex.C),
-                    child: Center(
-                      child: Text(
-                        'C) ${question.options[OptionIndex.C]!}',
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              const VerticalDivider(
-                thickness: 2,
-                width: 1,
-              ),
-              Expanded(
-                child: Material(
-                  child: InkWell(
-                    onTap: () => cubit.selectAnswer(OptionIndex.D),
-                    child: Center(
-                      child: Text(
-                        'D) ${question.options[OptionIndex.D]!}',
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: [
+      children: const [
         Expanded(
           flex: 7,
-          child: Center(
-            child: Text(
-              question.question,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.w400,
-              ),
-            ),
-          ),
+          child: _QuestionPanel(),
         ),
-        const Divider(
+        Divider(
           thickness: 5,
           height: 0,
         ),
         Expanded(
           flex: 1,
-          child: Center(
-            child: Text(
-              'Level $score',
-              style: const TextStyle(
-                fontSize: 18,
-              ),
-            ),
-          ),
+          child: _ScorePanel(),
         ),
-        const Divider(
+        Divider(
           thickness: 2,
           height: 0,
         ),
         Expanded(
           flex: 7,
-          child: optionsGrid(context),
+          child: _OptionsGrid(),
         ),
       ],
+    );
+  }
+}
+
+class _QuestionPanel extends StatelessWidget {
+  const _QuestionPanel({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: BlocBuilder<QuizCubit, QuizState>(
+        buildWhen: (previous, current) =>
+            previous.questionIndex != current.questionIndex,
+        builder: (context, state) {
+          return Text(
+            state.currentQuestion.question,
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.w400,
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+class _ScorePanel extends StatelessWidget {
+  const _ScorePanel({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: BlocBuilder<QuizCubit, QuizState>(
+        buildWhen: (previous, current) => previous.score != current.score,
+        builder: (context, state) {
+          return Text(
+            'Level ${state.score}',
+            style: const TextStyle(
+              fontSize: 18,
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+class _OptionsGrid extends StatelessWidget {
+  const _OptionsGrid({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final cubit = context.read<QuizCubit>();
+    return BlocBuilder<QuizCubit, QuizState>(
+      buildWhen: (previous, current) =>
+          previous.questionIndex != current.questionIndex,
+      builder: (context, state) {
+        final question = state.currentQuestion;
+        return Column(
+          children: [
+            Expanded(
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Material(
+                      child: InkWell(
+                        onTap: () => cubit.selectAnswer(OptionIndex.A),
+                        child: Center(
+                          child: Text(
+                            'A) ${question.options[OptionIndex.A]!}',
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const VerticalDivider(
+                    thickness: 2,
+                    width: 1,
+                  ),
+                  Expanded(
+                    child: Material(
+                      child: InkWell(
+                        onTap: () => cubit.selectAnswer(OptionIndex.B),
+                        child: Center(
+                          child: Text(
+                            'B) ${question.options[OptionIndex.B]!}',
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const Divider(
+              thickness: 1,
+              height: 0,
+            ),
+            Expanded(
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Material(
+                      child: InkWell(
+                        onTap: () => cubit.selectAnswer(OptionIndex.C),
+                        child: Center(
+                          child: Text(
+                            'C) ${question.options[OptionIndex.C]!}',
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const VerticalDivider(
+                    thickness: 2,
+                    width: 1,
+                  ),
+                  Expanded(
+                    child: Material(
+                      child: InkWell(
+                        onTap: () => cubit.selectAnswer(OptionIndex.D),
+                        child: Center(
+                          child: Text(
+                            'D) ${question.options[OptionIndex.D]!}',
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }
