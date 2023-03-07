@@ -55,7 +55,7 @@ class _Body extends StatelessWidget {
           } else if (state.status == FormzSubmissionStatus.failure) {
             return Text(state.error);
           } else {
-            return const _Layout();
+            return state.complete ? const _EndLayout() : const _Layout();
           }
         },
       ),
@@ -227,6 +227,50 @@ class _OptionButton extends StatelessWidget {
         child: Center(
           child: Text(text),
         ),
+      ),
+    );
+  }
+}
+
+class _EndLayout extends StatelessWidget {
+  const _EndLayout({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 32),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          const Text(
+            'Congratulations!',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+          BlocBuilder<QuizCubit, QuizState>(
+            builder: (context, state) {
+              return Text(
+                'You reached level ${state.score}',
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  fontSize: 16,
+                ),
+              );
+            },
+          ),
+          ElevatedButton(
+            onPressed: () => context.read<QuizCubit>().loadQuiz(),
+            child: const Text('Try Again'),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Goodbye'),
+          ),
+        ],
       ),
     );
   }

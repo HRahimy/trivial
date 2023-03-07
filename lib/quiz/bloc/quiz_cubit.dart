@@ -18,6 +18,9 @@ class QuizCubit extends Cubit<QuizState> {
   final QuizRepository _repository;
 
   void loadQuiz() {
+    if (state.complete) {
+      emit(const QuizState());
+    }
     emit(state.copyWith(
       status: FormzSubmissionStatus.inProgress,
     ));
@@ -58,9 +61,6 @@ class QuizCubit extends Cubit<QuizState> {
       emit(newState.copyWith(complete: true));
       return;
     }
-
-    final newQuestion = state.quizQuestions
-        .firstWhere((element) => element.sequenceIndex == newQuestionIndex);
 
     newState = newState.copyWith(
       questionIndex: newQuestionIndex,
