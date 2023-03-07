@@ -37,10 +37,13 @@ class _View extends StatelessWidget {
             } else if (state.status == FormzSubmissionStatus.failure) {
               return Text(state.error);
             } else {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children:
-                    state.quizzes.map((e) => _QuizButton(quiz: e)).toList(),
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 32),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children:
+                      state.quizzes.map((e) => _QuizButton(quiz: e)).toList(),
+                ),
               );
             }
           },
