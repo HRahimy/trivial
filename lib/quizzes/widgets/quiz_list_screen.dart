@@ -4,6 +4,7 @@ import 'package:formz/formz.dart';
 import 'package:repositories/repositories.dart';
 import 'package:trivial/quiz/widgets/quiz_screen.dart';
 import 'package:trivial/quizzes/bloc/quizzes_cubit.dart';
+import 'package:trivial/quizzes/quizzes_keys.dart';
 
 class QuizListScreen extends StatelessWidget {
   const QuizListScreen({Key? key}) : super(key: key);
@@ -40,9 +41,14 @@ class _View extends StatelessWidget {
               return Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 32),
                 child: Column(
+                  key: QuizzesKeys.quizList,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children:
-                      state.quizzes.map((e) => _QuizButton(quiz: e)).toList(),
+                  children: state.quizzes
+                      .map((e) => _QuizButton(
+                            key: QuizzesKeys.quizItemButton('${e.id}'),
+                            quiz: e,
+                          ))
+                      .toList(),
                 ),
               );
             }
@@ -54,7 +60,10 @@ class _View extends StatelessWidget {
 }
 
 class _QuizButton extends StatelessWidget {
-  const _QuizButton({Key? key, required this.quiz}) : super(key: key);
+  const _QuizButton({
+    Key? key,
+    required this.quiz,
+  }) : super(key: key);
   final Quiz quiz;
 
   @override
@@ -65,7 +74,10 @@ class _QuizButton extends StatelessWidget {
         QuizScreen.routeName,
         arguments: QuizScreenArgs(quizId: quiz.id),
       ),
-      child: Text(quiz.name),
+      child: Text(
+        quiz.name,
+        key: QuizzesKeys.quizItemButtonText('${quiz.id}'),
+      ),
     );
   }
 }
