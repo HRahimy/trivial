@@ -229,6 +229,11 @@ class _OptionsGrid extends StatelessWidget {
                       onTap: !state.questionDepleted
                           ? () => cubit.selectAnswer(OptionIndex.A)
                           : null,
+                      status: state.selectedOption == OptionIndex.A
+                          ? _OptionButtonStatus.selected
+                          : state.questionDepleted
+                              ? _OptionButtonStatus.disabled
+                              : _OptionButtonStatus.initial,
                     ),
                   ),
                   const VerticalDivider(
@@ -241,6 +246,11 @@ class _OptionsGrid extends StatelessWidget {
                       onTap: !state.questionDepleted
                           ? () => cubit.selectAnswer(OptionIndex.B)
                           : null,
+                      status: state.selectedOption == OptionIndex.B
+                          ? _OptionButtonStatus.selected
+                          : state.questionDepleted
+                              ? _OptionButtonStatus.disabled
+                              : _OptionButtonStatus.initial,
                     ),
                   ),
                 ],
@@ -259,6 +269,11 @@ class _OptionsGrid extends StatelessWidget {
                       onTap: !state.questionDepleted
                           ? () => cubit.selectAnswer(OptionIndex.C)
                           : null,
+                      status: state.selectedOption == OptionIndex.C
+                          ? _OptionButtonStatus.selected
+                          : state.questionDepleted
+                              ? _OptionButtonStatus.disabled
+                              : _OptionButtonStatus.initial,
                     ),
                   ),
                   const VerticalDivider(
@@ -271,6 +286,11 @@ class _OptionsGrid extends StatelessWidget {
                       onTap: !state.questionDepleted
                           ? () => cubit.selectAnswer(OptionIndex.D)
                           : null,
+                      status: state.selectedOption == OptionIndex.D
+                          ? _OptionButtonStatus.selected
+                          : state.questionDepleted
+                              ? _OptionButtonStatus.disabled
+                              : _OptionButtonStatus.initial,
                     ),
                   ),
                 ],
@@ -283,18 +303,34 @@ class _OptionsGrid extends StatelessWidget {
   }
 }
 
+enum _OptionButtonStatus { initial, selected, disabled }
+
 class _OptionButton extends StatelessWidget {
-  const _OptionButton({
-    Key? key,
-    this.onTap,
-    required this.text,
-  }) : super(key: key);
+  const _OptionButton(
+      {Key? key,
+      this.onTap,
+      required this.text,
+      this.status = _OptionButtonStatus.initial})
+      : super(key: key);
   final String text;
   final Function()? onTap;
+  final _OptionButtonStatus status;
+
+  Color? get _materialColor {
+    switch (status) {
+      case _OptionButtonStatus.initial:
+        return null;
+      case _OptionButtonStatus.selected:
+        return Colors.lightBlue[400];
+      case _OptionButtonStatus.disabled:
+        return Colors.grey[300];
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Material(
+      color: _materialColor,
       child: InkWell(
         onTap: onTap,
         child: Center(
