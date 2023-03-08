@@ -71,6 +71,7 @@ class _Layout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: const [
         Expanded(
           flex: 7,
@@ -92,6 +93,14 @@ class _Layout extends StatelessWidget {
         Expanded(
           flex: 7,
           child: _OptionsGrid(),
+        ),
+        Divider(
+          thickness: 2,
+          height: 0,
+        ),
+        Expanded(
+          flex: 1,
+          child: _ContinueButton(),
         ),
       ],
     );
@@ -292,6 +301,28 @@ class _OptionButton extends StatelessWidget {
           child: Text(text),
         ),
       ),
+    );
+  }
+}
+
+class _ContinueButton extends StatelessWidget {
+  const _ContinueButton({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<QuizCubit, QuizState>(
+      buildWhen: (previous, current) =>
+          previous.questionStatus != current.questionStatus,
+      builder: (context, state) {
+        final bool canPress =
+            state.questionStatus == QuestionStatus.choiceSelected ||
+                state.questionStatus == QuestionStatus.depleted;
+        return ElevatedButton(
+          onPressed:
+              canPress ? () => context.read<QuizCubit>().continueQuiz() : null,
+          child: const Text('Continue'),
+        );
+      },
     );
   }
 }
