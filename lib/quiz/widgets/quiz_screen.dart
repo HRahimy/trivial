@@ -140,15 +140,16 @@ class _Timer extends StatefulWidget {
 
 class _TimerState extends State<_Timer> with TickerProviderStateMixin {
   AnimationController? controller;
+  static const int durationSeconds = 15;
 
   @override
   void initState() {
     super.initState();
     controller = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 15),
+      duration: const Duration(seconds: durationSeconds),
     );
-    controller!.reverse(from: 15);
+    controller!.reverse(from: durationSeconds.toDouble());
     controller!.addStatusListener(listener);
   }
 
@@ -170,7 +171,7 @@ class _TimerState extends State<_Timer> with TickerProviderStateMixin {
       listenWhen: (previous, current) =>
           previous.questionIndex != current.questionIndex,
       listener: (context, state) {
-        controller!.reverse(from: 15);
+        controller!.reverse(from: durationSeconds.toDouble());
       },
       child: AnimatedBuilder(
         animation: controller!,
