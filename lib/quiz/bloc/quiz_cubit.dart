@@ -44,13 +44,13 @@ class QuizCubit extends Cubit<QuizState> {
   }
 
   void selectAnswer(OptionIndex choice) {
-    if (state.questionStatus == QuestionStatus.depleted) {
+    if (state.questionDepleted) {
       return;
     }
 
     emit(state.copyWith(
       selectedOption: choice,
-      questionStatus: QuestionStatus.choiceSelected,
+      choiceSelected: true,
     ));
   }
 
@@ -74,7 +74,8 @@ class QuizCubit extends Cubit<QuizState> {
 
     newState = newState.copyWith(
       questionIndex: state.questionIndex + 1,
-      questionStatus: QuestionStatus.waiting,
+      choiceSelected: false,
+      questionDepleted: false,
     );
 
     emit(newState);
@@ -82,7 +83,7 @@ class QuizCubit extends Cubit<QuizState> {
 
   void depleteQuestion() {
     emit(state.copyWith(
-      questionStatus: QuestionStatus.depleted,
+      questionDepleted: true,
     ));
   }
 }

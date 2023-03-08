@@ -1,7 +1,5 @@
 part of 'quiz_cubit.dart';
 
-enum QuestionStatus { waiting, depleted, choiceSelected, answered }
-
 class QuizState extends Equatable {
   const QuizState({
     this.quiz = Quiz.empty,
@@ -9,7 +7,8 @@ class QuizState extends Equatable {
     this.answers = const {},
     this.score = 0,
     this.questionIndex = 0,
-    this.questionStatus = QuestionStatus.waiting,
+    this.choiceSelected = false,
+    this.questionDepleted = false,
     OptionIndex? selectedOption = OptionIndex.A,
     this.complete = false,
     this.status = FormzSubmissionStatus.initial,
@@ -21,7 +20,8 @@ class QuizState extends Equatable {
   final Map<int, OptionIndex> answers;
   final int score;
   final int questionIndex;
-  final QuestionStatus questionStatus;
+  final bool choiceSelected;
+  final bool questionDepleted;
   final OptionIndex _selectedOption;
   final bool complete;
   final FormzSubmissionStatus status;
@@ -33,9 +33,7 @@ class QuizState extends Equatable {
   }
 
   OptionIndex? get selectedOption {
-    return questionStatus == QuestionStatus.choiceSelected
-        ? _selectedOption
-        : null;
+    return choiceSelected ? _selectedOption : null;
   }
 
   QuizState copyWith({
@@ -44,7 +42,8 @@ class QuizState extends Equatable {
     Map<int, OptionIndex>? answers,
     int? score,
     int? questionIndex,
-    QuestionStatus? questionStatus,
+    bool? choiceSelected,
+    bool? questionDepleted,
     OptionIndex? selectedOption,
     bool? complete,
     FormzSubmissionStatus? status,
@@ -56,7 +55,8 @@ class QuizState extends Equatable {
       answers: answers ?? this.answers,
       score: score ?? this.score,
       questionIndex: questionIndex ?? this.questionIndex,
-      questionStatus: questionStatus ?? this.questionStatus,
+      choiceSelected: choiceSelected ?? this.choiceSelected,
+      questionDepleted: questionDepleted ?? this.questionDepleted,
       selectedOption: selectedOption ?? _selectedOption,
       complete: complete ?? this.complete,
       status: status ?? this.status,
@@ -71,7 +71,8 @@ class QuizState extends Equatable {
         answers,
         score,
         questionIndex,
-        questionStatus,
+        choiceSelected,
+        questionDepleted,
         _selectedOption,
         complete,
         status,

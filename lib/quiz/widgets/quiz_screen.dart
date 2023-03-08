@@ -214,10 +214,10 @@ class _OptionsGrid extends StatelessWidget {
     return BlocBuilder<QuizCubit, QuizState>(
       buildWhen: (previous, current) =>
           previous.questionIndex != current.questionIndex ||
-          previous.questionStatus != current.questionStatus,
+          previous.selectedOption != current.selectedOption ||
+          previous.questionDepleted != current.questionDepleted,
       builder: (context, state) {
         final question = state.currentQuestion;
-        final bool canSelect = state.questionStatus != QuestionStatus.depleted;
         return Column(
           children: [
             Expanded(
@@ -226,7 +226,7 @@ class _OptionsGrid extends StatelessWidget {
                   Expanded(
                     child: _OptionButton(
                       text: 'A) ${question.options[OptionIndex.A]!}',
-                      onTap: canSelect
+                      onTap: !state.questionDepleted
                           ? () => cubit.selectAnswer(OptionIndex.A)
                           : null,
                     ),
@@ -238,7 +238,7 @@ class _OptionsGrid extends StatelessWidget {
                   Expanded(
                     child: _OptionButton(
                       text: 'B) ${question.options[OptionIndex.B]!}',
-                      onTap: canSelect
+                      onTap: !state.questionDepleted
                           ? () => cubit.selectAnswer(OptionIndex.B)
                           : null,
                     ),
@@ -256,7 +256,7 @@ class _OptionsGrid extends StatelessWidget {
                   Expanded(
                     child: _OptionButton(
                       text: 'C) ${question.options[OptionIndex.C]!}',
-                      onTap: canSelect
+                      onTap: !state.questionDepleted
                           ? () => cubit.selectAnswer(OptionIndex.C)
                           : null,
                     ),
@@ -268,7 +268,7 @@ class _OptionsGrid extends StatelessWidget {
                   Expanded(
                     child: _OptionButton(
                       text: 'D) ${question.options[OptionIndex.D]!}',
-                      onTap: canSelect
+                      onTap: !state.questionDepleted
                           ? () => cubit.selectAnswer(OptionIndex.D)
                           : null,
                     ),
@@ -312,11 +312,10 @@ class _ContinueButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<QuizCubit, QuizState>(
       buildWhen: (previous, current) =>
-          previous.questionStatus != current.questionStatus,
+          previous.choiceSelected != current.choiceSelected ||
+          previous.questionDepleted != current.questionDepleted,
       builder: (context, state) {
-        final bool canPress =
-            state.questionStatus == QuestionStatus.choiceSelected ||
-                state.questionStatus == QuestionStatus.depleted;
+        final bool canPress = state.choiceSelected || state.questionDepleted;
         return ElevatedButton(
           onPressed:
               canPress ? () => context.read<QuizCubit>().continueQuiz() : null,
