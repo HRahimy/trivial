@@ -151,7 +151,7 @@ class _TimerState extends State<_Timer> with TickerProviderStateMixin {
 
   void listener(AnimationStatus status) {
     if (controller!.isDismissed) {
-      context.read<QuizCubit>().skipQuestion();
+      context.read<QuizCubit>().depleteQuestion();
     }
   }
 
@@ -204,9 +204,11 @@ class _OptionsGrid extends StatelessWidget {
     final cubit = context.read<QuizCubit>();
     return BlocBuilder<QuizCubit, QuizState>(
       buildWhen: (previous, current) =>
-          previous.questionIndex != current.questionIndex,
+          previous.questionIndex != current.questionIndex ||
+          previous.questionStatus != current.questionStatus,
       builder: (context, state) {
         final question = state.currentQuestion;
+        final bool canSelect = state.questionStatus != QuestionStatus.depleted;
         return Column(
           children: [
             Expanded(
@@ -215,7 +217,9 @@ class _OptionsGrid extends StatelessWidget {
                   Expanded(
                     child: _OptionButton(
                       text: 'A) ${question.options[OptionIndex.A]!}',
-                      onTap: () => cubit.selectAnswer(OptionIndex.A),
+                      onTap: canSelect
+                          ? () => cubit.selectAnswer(OptionIndex.A)
+                          : null,
                     ),
                   ),
                   const VerticalDivider(
@@ -224,8 +228,10 @@ class _OptionsGrid extends StatelessWidget {
                   ),
                   Expanded(
                     child: _OptionButton(
-                      text: 'A) ${question.options[OptionIndex.B]!}',
-                      onTap: () => cubit.selectAnswer(OptionIndex.B),
+                      text: 'B) ${question.options[OptionIndex.B]!}',
+                      onTap: canSelect
+                          ? () => cubit.selectAnswer(OptionIndex.B)
+                          : null,
                     ),
                   ),
                 ],
@@ -240,8 +246,10 @@ class _OptionsGrid extends StatelessWidget {
                 children: [
                   Expanded(
                     child: _OptionButton(
-                      text: 'A) ${question.options[OptionIndex.C]!}',
-                      onTap: () => cubit.selectAnswer(OptionIndex.C),
+                      text: 'C) ${question.options[OptionIndex.C]!}',
+                      onTap: canSelect
+                          ? () => cubit.selectAnswer(OptionIndex.C)
+                          : null,
                     ),
                   ),
                   const VerticalDivider(
@@ -250,8 +258,10 @@ class _OptionsGrid extends StatelessWidget {
                   ),
                   Expanded(
                     child: _OptionButton(
-                      text: 'A) ${question.options[OptionIndex.D]!}',
-                      onTap: () => cubit.selectAnswer(OptionIndex.D),
+                      text: 'D) ${question.options[OptionIndex.D]!}',
+                      onTap: canSelect
+                          ? () => cubit.selectAnswer(OptionIndex.D)
+                          : null,
                     ),
                   ),
                 ],

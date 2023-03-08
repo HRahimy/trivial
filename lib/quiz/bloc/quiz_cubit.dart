@@ -44,13 +44,23 @@ class QuizCubit extends Cubit<QuizState> {
   }
 
   void selectAnswer(OptionIndex choice) {
+    if (state.questionStatus == QuestionStatus.depleted) {
+      return;
+    }
+
+    emit(state.copyWith(
+      selectedOption: choice,
+      questionStatus: QuestionStatus.choiceSelected,
+    ));
+  }
+
+  void continueQuiz() {
     if (state.complete) {
       return;
     }
 
-    final int newQuestionIndex = state.questionIndex + 1;
     QuizState newState = state;
-    if (choice == state.currentQuestion.correctOption) {
+    if (state.selectedOption == state.currentQuestion.correctOption) {
       newState = newState.copyWith(
         score: state.score + state.currentQuestion.points,
       );
@@ -58,26 +68,21 @@ class QuizCubit extends Cubit<QuizState> {
 
     if (!state.quizQuestions
         .any((element) => element.sequenceIndex > state.questionIndex)) {
-      emit(newState.copyWith(complete: true));
+      emit(state.copyWith(complete: true));
       return;
     }
 
     newState = newState.copyWith(
-      questionIndex: newQuestionIndex,
+      questionIndex: state.questionIndex + 1,
+      questionStatus: QuestionStatus.waiting,
     );
 
     emit(newState);
   }
 
-  void skipQuestion() {
-    if (!state.quizQuestions
-        .any((element) => element.sequenceIndex > state.questionIndex)) {
-      emit(state.copyWith(complete: true));
-      return;
-    }
-
+  void depleteQuestion() {
     emit(state.copyWith(
-      questionIndex: state.questionIndex + 1,
+      questionStatus: QuestionStatus.depleted,
     ));
   }
 }
