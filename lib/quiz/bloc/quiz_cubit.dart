@@ -68,7 +68,7 @@ class QuizCubit extends Cubit<QuizState> {
 
     if (!state.quizQuestions
         .any((element) => element.sequenceIndex > state.questionIndex)) {
-      emit(state.copyWith(complete: true));
+      emit(newState.copyWith(complete: true));
       return;
     }
 
