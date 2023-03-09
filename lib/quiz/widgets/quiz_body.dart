@@ -59,7 +59,9 @@ class _Layout extends StatelessWidget {
         ),
         Expanded(
           flex: 1,
-          child: _ScorePanel(),
+          child: _ScorePanel(
+            key: QuizKeys.scorePanel,
+          ),
         ),
         Divider(
           thickness: 2,
@@ -94,6 +96,7 @@ class _QuestionPanel extends StatelessWidget {
         builder: (context, state) {
           return Text(
             state.currentQuestion.question,
+            key: QuizKeys.questionText,
             textAlign: TextAlign.center,
             style: const TextStyle(
               fontSize: 24,
@@ -171,6 +174,7 @@ class _ScorePanel extends StatelessWidget {
         builder: (context, state) {
           return Text(
             'Level ${state.score}',
+            key: QuizKeys.scoreText,
             style: const TextStyle(
               fontSize: 18,
             ),
