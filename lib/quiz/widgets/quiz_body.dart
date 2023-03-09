@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:repositories/repositories.dart';
 import 'package:trivial/quiz/bloc/quiz_cubit.dart';
+import 'package:trivial/quiz/quiz_keys.dart';
 
 class QuizBody extends StatelessWidget {
   const QuizBody({Key? key}) : super(key: key);
@@ -22,7 +23,11 @@ class QuizBody extends StatelessWidget {
             } else if (state.status == FormzSubmissionStatus.failure) {
               return Text(state.error);
             } else {
-              return state.complete ? const _EndLayout() : const _Layout();
+              return state.complete
+                  ? const _EndLayout()
+                  : const _Layout(
+                      key: QuizKeys.quizBody,
+                    );
             }
           },
         ),
@@ -43,7 +48,9 @@ class _Layout extends StatelessWidget {
       children: const [
         Expanded(
           flex: 7,
-          child: _QuestionPanel(),
+          child: _QuestionPanel(
+            key: QuizKeys.questionPanel,
+          ),
         ),
         _Timer(),
         Divider(
