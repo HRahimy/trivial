@@ -6,6 +6,7 @@
 
 - [x] button is rendered for a quiz
 - [x] button contains correct text
+- [ ] pressing quiz button triggers navigation
 
 ### Quiz
 
