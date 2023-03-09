@@ -6,6 +6,8 @@ class QuizKeys {
   static const Key questionPanel = Key('__questionPanel__');
   static const Key questionText = Key('__questionText__');
 
+  static const Key questionTimer = Key('__questionTimer__');
+
   static const Key scorePanel = Key('__scorePanel__');
   static const Key scoreText = Key('__scoreText__');
 
