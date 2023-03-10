@@ -11,7 +11,6 @@
 ### Quiz
 
 - [x] question text exists & is correct
-- [ ] changing question updates UI with new question text
 - [x] timer exists and is animated
 - [ ] event to deplete the question triggers when timer runs out
 - [ ] timer resets when new question is opened
