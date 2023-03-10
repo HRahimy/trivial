@@ -140,6 +140,23 @@ void main() {
 
         expect(progressWidget.value, equals(0.0));
       });
+
+      testWidgets('timer is 15 seconds ', (tester) async {
+        when(() => cubit.state).thenReturn(loadedState);
+
+        await tester.pumpWidget(QuizBodyFixture(
+          quizCubit: cubit,
+        ));
+
+        final animationWidget = tester.widget(find.descendant(
+          of: find.byKey(QuizKeys.questionTimer),
+          matching: find.byType(AnimatedBuilder),
+        )) as AnimatedBuilder;
+        final controller = animationWidget.listenable as AnimationController;
+
+        expect(controller.duration, isNotNull);
+        expect(controller.duration!.inSeconds, equals(15));
+      });
     });
 
     group('[ScorePanel]', () {
