@@ -6,7 +6,10 @@ class QuizKeys {
   static const Key questionPanel = Key('__questionPanel__');
   static const Key questionText = Key('__questionText__');
 
-  static const Key questionTimer = Key('__questionTimer__');
+  // Timer must have unique key for each question to simplify
+  // resetting the counter when questions change
+  static Function(String) get questionTimer =>
+          (String id) => Key('__questionTimer_$id');
 
   static const Key scorePanel = Key('__scorePanel__');
   static const Key scoreText = Key('__scoreText__');

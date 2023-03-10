@@ -52,9 +52,7 @@ class _Layout extends StatelessWidget {
             key: QuizKeys.questionPanel,
           ),
         ),
-        _Timer(
-          key: QuizKeys.questionTimer,
-        ),
+        _TimerBuilder(),
         Divider(
           thickness: 5,
           height: 0,
@@ -111,6 +109,23 @@ class _QuestionPanel extends StatelessWidget {
   }
 }
 
+class _TimerBuilder extends StatelessWidget {
+  const _TimerBuilder();
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<QuizCubit, QuizState>(
+      buildWhen: (previous, current) =>
+          previous.questionIndex != current.questionIndex,
+      builder: (context, state) {
+        return _Timer(
+          key: QuizKeys.questionTimer('${state.currentQuestion.id}'),
+        );
+      },
+    );
+  }
+}
+
 class _Timer extends StatefulWidget {
   const _Timer({Key? key}) : super(key: key);
 
@@ -147,20 +162,13 @@ class _TimerState extends State<_Timer> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<QuizCubit, QuizState>(
-      listenWhen: (previous, current) =>
-          previous.questionIndex != current.questionIndex,
-      listener: (context, state) {
-        controller!.reverse(from: durationSeconds.toDouble());
+    return AnimatedBuilder(
+      animation: controller!,
+      builder: (context, child) {
+        return LinearProgressIndicator(
+          value: controller!.value,
+        );
       },
-      child: AnimatedBuilder(
-        animation: controller!,
-        builder: (context, child) {
-          return LinearProgressIndicator(
-            value: controller!.value,
-          );
-        },
-      ),
     );
   }
 }

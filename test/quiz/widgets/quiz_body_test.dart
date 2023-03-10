@@ -75,7 +75,7 @@ void main() {
       });
     });
 
-    group('Tester', () {
+    group('[Timer]', () {
       testWidgets('widget exists', (tester) async {
         when(() => cubit.state).thenReturn(loadedState);
 
@@ -84,7 +84,8 @@ void main() {
         ));
 
         final animationFinder = find.descendant(
-          of: find.byKey(QuizKeys.questionTimer),
+          of: find.byKey(
+              QuizKeys.questionTimer('${loadedState.currentQuestion.id}')),
           matching: find.byType(AnimatedBuilder),
         );
         final progressIndicatorFinder = find.descendant(
@@ -92,7 +93,10 @@ void main() {
           matching: find.byType(LinearProgressIndicator),
         );
 
-        expect(find.byKey(QuizKeys.questionTimer), findsOneWidget);
+        expect(
+            find.byKey(
+                QuizKeys.questionTimer('${loadedState.currentQuestion.id}')),
+            findsOneWidget);
         expect(animationFinder, findsOneWidget);
         expect(progressIndicatorFinder, findsOneWidget);
       });
@@ -105,7 +109,8 @@ void main() {
         ));
 
         final animationFinder = find.descendant(
-          of: find.byKey(QuizKeys.questionTimer),
+          of: find.byKey(
+              QuizKeys.questionTimer('${loadedState.currentQuestion.id}')),
           matching: find.byType(AnimatedBuilder),
         );
         final progressIndicatorFinder = find.descendant(
@@ -128,7 +133,8 @@ void main() {
         await tester.pumpAndSettle();
 
         final animationFinder = find.descendant(
-          of: find.byKey(QuizKeys.questionTimer),
+          of: find.byKey(
+              QuizKeys.questionTimer('${loadedState.currentQuestion.id}')),
           matching: find.byType(AnimatedBuilder),
         );
         final progressIndicatorFinder = find.descendant(
@@ -161,7 +167,8 @@ void main() {
         ));
 
         final animationWidget = tester.widget(find.descendant(
-          of: find.byKey(QuizKeys.questionTimer),
+          of: find.byKey(
+              QuizKeys.questionTimer('${loadedState.currentQuestion.id}')),
           matching: find.byType(AnimatedBuilder),
         )) as AnimatedBuilder;
         final controller = animationWidget.listenable as AnimationController;
