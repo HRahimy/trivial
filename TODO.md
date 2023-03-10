@@ -12,7 +12,7 @@
 
 - [x] question text exists & is correct
 - [x] timer exists and is animated
-- [ ] event to deplete the question triggers when timer runs out
+- [x] event to deplete the question triggers when timer runs out
 - [ ] timer resets when new question is opened
 - [x] score panel exists and renders correct score
 - [ ] options panel contains 4 buttons & renders values correctly

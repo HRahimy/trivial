@@ -141,6 +141,18 @@ void main() {
         expect(progressWidget.value, equals(0.0));
       });
 
+      testWidgets('timer goes down ', (tester) async {
+        when(() => cubit.state).thenReturn(loadedState);
+
+        await tester.pumpWidget(QuizBodyFixture(
+          quizCubit: cubit,
+        ));
+
+        await tester.pumpAndSettle();
+
+        verify(() => cubit.depleteQuestion()).called(1);
+      });
+
       testWidgets('timer is 15 seconds ', (tester) async {
         when(() => cubit.state).thenReturn(loadedState);
 
