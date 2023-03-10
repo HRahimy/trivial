@@ -10,6 +10,8 @@
 
 ### Quiz
 
+- [ ] update all keys to be unique based on question id
+
 - [x] question text exists & is correct
 - [x] timer exists and is animated
 - [x] event to deplete the question triggers when timer runs out
