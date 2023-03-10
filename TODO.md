@@ -10,12 +10,12 @@
 
 ### Quiz
 
-- [ ] question text exists & is correct
+- [x] question text exists & is correct
 - [ ] changing question updates UI with new question text
-- [ ] timer exists and is animated
+- [x] timer exists and is animated
 - [ ] event to deplete the question triggers when timer runs out
 - [ ] timer resets when new question is opened
-- [ ] score panel exists and renders correct score
+- [x] score panel exists and renders correct score
 - [ ] options panel contains 4 buttons & renders values correctly
 - [ ] button for selected options are highlighted
 - [ ] pressing an option button triggers select event in state
