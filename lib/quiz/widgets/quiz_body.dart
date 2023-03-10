@@ -52,7 +52,9 @@ class _Layout extends StatelessWidget {
             key: QuizKeys.questionPanel,
           ),
         ),
-        _Timer(),
+        _Timer(
+          key: QuizKeys.questionTimer,
+        ),
         Divider(
           thickness: 5,
           height: 0,

@@ -1,5 +1,4 @@
-import 'dart:math';
-
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:formz/formz.dart';
@@ -73,6 +72,29 @@ void main() {
           widget.data,
           equals(loadedState.currentQuestion.question),
         );
+      });
+    });
+
+    group('Tester', () {
+      testWidgets('widget exists', (tester) async {
+        when(() => cubit.state).thenReturn(loadedState);
+
+        await tester.pumpWidget(QuizBodyFixture(
+          quizCubit: cubit,
+        ));
+
+        final animationFinder = find.descendant(
+          of: find.byKey(QuizKeys.questionTimer),
+          matching: find.byType(AnimatedBuilder),
+        );
+        final progressIndicatorFinder = find.descendant(
+          of: animationFinder,
+          matching: find.byType(LinearProgressIndicator),
+        );
+
+        expect(find.byKey(QuizKeys.questionTimer), findsOneWidget);
+        expect(animationFinder, findsOneWidget);
+        expect(progressIndicatorFinder, findsOneWidget);
       });
     });
 
