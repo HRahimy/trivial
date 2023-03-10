@@ -96,6 +96,50 @@ void main() {
         expect(animationFinder, findsOneWidget);
         expect(progressIndicatorFinder, findsOneWidget);
       });
+
+      testWidgets('timer starts full', (tester) async {
+        when(() => cubit.state).thenReturn(loadedState);
+
+        await tester.pumpWidget(QuizBodyFixture(
+          quizCubit: cubit,
+        ));
+
+        final animationFinder = find.descendant(
+          of: find.byKey(QuizKeys.questionTimer),
+          matching: find.byType(AnimatedBuilder),
+        );
+        final progressIndicatorFinder = find.descendant(
+          of: animationFinder,
+          matching: find.byType(LinearProgressIndicator),
+        );
+        final progressWidget =
+            tester.widget(progressIndicatorFinder) as LinearProgressIndicator;
+
+        expect(progressWidget.value, equals(1.0));
+      });
+
+      testWidgets('timer goes down ', (tester) async {
+        when(() => cubit.state).thenReturn(loadedState);
+
+        await tester.pumpWidget(QuizBodyFixture(
+          quizCubit: cubit,
+        ));
+
+        await tester.pumpAndSettle();
+
+        final animationFinder = find.descendant(
+          of: find.byKey(QuizKeys.questionTimer),
+          matching: find.byType(AnimatedBuilder),
+        );
+        final progressIndicatorFinder = find.descendant(
+          of: animationFinder,
+          matching: find.byType(LinearProgressIndicator),
+        );
+        final progressWidget =
+            tester.widget(progressIndicatorFinder) as LinearProgressIndicator;
+
+        expect(progressWidget.value, equals(0.0));
+      });
     });
 
     group('[ScorePanel]', () {
