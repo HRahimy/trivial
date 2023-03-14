@@ -45,37 +45,50 @@ class _Layout extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: const [
+      children: [
         Expanded(
           flex: 7,
-          child: _QuestionPanel(
-            key: QuizKeys.questionPanel,
+          child: BlocBuilder<QuizCubit, QuizState>(
+            buildWhen: (previous, current) =>
+                previous.questionIndex != current.questionIndex,
+            builder: (context, state) {
+              return _QuestionPanel(
+                key: QuizKeys.questionPanel('${state.currentQuestion.id}'),
+                question: state.currentQuestion,
+              );
+            },
           ),
         ),
-        _TimerBuilder(),
-        Divider(
+        const _TimerBuilder(),
+        const Divider(
           thickness: 5,
           height: 0,
         ),
         Expanded(
           flex: 1,
-          child: _ScorePanel(
-            key: QuizKeys.scorePanel,
+          child: BlocBuilder<QuizCubit, QuizState>(
+            buildWhen: (previous, current) => previous.score != current.score,
+            builder: (context, state) {
+              return _ScorePanel(
+                key: QuizKeys.scorePanel,
+                score: '${state.score}',
+              );
+            },
           ),
         ),
-        Divider(
+        const Divider(
           thickness: 2,
           height: 0,
         ),
-        Expanded(
+        const Expanded(
           flex: 7,
           child: _OptionsGrid(),
         ),
-        Divider(
+        const Divider(
           thickness: 2,
           height: 0,
         ),
-        Expanded(
+        const Expanded(
           flex: 1,
           child: _ContinueButton(),
         ),
@@ -85,25 +98,23 @@ class _Layout extends StatelessWidget {
 }
 
 class _QuestionPanel extends StatelessWidget {
-  const _QuestionPanel({Key? key}) : super(key: key);
+  const _QuestionPanel({
+    Key? key,
+    required this.question,
+  }) : super(key: key);
+  final QuizQuestion question;
 
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: BlocBuilder<QuizCubit, QuizState>(
-        buildWhen: (previous, current) =>
-            previous.questionIndex != current.questionIndex,
-        builder: (context, state) {
-          return Text(
-            state.currentQuestion.question,
-            key: QuizKeys.questionText,
-            textAlign: TextAlign.center,
-            style: const TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.w400,
-            ),
-          );
-        },
+      child: Text(
+        question.question,
+        key: QuizKeys.questionText('${question.id}'),
+        textAlign: TextAlign.center,
+        style: const TextStyle(
+          fontSize: 24,
+          fontWeight: FontWeight.w400,
+        ),
       ),
     );
   }
@@ -174,22 +185,22 @@ class _TimerState extends State<_Timer> with TickerProviderStateMixin {
 }
 
 class _ScorePanel extends StatelessWidget {
-  const _ScorePanel({Key? key}) : super(key: key);
+  const _ScorePanel({
+    Key? key,
+    required this.score,
+  }) : super(key: key);
+
+  final String score;
 
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: BlocBuilder<QuizCubit, QuizState>(
-        buildWhen: (previous, current) => previous.score != current.score,
-        builder: (context, state) {
-          return Text(
-            'Level ${state.score}',
-            key: QuizKeys.scoreText,
-            style: const TextStyle(
-              fontSize: 18,
-            ),
-          );
-        },
+      child: Text(
+        'Level $score',
+        key: QuizKeys.scoreText,
+        style: const TextStyle(
+          fontSize: 18,
+        ),
       ),
     );
   }

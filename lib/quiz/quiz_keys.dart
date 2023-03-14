@@ -18,11 +18,8 @@ class QuizKeys {
       (String id) => Key('__questionTimer_${id}__');
 
   //region Score panel
-  static Function(String) get scorePanel =>
-      (String id) => Key('__scorePanel_${id}__');
-
-  static Function(String) get scoreText =>
-      (String id) => Key('__scoreText_${id}__');
+  static const Key scorePanel = Key('__scorePanel__');
+  static const Key scoreText = Key('__scoreText__');
 
   //endregion
 
