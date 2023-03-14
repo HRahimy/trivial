@@ -220,6 +220,7 @@ class _OptionsGrid extends StatelessWidget {
       builder: (context, state) {
         final question = state.currentQuestion;
         return Column(
+          key: QuizKeys.optionsPanel('${state.currentQuestion.id}'),
           children: [
             Expanded(
               child: Row(
