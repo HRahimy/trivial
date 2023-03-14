@@ -1,5 +1,7 @@
 # ToDo
 
+- [ ] add custom theme
+
 ## Tests
 
 ### Quiz list
