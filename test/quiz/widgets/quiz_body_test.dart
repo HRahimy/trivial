@@ -70,7 +70,9 @@ void main() {
           quizCubit: cubit,
         ));
 
-        final widget = tester.widget(find.byKey(QuizKeys.questionText('${loadedState.currentQuestion.id}'))) as Text;
+        final widget = tester.widget(find.byKey(
+                QuizKeys.questionText('${loadedState.currentQuestion.id}')))
+            as Text;
         expect(
           widget.data,
           equals(loadedState.currentQuestion.question),
@@ -231,7 +233,10 @@ void main() {
           quizCubit: cubit,
         ));
 
-        expect(find.byKey(QuizKeys.optionsPanel('${loadedState.currentQuestion.id}')), findsOneWidget);
+        expect(
+            find.byKey(
+                QuizKeys.optionsPanel('${loadedState.currentQuestion.id}')),
+            findsOneWidget);
       });
 
       testWidgets('panel contains option buttons', (tester) async {
@@ -241,22 +246,27 @@ void main() {
           quizCubit: cubit,
         ));
 
-        final panelFinder = find.byKey(QuizKeys.optionsPanel('${loadedState.currentQuestion.id}'));
+        final panelFinder = find
+            .byKey(QuizKeys.optionsPanel('${loadedState.currentQuestion.id}'));
         final aFinder = find.descendant(
           of: panelFinder,
-          matching: find.byKey(QuizKeys.optionAButton('${loadedState.currentQuestion.id}')),
+          matching: find.byKey(
+              QuizKeys.optionAButton('${loadedState.currentQuestion.id}')),
         );
         final bFinder = find.descendant(
           of: panelFinder,
-          matching: find.byKey(QuizKeys.optionBButton('${loadedState.currentQuestion.id}')),
+          matching: find.byKey(
+              QuizKeys.optionBButton('${loadedState.currentQuestion.id}')),
         );
         final cFinder = find.descendant(
           of: panelFinder,
-          matching: find.byKey(QuizKeys.optionCButton('${loadedState.currentQuestion.id}')),
+          matching: find.byKey(
+              QuizKeys.optionCButton('${loadedState.currentQuestion.id}')),
         );
         final dFinder = find.descendant(
           of: panelFinder,
-          matching: find.byKey(QuizKeys.optionDButton('${loadedState.currentQuestion.id}')),
+          matching: find.byKey(
+              QuizKeys.optionDButton('${loadedState.currentQuestion.id}')),
         );
 
         expect(aFinder, findsOneWidget);
@@ -273,10 +283,12 @@ void main() {
             quizCubit: cubit,
           ));
 
-          final buttonFinder = find.byKey(QuizKeys.optionAButton('${loadedState.currentQuestion.id}'));
+          final buttonFinder = find.byKey(
+              QuizKeys.optionAButton('${loadedState.currentQuestion.id}'));
           final textFinder = find.descendant(
             of: buttonFinder,
-            matching: find.byKey(QuizKeys.optionAButtonText('${loadedState.currentQuestion.id}')),
+            matching: find.byKey(QuizKeys.optionAButtonText(
+                '${loadedState.currentQuestion.id}')),
           );
           final textWidget = tester.widget(textFinder) as Text;
 
@@ -296,10 +308,12 @@ void main() {
             quizCubit: cubit,
           ));
 
-          final buttonFinder = find.byKey(QuizKeys.optionBButton('${loadedState.currentQuestion.id}'));
+          final buttonFinder = find.byKey(
+              QuizKeys.optionBButton('${loadedState.currentQuestion.id}'));
           final textFinder = find.descendant(
             of: buttonFinder,
-            matching: find.byKey(QuizKeys.optionBButtonText('${loadedState.currentQuestion.id}')),
+            matching: find.byKey(QuizKeys.optionBButtonText(
+                '${loadedState.currentQuestion.id}')),
           );
           final textWidget = tester.widget(textFinder) as Text;
 
@@ -319,10 +333,12 @@ void main() {
             quizCubit: cubit,
           ));
 
-          final buttonFinder = find.byKey(QuizKeys.optionCButton('${loadedState.currentQuestion.id}'));
+          final buttonFinder = find.byKey(
+              QuizKeys.optionCButton('${loadedState.currentQuestion.id}'));
           final textFinder = find.descendant(
             of: buttonFinder,
-            matching: find.byKey(QuizKeys.optionCButtonText('${loadedState.currentQuestion.id}')),
+            matching: find.byKey(QuizKeys.optionCButtonText(
+                '${loadedState.currentQuestion.id}')),
           );
           final textWidget = tester.widget(textFinder) as Text;
 
@@ -342,10 +358,12 @@ void main() {
             quizCubit: cubit,
           ));
 
-          final buttonFinder = find.byKey(QuizKeys.optionDButton('${loadedState.currentQuestion.id}'));
+          final buttonFinder = find.byKey(
+              QuizKeys.optionDButton('${loadedState.currentQuestion.id}'));
           final textFinder = find.descendant(
             of: buttonFinder,
-            matching: find.byKey(QuizKeys.optionDButtonText('${loadedState.currentQuestion.id}')),
+            matching: find.byKey(QuizKeys.optionDButtonText(
+                '${loadedState.currentQuestion.id}')),
           );
           final textWidget = tester.widget(textFinder) as Text;
 
@@ -355,6 +373,45 @@ void main() {
             equals('D) ${loadedState.currentQuestion.options[OptionIndex.D]}'),
           );
         });
+      });
+    });
+
+    group('[ContinueButton]', () {
+      testWidgets('widget exists', (tester) async {
+        when(() => cubit.state).thenReturn(loadedState);
+
+        await tester.pumpWidget(QuizBodyFixture(
+          quizCubit: cubit,
+        ));
+
+        final String buttonId = '${loadedState.currentQuestion.id}';
+
+        expect(
+          find.byKey(QuizKeys.continueButton(buttonId)),
+          findsOneWidget,
+        );
+      });
+
+      testWidgets('text exists and is correct', (tester) async {
+        when(() => cubit.state).thenReturn(loadedState);
+
+        await tester.pumpWidget(QuizBodyFixture(
+          quizCubit: cubit,
+        ));
+
+        final String buttonId = '${loadedState.currentQuestion.id}';
+
+        final textFinder = find.descendant(
+          of: find.byKey(QuizKeys.continueButton(buttonId)),
+          matching: find.byKey(QuizKeys.continueButtonText(buttonId)),
+        );
+
+        expect(textFinder, findsOneWidget);
+
+        final textWidget = tester.widget(textFinder);
+
+        expect(textWidget.runtimeType, equals(Text));
+        expect((textWidget as Text).data, equals('Continue'));
       });
     });
   });
