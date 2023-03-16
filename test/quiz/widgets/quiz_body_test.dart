@@ -471,4 +471,50 @@ void main() {
       });
     });
   });
+
+  group('[EndBody]', () {
+    testWidgets('given quiz is incomplete, body does not exist',
+        (tester) async {
+      when(() => cubit.state).thenReturn(loadedState.copyWith(
+        complete: false,
+      ));
+
+      await tester.pumpWidget(QuizBodyFixture(
+        quizCubit: cubit,
+      ));
+
+      expect(find.byKey(QuizKeys.quizEndBody), findsNothing);
+    });
+
+    testWidgets('given quiz is complete, body exists', (tester) async {
+      when(() => cubit.state).thenReturn(loadedState.copyWith(
+        complete: true,
+      ));
+
+      await tester.pumpWidget(QuizBodyFixture(
+        quizCubit: cubit,
+      ));
+
+      expect(find.byKey(QuizKeys.quizEndBody), findsOneWidget);
+    });
+
+    testWidgets('flavor text exists', (tester) async {
+      when(() => cubit.state).thenReturn(loadedState.copyWith(
+        complete: true,
+      ));
+
+      await tester.pumpWidget(QuizBodyFixture(
+        quizCubit: cubit,
+      ));
+
+      final sectionFinder = find.byKey(QuizKeys.quizEndFlavorTextSection);
+      final textFinder = find.descendant(
+        of: find.byKey(QuizKeys.quizEndFlavorTextSection),
+        matching: find.byKey(QuizKeys.quizEndFlavorText),
+      );
+
+      expect(sectionFinder, findsOneWidget);
+      expect(textFinder, findsOneWidget);
+    });
+  });
 }
