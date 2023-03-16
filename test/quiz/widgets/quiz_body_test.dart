@@ -413,6 +413,62 @@ void main() {
         expect(textWidget.runtimeType, equals(Text));
         expect((textWidget as Text).data, equals('Continue'));
       });
+
+      testWidgets('given question is in initial state, button is disabled',
+          (tester) async {
+        when(() => cubit.state).thenReturn(loadedState);
+
+        await tester.pumpWidget(QuizBodyFixture(
+          quizCubit: cubit,
+        ));
+
+        final String buttonId = '${loadedState.currentQuestion.id}';
+
+        final button =
+            tester.widget(find.byKey(QuizKeys.continueButton(buttonId)))
+                as ElevatedButton;
+
+        expect(button.enabled, equals(false));
+      });
+
+      testWidgets('given option is selected, button is disabled',
+          (tester) async {
+        when(() => cubit.state).thenReturn(loadedState.copyWith(
+          choiceSelected: true,
+          selectedOption: OptionIndex.C,
+        ));
+
+        await tester.pumpWidget(QuizBodyFixture(
+          quizCubit: cubit,
+        ));
+
+        final String buttonId = '${loadedState.currentQuestion.id}';
+
+        final button =
+            tester.widget(find.byKey(QuizKeys.continueButton(buttonId)))
+                as ElevatedButton;
+
+        expect(button.enabled, equals(true));
+      });
+
+      testWidgets('given question is depleted, button is disabled',
+          (tester) async {
+        when(() => cubit.state).thenReturn(loadedState.copyWith(
+          questionDepleted: true,
+        ));
+
+        await tester.pumpWidget(QuizBodyFixture(
+          quizCubit: cubit,
+        ));
+
+        final String buttonId = '${loadedState.currentQuestion.id}';
+
+        final button =
+            tester.widget(find.byKey(QuizKeys.continueButton(buttonId)))
+                as ElevatedButton;
+
+        expect(button.enabled, equals(true));
+      });
     });
   });
 }
