@@ -227,7 +227,10 @@ class _OptionsGrid extends StatelessWidget {
                 children: [
                   Expanded(
                     child: _OptionButton(
-                      text: 'A) ${question.options[OptionIndex.A]!}',
+                      question: question.options[OptionIndex.A]!,
+                      option: OptionIndex.A,
+                      questionId: '${question.id}',
+                      key: QuizKeys.optionAButton('${question.id}'),
                       onTap: !state.questionDepleted
                           ? () => cubit.selectAnswer(OptionIndex.A)
                           : null,
@@ -244,7 +247,10 @@ class _OptionsGrid extends StatelessWidget {
                   ),
                   Expanded(
                     child: _OptionButton(
-                      text: 'B) ${question.options[OptionIndex.B]!}',
+                      question: question.options[OptionIndex.B]!,
+                      option: OptionIndex.B,
+                      questionId: '${question.id}',
+                      key: QuizKeys.optionBButton('${question.id}'),
                       onTap: !state.questionDepleted
                           ? () => cubit.selectAnswer(OptionIndex.B)
                           : null,
@@ -267,7 +273,10 @@ class _OptionsGrid extends StatelessWidget {
                 children: [
                   Expanded(
                     child: _OptionButton(
-                      text: 'C) ${question.options[OptionIndex.C]!}',
+                      question: question.options[OptionIndex.C]!,
+                      option: OptionIndex.C,
+                      questionId: '${question.id}',
+                      key: QuizKeys.optionCButton('${question.id}'),
                       onTap: !state.questionDepleted
                           ? () => cubit.selectAnswer(OptionIndex.C)
                           : null,
@@ -284,7 +293,10 @@ class _OptionsGrid extends StatelessWidget {
                   ),
                   Expanded(
                     child: _OptionButton(
-                      text: 'D) ${question.options[OptionIndex.D]!}',
+                      question: question.options[OptionIndex.D]!,
+                      option: OptionIndex.D,
+                      questionId: '${question.id}',
+                      key: QuizKeys.optionDButton('${question.id}'),
                       onTap: !state.questionDepleted
                           ? () => cubit.selectAnswer(OptionIndex.D)
                           : null,
@@ -308,13 +320,17 @@ class _OptionsGrid extends StatelessWidget {
 enum _OptionButtonStatus { initial, selected, disabled }
 
 class _OptionButton extends StatelessWidget {
-  const _OptionButton(
-      {Key? key,
-      this.onTap,
-      required this.text,
-      this.status = _OptionButtonStatus.initial})
-      : super(key: key);
-  final String text;
+  const _OptionButton({
+    Key? key,
+    this.onTap,
+    required this.question,
+    required this.option,
+    required this.questionId,
+    this.status = _OptionButtonStatus.initial,
+  }) : super(key: key);
+  final String question;
+  final OptionIndex option;
+  final String questionId;
   final Function()? onTap;
   final _OptionButtonStatus status;
 
@@ -329,6 +345,32 @@ class _OptionButton extends StatelessWidget {
     }
   }
 
+  String get text {
+    switch (option) {
+      case OptionIndex.A:
+        return 'A) $question';
+      case OptionIndex.B:
+        return 'B) $question';
+      case OptionIndex.C:
+        return 'C) $question';
+      case OptionIndex.D:
+        return 'D) $question';
+    }
+  }
+
+  Key get textKey {
+    switch (option) {
+      case OptionIndex.A:
+        return QuizKeys.optionAButtonText(questionId);
+      case OptionIndex.B:
+        return QuizKeys.optionBButtonText(questionId);
+      case OptionIndex.C:
+        return QuizKeys.optionCButtonText(questionId);
+      case OptionIndex.D:
+        return QuizKeys.optionDButtonText(questionId);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -336,7 +378,10 @@ class _OptionButton extends StatelessWidget {
       child: InkWell(
         onTap: onTap,
         child: Center(
-          child: Text(text),
+          child: Text(
+            text,
+            key: textKey,
+          ),
         ),
       ),
     );
