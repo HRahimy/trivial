@@ -400,9 +400,13 @@ class _ContinueButton extends StatelessWidget {
       builder: (context, state) {
         final bool canPress = state.choiceSelected || state.questionDepleted;
         return ElevatedButton(
+          key: QuizKeys.continueButton('${state.currentQuestion.id}'),
           onPressed:
               canPress ? () => context.read<QuizCubit>().continueQuiz() : null,
-          child: const Text('Continue'),
+          child: Text(
+            'Continue',
+            key: QuizKeys.continueButtonText('${state.currentQuestion.id}'),
+          ),
         );
       },
     );
