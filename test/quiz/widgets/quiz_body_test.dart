@@ -406,6 +406,91 @@ void main() {
             equals('B) ${loadedState.currentQuestion.options[OptionIndex.B]}'),
           );
         });
+
+        testWidgets('given option B is selected, button is highlighted',
+            (tester) async {
+          when(() => cubit.state).thenReturn(loadedState.copyWith(
+            choiceSelected: true,
+            selectedOption: OptionIndex.B,
+          ));
+
+          await tester.pumpWidget(QuizBodyFixture(
+            quizCubit: cubit,
+          ));
+
+          final buttonFinder = find.byKey(
+            QuizKeys.optionBButton('${loadedState.currentQuestion.id}'),
+          );
+          final materialFinder = find.descendant(
+            of: buttonFinder,
+            matching: find.byType(Material),
+          );
+
+          expect(materialFinder, findsOneWidget);
+
+          final materialWidget = tester.widget(materialFinder) as Material;
+          expect(materialWidget.color, equals(Colors.lightBlue[400]));
+        });
+
+        testWidgets(
+            'given option B is selected and question is depleted, button is highlighted',
+            (tester) async {
+          when(() => cubit.state).thenReturn(loadedState.copyWith(
+            choiceSelected: true,
+            selectedOption: OptionIndex.B,
+            questionDepleted: true,
+          ));
+
+          await tester.pumpWidget(QuizBodyFixture(
+            quizCubit: cubit,
+          ));
+
+          final buttonFinder = find.byKey(
+            QuizKeys.optionBButton('${loadedState.currentQuestion.id}'),
+          );
+          final materialFinder = find.descendant(
+            of: buttonFinder,
+            matching: find.byType(Material),
+          );
+
+          expect(materialFinder, findsOneWidget);
+
+          final materialWidget = tester.widget(materialFinder) as Material;
+          expect(materialWidget.color, equals(Colors.lightBlue[400]));
+        });
+
+        testWidgets(
+            'given option B is NOT selected and question is depleted, button is greyed and disabled',
+            (tester) async {
+          when(() => cubit.state).thenReturn(loadedState.copyWith(
+            questionDepleted: true,
+          ));
+
+          await tester.pumpWidget(QuizBodyFixture(
+            quizCubit: cubit,
+          ));
+
+          final buttonFinder = find.byKey(
+            QuizKeys.optionBButton('${loadedState.currentQuestion.id}'),
+          );
+          final materialFinder = find.descendant(
+            of: buttonFinder,
+            matching: find.byType(Material),
+          );
+          final inkwellFinder = find.descendant(
+            of: materialFinder,
+            matching: find.byType(InkWell),
+          );
+
+          expect(materialFinder, findsOneWidget);
+          expect(inkwellFinder, findsOneWidget);
+
+          final materialWidget = tester.widget(materialFinder) as Material;
+          expect(materialWidget.color, equals(Colors.grey[300]));
+
+          await tester.tap(inkwellFinder);
+          verifyNever(() => cubit.selectAnswer(OptionIndex.B));
+        });
       });
 
       group('[OptionCButton]', () {
@@ -431,6 +516,91 @@ void main() {
             equals('C) ${loadedState.currentQuestion.options[OptionIndex.C]}'),
           );
         });
+
+        testWidgets('given option C is selected, button is highlighted',
+            (tester) async {
+          when(() => cubit.state).thenReturn(loadedState.copyWith(
+            choiceSelected: true,
+            selectedOption: OptionIndex.C,
+          ));
+
+          await tester.pumpWidget(QuizBodyFixture(
+            quizCubit: cubit,
+          ));
+
+          final buttonFinder = find.byKey(
+            QuizKeys.optionCButton('${loadedState.currentQuestion.id}'),
+          );
+          final materialFinder = find.descendant(
+            of: buttonFinder,
+            matching: find.byType(Material),
+          );
+
+          expect(materialFinder, findsOneWidget);
+
+          final materialWidget = tester.widget(materialFinder) as Material;
+          expect(materialWidget.color, equals(Colors.lightBlue[400]));
+        });
+
+        testWidgets(
+            'given option C is selected and question is depleted, button is highlighted',
+            (tester) async {
+          when(() => cubit.state).thenReturn(loadedState.copyWith(
+            choiceSelected: true,
+            selectedOption: OptionIndex.C,
+            questionDepleted: true,
+          ));
+
+          await tester.pumpWidget(QuizBodyFixture(
+            quizCubit: cubit,
+          ));
+
+          final buttonFinder = find.byKey(
+            QuizKeys.optionCButton('${loadedState.currentQuestion.id}'),
+          );
+          final materialFinder = find.descendant(
+            of: buttonFinder,
+            matching: find.byType(Material),
+          );
+
+          expect(materialFinder, findsOneWidget);
+
+          final materialWidget = tester.widget(materialFinder) as Material;
+          expect(materialWidget.color, equals(Colors.lightBlue[400]));
+        });
+
+        testWidgets(
+            'given option C is NOT selected and question is depleted, button is greyed and disabled',
+            (tester) async {
+          when(() => cubit.state).thenReturn(loadedState.copyWith(
+            questionDepleted: true,
+          ));
+
+          await tester.pumpWidget(QuizBodyFixture(
+            quizCubit: cubit,
+          ));
+
+          final buttonFinder = find.byKey(
+            QuizKeys.optionCButton('${loadedState.currentQuestion.id}'),
+          );
+          final materialFinder = find.descendant(
+            of: buttonFinder,
+            matching: find.byType(Material),
+          );
+          final inkwellFinder = find.descendant(
+            of: materialFinder,
+            matching: find.byType(InkWell),
+          );
+
+          expect(materialFinder, findsOneWidget);
+          expect(inkwellFinder, findsOneWidget);
+
+          final materialWidget = tester.widget(materialFinder) as Material;
+          expect(materialWidget.color, equals(Colors.grey[300]));
+
+          await tester.tap(inkwellFinder);
+          verifyNever(() => cubit.selectAnswer(OptionIndex.C));
+        });
       });
 
       group('[OptionDButton]', () {
@@ -455,6 +625,91 @@ void main() {
             textWidget.data,
             equals('D) ${loadedState.currentQuestion.options[OptionIndex.D]}'),
           );
+        });
+
+        testWidgets('given option D is selected, button is highlighted',
+            (tester) async {
+          when(() => cubit.state).thenReturn(loadedState.copyWith(
+            choiceSelected: true,
+            selectedOption: OptionIndex.D,
+          ));
+
+          await tester.pumpWidget(QuizBodyFixture(
+            quizCubit: cubit,
+          ));
+
+          final buttonFinder = find.byKey(
+            QuizKeys.optionDButton('${loadedState.currentQuestion.id}'),
+          );
+          final materialFinder = find.descendant(
+            of: buttonFinder,
+            matching: find.byType(Material),
+          );
+
+          expect(materialFinder, findsOneWidget);
+
+          final materialWidget = tester.widget(materialFinder) as Material;
+          expect(materialWidget.color, equals(Colors.lightBlue[400]));
+        });
+
+        testWidgets(
+            'given option D is selected and question is depleted, button is highlighted',
+            (tester) async {
+          when(() => cubit.state).thenReturn(loadedState.copyWith(
+            choiceSelected: true,
+            selectedOption: OptionIndex.D,
+            questionDepleted: true,
+          ));
+
+          await tester.pumpWidget(QuizBodyFixture(
+            quizCubit: cubit,
+          ));
+
+          final buttonFinder = find.byKey(
+            QuizKeys.optionDButton('${loadedState.currentQuestion.id}'),
+          );
+          final materialFinder = find.descendant(
+            of: buttonFinder,
+            matching: find.byType(Material),
+          );
+
+          expect(materialFinder, findsOneWidget);
+
+          final materialWidget = tester.widget(materialFinder) as Material;
+          expect(materialWidget.color, equals(Colors.lightBlue[400]));
+        });
+
+        testWidgets(
+            'given option D is NOT selected and question is depleted, button is greyed and disabled',
+            (tester) async {
+          when(() => cubit.state).thenReturn(loadedState.copyWith(
+            questionDepleted: true,
+          ));
+
+          await tester.pumpWidget(QuizBodyFixture(
+            quizCubit: cubit,
+          ));
+
+          final buttonFinder = find.byKey(
+            QuizKeys.optionDButton('${loadedState.currentQuestion.id}'),
+          );
+          final materialFinder = find.descendant(
+            of: buttonFinder,
+            matching: find.byType(Material),
+          );
+          final inkwellFinder = find.descendant(
+            of: materialFinder,
+            matching: find.byType(InkWell),
+          );
+
+          expect(materialFinder, findsOneWidget);
+          expect(inkwellFinder, findsOneWidget);
+
+          final materialWidget = tester.widget(materialFinder) as Material;
+          expect(materialWidget.color, equals(Colors.grey[300]));
+
+          await tester.tap(inkwellFinder);
+          verifyNever(() => cubit.selectAnswer(OptionIndex.D));
         });
       });
     });
