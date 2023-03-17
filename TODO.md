@@ -32,6 +32,6 @@
 
 - [x] contains flavor text including the final score
 - [x] contains the 'try again' button
-- [ ] 'try again' button resets the quiz
+- [x] 'try again' button resets the quiz
 - [x] contains the 'goodbye' button
 - [ ] 'goodbye' button navigates to last screen

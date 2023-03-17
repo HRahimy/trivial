@@ -1044,5 +1044,20 @@ void main() {
       expect(text.runtimeType, Text);
       expect((text as Text).data, equals('You reached level 32'));
     });
+
+    testWidgets('pressing "Try Again!" button triggers load event in state',
+        (tester) async {
+      when(() => cubit.state).thenReturn(loadedState.copyWith(
+        complete: true,
+        score: 32,
+      ));
+
+      await tester.pumpWidget(QuizBodyFixture(
+        quizCubit: cubit,
+      ));
+
+      await tester.tap(find.byKey(QuizKeys.tryAgainButton));
+      verify(() => cubit.loadQuiz()).called(1);
+    });
   });
 }
