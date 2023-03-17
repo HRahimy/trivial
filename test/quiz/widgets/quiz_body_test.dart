@@ -507,9 +507,48 @@ void main() {
       expect(textFinder, findsOneWidget);
       expect(find.byKey(QuizKeys.quizEndScoreText), findsOneWidget);
       //endregion
+
+      //region controls section
+      final controlsSectionFinder = find.byKey(QuizKeys.quizEndControlsSection);
+      expect(controlsSectionFinder, findsOneWidget);
+      //endregion
+
+      //region try again button
+      final tryButtonFinder = find.descendant(
+        of: controlsSectionFinder,
+        matching: find.byKey(QuizKeys.tryAgainButton),
+      );
+      final tryButtonTextFinder = find.descendant(
+        of: tryButtonFinder,
+        matching: find.byKey(QuizKeys.tryAgainButtonText),
+      );
+      expect(tryButtonFinder, findsOneWidget);
+      expect(tryButtonTextFinder, findsOneWidget);
+
+      final tryButtonTextWidget = tester.widget(tryButtonTextFinder);
+      expect(tryButtonTextWidget.runtimeType, equals(Text));
+      expect((tryButtonTextWidget as Text).data, equals('Try Again!'));
+      //endregion
+
+      //region goodbye button
+      final byeButtonFinder = find.descendant(
+        of: controlsSectionFinder,
+        matching: find.byKey(QuizKeys.goodbyeButton),
+      );
+      final byeButtonTextFinder = find.descendant(
+        of: byeButtonFinder,
+        matching: find.byKey(QuizKeys.goodbyeButtonText),
+      );
+      expect(byeButtonFinder, findsOneWidget);
+      expect(byeButtonTextFinder, findsOneWidget);
+
+      final byeButtonTextWidget = tester.widget(byeButtonTextFinder);
+      expect(byeButtonTextWidget.runtimeType, equals(Text));
+      expect((byeButtonTextWidget as Text).data, equals('Goodbye!'));
+      //endregion
     });
 
-    testWidgets('score text is correct', (tester) async {
+    testWidgets('quiz end score text is correct', (tester) async {
       when(() => cubit.state).thenReturn(loadedState.copyWith(
         complete: true,
         score: 32,
