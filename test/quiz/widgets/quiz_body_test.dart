@@ -297,7 +297,8 @@ void main() {
           );
         });
 
-        testWidgets('button is highlighted when selected', (tester) async {
+        testWidgets('given option A is selected, button is highlighted',
+            (tester) async {
           when(() => cubit.state).thenReturn(loadedState.copyWith(
             choiceSelected: true,
             selectedOption: OptionIndex.A,
@@ -319,6 +320,66 @@ void main() {
 
           final materialWidget = tester.widget(materialFinder) as Material;
           expect(materialWidget.color, equals(Colors.lightBlue[400]));
+        });
+
+        testWidgets(
+            'given option A is selected and question is depleted, button is highlighted',
+            (tester) async {
+          when(() => cubit.state).thenReturn(loadedState.copyWith(
+            choiceSelected: true,
+            selectedOption: OptionIndex.A,
+            questionDepleted: true,
+          ));
+
+          await tester.pumpWidget(QuizBodyFixture(
+            quizCubit: cubit,
+          ));
+
+          final buttonFinder = find.byKey(
+            QuizKeys.optionAButton('${loadedState.currentQuestion.id}'),
+          );
+          final materialFinder = find.descendant(
+            of: buttonFinder,
+            matching: find.byType(Material),
+          );
+
+          expect(materialFinder, findsOneWidget);
+
+          final materialWidget = tester.widget(materialFinder) as Material;
+          expect(materialWidget.color, equals(Colors.lightBlue[400]));
+        });
+
+        testWidgets(
+            'given option A is NOT selected and question is depleted, button is greyed and disabled',
+            (tester) async {
+          when(() => cubit.state).thenReturn(loadedState.copyWith(
+            questionDepleted: true,
+          ));
+
+          await tester.pumpWidget(QuizBodyFixture(
+            quizCubit: cubit,
+          ));
+
+          final buttonFinder = find.byKey(
+            QuizKeys.optionAButton('${loadedState.currentQuestion.id}'),
+          );
+          final materialFinder = find.descendant(
+            of: buttonFinder,
+            matching: find.byType(Material),
+          );
+          final inkwellFinder = find.descendant(
+            of: materialFinder,
+            matching: find.byType(InkWell),
+          );
+
+          expect(materialFinder, findsOneWidget);
+          expect(inkwellFinder, findsOneWidget);
+
+          final materialWidget = tester.widget(materialFinder) as Material;
+          expect(materialWidget.color, equals(Colors.grey[300]));
+
+          await tester.tap(inkwellFinder);
+          verifyNever(() => cubit.selectAnswer(OptionIndex.A));
         });
       });
 
