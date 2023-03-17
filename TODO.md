@@ -4,6 +4,9 @@
 
 ## Tests
 
+- [ ] quiz list state and cubit
+- [ ] quiz state and cubit
+
 ### Quiz list
 
 - [x] button is rendered for a quiz
