@@ -125,7 +125,7 @@ void main() {
         expect(progressWidget.value, equals(1.0));
       });
 
-      testWidgets('timer goes down ', (tester) async {
+      testWidgets('timer goes down', (tester) async {
         when(() => cubit.state).thenReturn(loadedState);
 
         await tester.pumpWidget(QuizBodyFixture(
@@ -149,7 +149,9 @@ void main() {
         expect(progressWidget.value, equals(0.0));
       });
 
-      testWidgets('timer goes down ', (tester) async {
+      testWidgets(
+          'given timer is depleted, `depleteQuestion()` event is called in state',
+          (tester) async {
         when(() => cubit.state).thenReturn(loadedState);
 
         await tester.pumpWidget(QuizBodyFixture(
