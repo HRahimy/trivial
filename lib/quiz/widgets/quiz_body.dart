@@ -24,7 +24,9 @@ class QuizBody extends StatelessWidget {
               return Text(state.error);
             } else {
               return state.complete
-                  ? const _EndLayout()
+                  ? const _EndLayout(
+                      key: QuizKeys.quizEndBody,
+                    )
                   : const _Layout(
                       key: QuizKeys.quizBody,
                     );
@@ -416,6 +418,37 @@ class _ContinueButton extends StatelessWidget {
 class _EndLayout extends StatelessWidget {
   const _EndLayout({Key? key}) : super(key: key);
 
+  Column _flavorTextSection(BuildContext context) {
+    return Column(
+      key: QuizKeys.quizEndFlavorTextSection,
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        const Text(
+          'Congratulations!',
+          key: QuizKeys.quizEndFlavorText,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.w400,
+          ),
+        ),
+        BlocBuilder<QuizCubit, QuizState>(
+          builder: (context, state) {
+            return Text(
+              'You reached level ${state.score}',
+              key: QuizKeys.quizEndScoreText,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontSize: 16,
+              ),
+            );
+          },
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -424,25 +457,7 @@ class _EndLayout extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const Text(
-            'Congratulations!',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.w400,
-            ),
-          ),
-          BlocBuilder<QuizCubit, QuizState>(
-            builder: (context, state) {
-              return Text(
-                'You reached level ${state.score}',
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontSize: 16,
-                ),
-              );
-            },
-          ),
+          _flavorTextSection(context),
           ElevatedButton(
             onPressed: () => context.read<QuizCubit>().loadQuiz(),
             child: const Text('Try Again'),

@@ -526,7 +526,7 @@ void main() {
         quizCubit: cubit,
       ));
 
-      expect(QuizKeys.quizEndScoreText, findsOneWidget);
+      expect(find.byKey(QuizKeys.quizEndScoreText), findsOneWidget);
     });
 
     testWidgets('score text is correct', (tester) async {
@@ -542,7 +542,7 @@ void main() {
       final text = tester.widget(find.byKey(QuizKeys.quizEndScoreText));
 
       expect(text.runtimeType, Text);
-      expect((text as Text).data, equals('Level 32'));
+      expect((text as Text).data, equals('You reached level 32'));
     });
   });
 }
