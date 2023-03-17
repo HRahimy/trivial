@@ -40,27 +40,24 @@ void main() {
         await tester.pumpWidget(QuizBodyFixture(
           quizCubit: cubit,
         ));
-        final finder = find.descendant(
+
+        //region question section
+        final sectionFinder = find.descendant(
           of: find.byKey(QuizKeys.quizBody),
           matching: find.byKey(
               QuizKeys.questionPanel('${loadedState.currentQuestion.id}')),
         );
-        expect(finder, findsOneWidget);
-      });
+        expect(sectionFinder, findsOneWidget);
+        //endregion
 
-      testWidgets('question text exists', (tester) async {
-        when(() => cubit.state).thenReturn(loadedState);
-
-        await tester.pumpWidget(QuizBodyFixture(
-          quizCubit: cubit,
-        ));
-        final finder = find.descendant(
-          of: find.byKey(
-              QuizKeys.questionPanel('${loadedState.currentQuestion.id}')),
+        //region question text
+        final textFinder = find.descendant(
+          of: sectionFinder,
           matching: find.byKey(
               QuizKeys.questionText('${loadedState.currentQuestion.id}')),
         );
-        expect(finder, findsOneWidget);
+        expect(textFinder, findsOneWidget);
+        //endregion
       });
 
       testWidgets('question text is correct', (tester) async {
@@ -486,7 +483,8 @@ void main() {
       expect(find.byKey(QuizKeys.quizEndBody), findsNothing);
     });
 
-    testWidgets('given quiz is complete, body exists', (tester) async {
+    testWidgets('given quiz is complete, body components are rendered',
+        (tester) async {
       when(() => cubit.state).thenReturn(loadedState.copyWith(
         complete: true,
       ));
@@ -495,18 +493,10 @@ void main() {
         quizCubit: cubit,
       ));
 
+      // body exists
       expect(find.byKey(QuizKeys.quizEndBody), findsOneWidget);
-    });
 
-    testWidgets('flavor text exists', (tester) async {
-      when(() => cubit.state).thenReturn(loadedState.copyWith(
-        complete: true,
-      ));
-
-      await tester.pumpWidget(QuizBodyFixture(
-        quizCubit: cubit,
-      ));
-
+      //region flavor text exists
       final sectionFinder = find.byKey(QuizKeys.quizEndFlavorTextSection);
       final textFinder = find.descendant(
         of: find.byKey(QuizKeys.quizEndFlavorTextSection),
@@ -515,18 +505,8 @@ void main() {
 
       expect(sectionFinder, findsOneWidget);
       expect(textFinder, findsOneWidget);
-    });
-
-    testWidgets('score text exists', (tester) async {
-      when(() => cubit.state).thenReturn(loadedState.copyWith(
-        complete: true,
-      ));
-
-      await tester.pumpWidget(QuizBodyFixture(
-        quizCubit: cubit,
-      ));
-
       expect(find.byKey(QuizKeys.quizEndScoreText), findsOneWidget);
+      //endregion
     });
 
     testWidgets('score text is correct', (tester) async {
