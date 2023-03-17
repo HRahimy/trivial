@@ -516,5 +516,33 @@ void main() {
       expect(sectionFinder, findsOneWidget);
       expect(textFinder, findsOneWidget);
     });
+
+    testWidgets('score text exists', (tester) async {
+      when(() => cubit.state).thenReturn(loadedState.copyWith(
+        complete: true,
+      ));
+
+      await tester.pumpWidget(QuizBodyFixture(
+        quizCubit: cubit,
+      ));
+
+      expect(QuizKeys.quizEndScoreText, findsOneWidget);
+    });
+
+    testWidgets('score text is correct', (tester) async {
+      when(() => cubit.state).thenReturn(loadedState.copyWith(
+        complete: true,
+        score: 32,
+      ));
+
+      await tester.pumpWidget(QuizBodyFixture(
+        quizCubit: cubit,
+      ));
+
+      final text = tester.widget(find.byKey(QuizKeys.quizEndScoreText));
+
+      expect(text.runtimeType, Text);
+      expect((text as Text).data, equals('Level 32'));
+    });
   });
 }
