@@ -449,6 +449,32 @@ class _EndLayout extends StatelessWidget {
     );
   }
 
+  Column _controls(BuildContext context) {
+    return Column(
+      key: QuizKeys.quizEndControlsSection,
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        ElevatedButton(
+          key: QuizKeys.tryAgainButton,
+          onPressed: () => context.read<QuizCubit>().loadQuiz(),
+          child: const Text(
+            'Try Again!',
+            key: QuizKeys.tryAgainButtonText,
+          ),
+        ),
+        ElevatedButton(
+          key: QuizKeys.goodbyeButton,
+          onPressed: () => Navigator.pop(context),
+          child: const Text(
+            'Goodbye!',
+            key: QuizKeys.goodbyeButtonText,
+          ),
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -458,14 +484,7 @@ class _EndLayout extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           _flavorTextSection(context),
-          ElevatedButton(
-            onPressed: () => context.read<QuizCubit>().loadQuiz(),
-            child: const Text('Try Again'),
-          ),
-          ElevatedButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Goodbye'),
-          ),
+          _controls(context),
         ],
       ),
     );
