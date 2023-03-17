@@ -231,9 +231,10 @@ void main() {
         ));
 
         expect(
-            find.byKey(
-                QuizKeys.optionsPanel('${loadedState.currentQuestion.id}')),
-            findsOneWidget);
+          find.byKey(
+              QuizKeys.optionsPanel('${loadedState.currentQuestion.id}')),
+          findsOneWidget,
+        );
       });
 
       testWidgets('panel contains option buttons', (tester) async {
@@ -294,6 +295,30 @@ void main() {
             textWidget.data,
             equals('A) ${loadedState.currentQuestion.options[OptionIndex.A]}'),
           );
+        });
+
+        testWidgets('button is highlighted when selected', (tester) async {
+          when(() => cubit.state).thenReturn(loadedState.copyWith(
+            choiceSelected: true,
+            selectedOption: OptionIndex.A,
+          ));
+
+          await tester.pumpWidget(QuizBodyFixture(
+            quizCubit: cubit,
+          ));
+
+          final buttonFinder = find.byKey(
+            QuizKeys.optionAButton('${loadedState.currentQuestion.id}'),
+          );
+          final materialFinder = find.descendant(
+            of: buttonFinder,
+            matching: find.byType(Material),
+          );
+
+          expect(materialFinder, findsOneWidget);
+
+          final materialWidget = tester.widget(materialFinder) as Material;
+          expect(materialWidget.color, equals(Colors.lightBlue[400]));
         });
       });
 
