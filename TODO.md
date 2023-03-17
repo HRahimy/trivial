@@ -34,4 +34,4 @@
 - [x] contains the 'try again' button
 - [x] 'try again' button resets the quiz
 - [x] contains the 'goodbye' button
-- [ ] 'goodbye' button navigates to last screen
+- [x] 'goodbye' button navigates to last screen
