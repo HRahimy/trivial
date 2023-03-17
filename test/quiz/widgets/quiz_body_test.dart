@@ -889,7 +889,7 @@ void main() {
         expect(button.enabled, equals(false));
       });
 
-      testWidgets('given option is selected, button is disabled',
+      testWidgets('given option is selected, button is enabled',
           (tester) async {
         when(() => cubit.state).thenReturn(loadedState.copyWith(
           choiceSelected: true,
@@ -909,7 +909,7 @@ void main() {
         expect(button.enabled, equals(true));
       });
 
-      testWidgets('given question is depleted, button is disabled',
+      testWidgets('given question is depleted, button is enabled',
           (tester) async {
         when(() => cubit.state).thenReturn(loadedState.copyWith(
           questionDepleted: true,
