@@ -1,5 +1,6 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:formz/formz.dart';
 import 'package:mocktail/mocktail.dart';
@@ -8,9 +9,11 @@ import 'package:trivial/quiz/bloc/quiz_cubit.dart';
 import 'package:trivial/quiz/quiz_keys.dart';
 
 import '../../mocks/quiz_cubit_mock.dart';
+import '../../tests_navigator_observer.dart';
 import '../fixtures/quiz_body_fixture.dart';
 
 void main() {
+  late TestsNavigatorObserver navObserver;
   late QuizCubit cubit;
   const QuizState loadedState = QuizState(
     quiz: SeedData.wowQuiz,
@@ -20,6 +23,7 @@ void main() {
   );
   setUp(() {
     cubit = QuizCubitMock();
+    navObserver = TestsNavigatorObserver();
   });
 
   group('[QuizBody] while running ', () {
@@ -1058,6 +1062,24 @@ void main() {
 
       await tester.tap(find.byKey(QuizKeys.tryAgainButton));
       verify(() => cubit.loadQuiz()).called(1);
+    });
+
+    testWidgets('pressing "Goodbye!" button triggers `pop` event in navigator',
+        (tester) async {
+      when(() => cubit.state).thenReturn(loadedState.copyWith(
+        complete: true,
+        score: 32,
+      ));
+
+      await tester.pumpWidget(QuizBodyFixture(
+        quizCubit: cubit,
+        navigatorObserver: navObserver,
+      ));
+
+      await tester.tap(find.byKey(QuizKeys.goodbyeButton));
+      await tester.pumpAndSettle();
+
+      expect(navObserver.poppedCount, equals(0));
     });
   });
 }

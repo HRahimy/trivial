@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 typedef OnObservation = void Function(
     Route<dynamic> route, Route<dynamic> previousRoute);
 
-// Reference https://medium.com/@harsha973/widget-testing-pushing-a-new-page-13cd6a0bb055
+// Adapted from https://medium.com/@harsha973/widget-testing-pushing-a-new-page-13cd6a0bb055
 class TestsNavigatorObserver extends NavigatorObserver {
   OnObservation? onPushed;
   OnObservation? onPopped;
+  int poppedCount = 0;
 
   @override
   void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) {
@@ -20,6 +21,8 @@ class TestsNavigatorObserver extends NavigatorObserver {
     if (onPopped != null) {
       onPopped!(route, previousRoute!);
     }
+
+    poppedCount += 1;
   }
 
   attachPushRouteObserver(String expectedRouteName, Function pushCallback) {
