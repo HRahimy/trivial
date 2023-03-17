@@ -20,8 +20,8 @@
 - [x] score panel exists and renders correct score
 - [x] options panel contains 4 buttons & renders values correctly
 - [x] button for selected options are highlighted
-- [ ] pressing an option button triggers select event in state
-- [ ] option buttons are disabled and greyed when time is depleted
+- [x] pressing an option button triggers select event in state
+- [x] option buttons are disabled and greyed when time is depleted
 - [x] continue button is enabled when question is depleted or option is selected
 - [ ] pressing continue button triggers continue event in state
 
