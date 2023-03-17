@@ -1079,7 +1079,7 @@ void main() {
       await tester.tap(find.byKey(QuizKeys.goodbyeButton));
       await tester.pumpAndSettle();
 
-      expect(navObserver.poppedCount, equals(0));
+      expect(navObserver.poppedCount, equals(1));
     });
   });
 }
