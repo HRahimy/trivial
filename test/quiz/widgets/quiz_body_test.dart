@@ -927,6 +927,24 @@ void main() {
 
         expect(button.enabled, equals(true));
       });
+
+      testWidgets(
+          'given button is enabled, pressing button triggers continue event in state',
+          (tester) async {
+        when(() => cubit.state).thenReturn(loadedState.copyWith(
+          questionDepleted: true,
+        ));
+
+        await tester.pumpWidget(QuizBodyFixture(
+          quizCubit: cubit,
+        ));
+
+        final String buttonId = '${loadedState.currentQuestion.id}';
+        final buttonFinder = find.byKey(QuizKeys.continueButton(buttonId));
+
+        await tester.tap(buttonFinder);
+        verify(() => cubit.continueQuiz()).called(1);
+      });
     });
   });
 
