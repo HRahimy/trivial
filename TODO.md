@@ -4,7 +4,7 @@
 
 ## Tests
 
-- [ ] quiz list state and cubit
+- [x] quiz list state and cubit
 - [ ] quiz state and cubit
 
 ### Quiz list
