@@ -91,6 +91,10 @@ class QuizCubit extends Cubit<QuizState> {
   }
 
   void depleteQuestion() {
+    if (state.questionDepleted) {
+      return;
+    }
+
     emit(state.copyWith(
       questionDepleted: true,
     ));
