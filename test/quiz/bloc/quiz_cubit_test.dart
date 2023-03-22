@@ -340,7 +340,9 @@ void main() {
 
       blocTest(
         'given question depleted, does nothing',
-        seed: () => successLoadedSeedState,
+        seed: () => successLoadedSeedState.copyWith(
+          questionDepleted: true,
+        ),
         build: () => cubit,
         act: (contextCubit) => contextCubit.depleteQuestion(),
         expect: () => <QuizState>[],
