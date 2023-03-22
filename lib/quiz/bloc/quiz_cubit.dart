@@ -60,6 +60,10 @@ class QuizCubit extends Cubit<QuizState> {
       return;
     }
 
+    if (!state.questionDepleted && !state.choiceSelected) {
+      return;
+    }
+
     QuizState newState = state;
     if (state.selectedOption == state.currentQuestion.correctOption) {
       newState = newState.copyWith(
@@ -69,7 +73,11 @@ class QuizCubit extends Cubit<QuizState> {
 
     if (!state.quizQuestions
         .any((element) => element.sequenceIndex > state.questionIndex)) {
-      emit(newState.copyWith(complete: true));
+      emit(newState.copyWith(
+        complete: true,
+        choiceSelected: false,
+        questionDepleted: false,
+      ));
       return;
     }
 
