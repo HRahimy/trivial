@@ -44,7 +44,8 @@ class QuizCubit extends Cubit<QuizState> {
   }
 
   void selectAnswer(OptionIndex choice) {
-    if (state.questionDepleted) {
+    if (state.questionDepleted ||
+        state.status != FormzSubmissionStatus.success) {
       return;
     }
 
