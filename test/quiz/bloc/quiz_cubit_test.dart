@@ -156,5 +156,32 @@ void main() {
         expect: () => <QuizState>[],
       );
     });
+
+    group('[continueQuestion()]', () {
+      blocTest(
+        'given quiz is complete, does nothing',
+        seed: () => successLoadedSeedState.copyWith(complete: true),
+        build: () => cubit,
+        act: (contextCubit) => contextCubit.continueQuiz(),
+        expect: () => <QuizState>[],
+      );
+
+      blocTest(
+        'given correct choice selected, emits state with updated question and score',
+        seed: () => successLoadedSeedState.copyWith(
+          selectedOption: successLoadedSeedState.currentQuestion.correctOption,
+          choiceSelected: true,
+        ),
+        build: () => cubit,
+        act: (contextCubit) => contextCubit.continueQuiz(),
+        expect: () => <QuizState>[
+          successLoadedSeedState.copyWith(
+            questionIndex: successLoadedSeedState.questionIndex + 1,
+            score: successLoadedSeedState.score +
+                successLoadedSeedState.currentQuestion.points,
+          ),
+        ],
+      );
+    });
   });
 }
