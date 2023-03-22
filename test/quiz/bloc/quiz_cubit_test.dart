@@ -324,5 +324,27 @@ void main() {
         ],
       );
     });
+
+    group('[depleteQuestion()]', () {
+      blocTest(
+        'given question not depleted, emits new state with marking question depleted',
+        seed: () => successLoadedSeedState,
+        build: () => cubit,
+        act: (contextCubit) => contextCubit.depleteQuestion(),
+        expect: () => <QuizState>[
+          successLoadedSeedState.copyWith(
+            questionDepleted: true,
+          ),
+        ],
+      );
+
+      blocTest(
+        'given question depleted, does nothing',
+        seed: () => successLoadedSeedState,
+        build: () => cubit,
+        act: (contextCubit) => contextCubit.depleteQuestion(),
+        expect: () => <QuizState>[],
+      );
+    });
   });
 }
