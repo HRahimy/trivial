@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:formz/formz.dart';
@@ -23,6 +24,13 @@ void main() {
     status: FormzSubmissionStatus.success,
     questionIndex: 1,
     error: '',
+  );
+
+  // Solution to get last question index adapted from:
+  // https://stackoverflow.com/a/58386492/5472560
+  int lastQuestionIndex = successLoadedSeedState.quizQuestions.fold(
+    0,
+    (max, e) => e.sequenceIndex > max ? e.sequenceIndex : max,
   );
 
   QuizState failLoadedSeedState = QuizState(
@@ -167,6 +175,14 @@ void main() {
       );
 
       blocTest(
+        'given choice not selected and question not depleted, does nothing',
+        seed: () => successLoadedSeedState,
+        build: () => cubit,
+        act: (contextCubit) => contextCubit.continueQuiz(),
+        expect: () => <QuizState>[],
+      );
+
+      blocTest(
         'given correct choice selected, emits state with updated question and score',
         seed: () => successLoadedSeedState.copyWith(
           selectedOption: successLoadedSeedState.currentQuestion.correctOption,
@@ -179,6 +195,129 @@ void main() {
             questionIndex: successLoadedSeedState.questionIndex + 1,
             score: successLoadedSeedState.score +
                 successLoadedSeedState.currentQuestion.points,
+            selectedOption:
+                successLoadedSeedState.currentQuestion.correctOption,
+          ),
+        ],
+      );
+
+      blocTest(
+        'given incorrect choice selected, emits state with new question and same score',
+        seed: () => successLoadedSeedState.copyWith(
+          selectedOption: OptionIndex.C,
+          choiceSelected: true,
+        ),
+        build: () => cubit,
+        act: (contextCubit) => contextCubit.continueQuiz(),
+        expect: () => <QuizState>[
+          successLoadedSeedState.copyWith(
+            questionIndex: successLoadedSeedState.questionIndex + 1,
+            selectedOption: OptionIndex.C,
+          ),
+        ],
+      );
+
+      blocTest(
+        'given correct choice and quiz depleted, emits state with new question and updated score',
+        seed: () => successLoadedSeedState.copyWith(
+          selectedOption: successLoadedSeedState.currentQuestion.correctOption,
+          choiceSelected: true,
+          questionDepleted: true,
+        ),
+        build: () => cubit,
+        act: (contextCubit) => contextCubit.continueQuiz(),
+        expect: () => <QuizState>[
+          successLoadedSeedState.copyWith(
+            questionIndex: successLoadedSeedState.questionIndex + 1,
+            score: successLoadedSeedState.score +
+                successLoadedSeedState.currentQuestion.points,
+            selectedOption:
+                successLoadedSeedState.currentQuestion.correctOption,
+          ),
+        ],
+      );
+
+      blocTest(
+        'given no choice selected and quiz depleted, emits new question with same score',
+        seed: () => successLoadedSeedState.copyWith(questionDepleted: true),
+        build: () => cubit,
+        act: (contextCubit) => contextCubit.continueQuiz(),
+        expect: () => <QuizState>[
+          successLoadedSeedState.copyWith(
+            questionIndex: successLoadedSeedState.questionIndex + 1,
+          ),
+        ],
+      );
+
+      blocTest(
+        'given incorrect choice and quiz depleted, emits new question with same score',
+        seed: () => successLoadedSeedState.copyWith(
+          selectedOption: OptionIndex.C,
+          choiceSelected: true,
+          questionDepleted: true,
+        ),
+        build: () => cubit,
+        act: (contextCubit) => contextCubit.continueQuiz(),
+        expect: () => <QuizState>[
+          successLoadedSeedState.copyWith(
+            questionIndex: successLoadedSeedState.questionIndex + 1,
+            selectedOption: OptionIndex.C,
+          ),
+        ],
+      );
+
+      blocTest(
+        'given last question, ends quiz',
+        seed: () => successLoadedSeedState.copyWith(
+          questionIndex: lastQuestionIndex,
+          questionDepleted: true,
+        ),
+        build: () => cubit,
+        act: (contextCubit) => contextCubit.continueQuiz(),
+        expect: () => <QuizState>[
+          successLoadedSeedState.copyWith(
+            questionIndex: lastQuestionIndex,
+            questionDepleted: true,
+            complete: true,
+          ),
+        ],
+      );
+
+      blocTest(
+        'given last question and correct choice selected, ends quiz with updated score',
+        seed: () => successLoadedSeedState.copyWith(
+          questionIndex: lastQuestionIndex,
+          selectedOption: successLoadedSeedState.currentQuestion.correctOption,
+          choiceSelected: true,
+        ),
+        build: () => cubit,
+        act: (contextCubit) => contextCubit.continueQuiz(),
+        expect: () => <QuizState>[
+          successLoadedSeedState.copyWith(
+            questionIndex: lastQuestionIndex,
+            selectedOption:
+                successLoadedSeedState.currentQuestion.correctOption,
+            score: successLoadedSeedState.score +
+                successLoadedSeedState.currentQuestion.points,
+            complete: true,
+          ),
+        ],
+      );
+
+      blocTest(
+        'given last question and incorrect choice selected, ends quiz with same score',
+        seed: () => successLoadedSeedState.copyWith(
+          questionIndex: lastQuestionIndex,
+          selectedOption: OptionIndex.C,
+          choiceSelected: true,
+        ),
+        build: () => cubit,
+        act: (contextCubit) => contextCubit.continueQuiz(),
+        expect: () => <QuizState>[
+          successLoadedSeedState.copyWith(
+            questionIndex: lastQuestionIndex,
+            selectedOption: OptionIndex.C,
+            complete: true,
           ),
         ],
       );
