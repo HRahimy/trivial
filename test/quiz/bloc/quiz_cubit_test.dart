@@ -17,6 +17,19 @@ void main() {
   final Exception getQuestionsFailedException =
       Exception('failed to get questions');
 
+  const QuizState successLoadedSeedState = QuizState(
+    quiz: SeedData.wowQuiz,
+    quizQuestions: SeedData.wowQuestions,
+    status: FormzSubmissionStatus.success,
+    questionIndex: 1,
+    error: '',
+  );
+
+  QuizState failLoadedSeedState = QuizState(
+    status: FormzSubmissionStatus.failure,
+    error: getQuizFailedException.toString(),
+  );
+
   setUpAll(() {
     registerFallbackValue(FakeQuizState());
   });
@@ -103,6 +116,44 @@ void main() {
             error: getQuestionsFailedException.toString(),
           ),
         ],
+      );
+    });
+
+    group('[selectAnswer()]', () {
+      blocTest(
+        'given valid choice, emits new state with choice and `choiceSelected=true`',
+        seed: () => successLoadedSeedState,
+        build: () => cubit,
+        act: (contextCubit) => contextCubit.selectAnswer(OptionIndex.C),
+        expect: () => <QuizState>[
+          successLoadedSeedState.copyWith(
+            selectedOption: OptionIndex.C,
+            choiceSelected: true,
+          ),
+        ],
+      );
+
+      blocTest(
+        'given question depleted, does not emit new state',
+        seed: () => successLoadedSeedState.copyWith(questionDepleted: true),
+        build: () => cubit,
+        act: (contextCubit) => contextCubit.selectAnswer(OptionIndex.C),
+        expect: () => <QuizState>[],
+      );
+
+      blocTest(
+        'given quiz not loaded, does not emit new state',
+        build: () => cubit,
+        act: (contextCubit) => contextCubit.selectAnswer(OptionIndex.C),
+        expect: () => <QuizState>[],
+      );
+
+      blocTest(
+        'given quiz load failure, does not emit new state',
+        seed: () => failLoadedSeedState,
+        build: () => cubit,
+        act: (contextCubit) => contextCubit.selectAnswer(OptionIndex.C),
+        expect: () => <QuizState>[],
       );
     });
   });
