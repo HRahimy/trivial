@@ -36,7 +36,9 @@ void main() {
   final QuizState lastQuestionWithCorrectChoiceSelected =
       successLoadedSeedState.copyWith(
     questionIndex: lastQuestionIndex,
-    selectedOption: successLoadedSeedState.currentQuestion.correctOption,
+    selectedOption: successLoadedSeedState.quizQuestions
+        .firstWhere((element) => element.sequenceIndex == lastQuestionIndex)
+        .correctOption,
     choiceSelected: true,
   );
 
