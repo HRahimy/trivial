@@ -33,6 +33,13 @@ void main() {
     (max, e) => e.sequenceIndex > max ? e.sequenceIndex : max,
   );
 
+  final QuizState lastQuestionWithCorrectChoiceSelected =
+      successLoadedSeedState.copyWith(
+    questionIndex: lastQuestionIndex,
+    selectedOption: successLoadedSeedState.currentQuestion.correctOption,
+    choiceSelected: true,
+  );
+
   QuizState failLoadedSeedState = QuizState(
     status: FormzSubmissionStatus.failure,
     error: getQuizFailedException.toString(),
@@ -277,7 +284,6 @@ void main() {
         expect: () => <QuizState>[
           successLoadedSeedState.copyWith(
             questionIndex: lastQuestionIndex,
-            questionDepleted: true,
             complete: true,
           ),
         ],
@@ -285,21 +291,15 @@ void main() {
 
       blocTest(
         'given last question and correct choice selected, ends quiz with updated score',
-        seed: () => successLoadedSeedState.copyWith(
-          questionIndex: lastQuestionIndex,
-          selectedOption: successLoadedSeedState.currentQuestion.correctOption,
-          choiceSelected: true,
-        ),
+        seed: () => lastQuestionWithCorrectChoiceSelected,
         build: () => cubit,
         act: (contextCubit) => contextCubit.continueQuiz(),
         expect: () => <QuizState>[
-          successLoadedSeedState.copyWith(
-            questionIndex: lastQuestionIndex,
-            selectedOption:
-                successLoadedSeedState.currentQuestion.correctOption,
-            score: successLoadedSeedState.score +
-                successLoadedSeedState.currentQuestion.points,
+          lastQuestionWithCorrectChoiceSelected.copyWith(
+            score: lastQuestionWithCorrectChoiceSelected.score +
+                lastQuestionWithCorrectChoiceSelected.currentQuestion.points,
             complete: true,
+            choiceSelected: false,
           ),
         ],
       );
@@ -308,7 +308,7 @@ void main() {
         'given last question and incorrect choice selected, ends quiz with same score',
         seed: () => successLoadedSeedState.copyWith(
           questionIndex: lastQuestionIndex,
-          selectedOption: OptionIndex.C,
+          selectedOption: OptionIndex.A,
           choiceSelected: true,
         ),
         build: () => cubit,
@@ -316,7 +316,7 @@ void main() {
         expect: () => <QuizState>[
           successLoadedSeedState.copyWith(
             questionIndex: lastQuestionIndex,
-            selectedOption: OptionIndex.C,
+            selectedOption: OptionIndex.A,
             complete: true,
           ),
         ],
