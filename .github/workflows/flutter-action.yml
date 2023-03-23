@@ -9,11 +9,16 @@ jobs:
         with:
           flutter-version: '3.7.8'
           channel: 'stable'
-      - run: flutter pub get
-      - run: flutter analyze
-      - run: cd packages/repositories
-      - run: flutter pub get
-      - run: flutter analyze
+      - name: Get dependencies for main app
+        run: flutter pub get
+      - name: Analyze main app
+        run: flutter analyze
+      - name: Get dependencies for `repositories` package
+        run: flutter pub get
+        working-directory: ./packages/repositories
+      - name: Analyze `repositories` package
+        run: flutter analyze
+        working-directory: ./packages/repositories
   test:
     runs-on: ubuntu-latest
     steps:
