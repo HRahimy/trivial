@@ -1,4 +1,4 @@
-![Tests & Lints](https://github.com/HRahimy/trivial/actions/workflows/flutter-tests-action.yml/badge.svg?branch=main)
+![Tests & Lints](https://github.com/HRahimy/trivial/actions/workflows/flutter-tests-action.yml/badge.svg)
 
 # trivial
 
