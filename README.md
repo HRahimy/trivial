@@ -1,3 +1,5 @@
+![Tests & Lints](https://github.com/HRahimy/trivial/actions/workflows/flutter-action.yml/badge.svg?branch=main)
+
 # trivial
 
 A trivia game similar to who's gonna become a millionaire, but focused on lore from different video games

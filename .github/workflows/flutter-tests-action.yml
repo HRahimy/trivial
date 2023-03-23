@@ -1,4 +1,4 @@
-name: Flutter action
+name: Tests & Lints
 on: [push]
 jobs:
   lint:
