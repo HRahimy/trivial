@@ -11,6 +11,9 @@ jobs:
           channel: 'stable'
       - run: flutter pub get
       - run: flutter analyze
+      - run: cd packages/repositories
+      - run: flutter pub get
+      - run: flutter analyze
   test:
     runs-on: ubuntu-latest
     steps:
