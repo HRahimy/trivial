@@ -5,7 +5,8 @@
 ## Tests
 
 - [x] quiz list state and cubit
-- [ ] quiz state and cubit
+- [x] quiz state and cubit
+- [ ] seed questions to have a valid sequence
 
 ### Quiz list
 
