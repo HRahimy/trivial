@@ -309,7 +309,7 @@ void main() {
         'given last question and incorrect choice selected, ends quiz with same score',
         seed: () => successLoadedSeedState.copyWith(
           questionIndex: lastQuestionIndex,
-          selectedOption: OptionIndex.A,
+          selectedOption: OptionIndex.C,
           choiceSelected: true,
         ),
         build: () => cubit,
@@ -317,7 +317,7 @@ void main() {
         expect: () => <QuizState>[
           successLoadedSeedState.copyWith(
             questionIndex: lastQuestionIndex,
-            selectedOption: OptionIndex.A,
+            selectedOption: OptionIndex.C,
             complete: true,
           ),
         ],
