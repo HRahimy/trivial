@@ -498,7 +498,7 @@ class SeedData {
     sequenceIndex: 12,
     points: 28,
     question:
-        'During the dueal at the Tor, whose name was Pelinal Whitestrake said to have praised dispite this person not being born until thousands of years later?',
+        'During the duel at the Tor, whose name was Pelinal Whitestrake said to have praised dispite this person not being born until thousands of years later?',
     options: {
       OptionIndex.A: 'Tiber Septim',
       OptionIndex.B: 'Vivec',
