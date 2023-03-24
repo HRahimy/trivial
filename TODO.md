@@ -1,13 +1,14 @@
 # ToDo
 
 - [ ] add custom theme
-- [ ] add elder scrolls quiz questions
+- [x] add elder scrolls quiz questions
+- [ ] implement repository
 
 ## Tests
 
 - [x] quiz list state and cubit
 - [x] quiz state and cubit
-- [ ] seed questions to have a valid sequence
+- [ ] seed questions to have a valid sequence and id
 
 ### Quiz list
 

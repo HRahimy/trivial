@@ -322,4 +322,259 @@ class SeedData {
     wowQuestion17,
     wowQuestion18,
   ];
+
+  static const QuizQuestion scrollsQuestion1 = QuizQuestion(
+    id: 19,
+    quizId: 2,
+    sequenceIndex: 1,
+    points: 1,
+    question:
+        'By what title was the Guild Master of the Thieves Guild once known?',
+    options: {
+      OptionIndex.A: 'Shadow Fox',
+      OptionIndex.B: 'Grey Fox',
+      OptionIndex.C: 'Black Fox',
+      OptionIndex.D: 'Phantom Fox',
+    },
+    correctOption: OptionIndex.B,
+  );
+
+  static const QuizQuestion scrollsQuestion2 = QuizQuestion(
+    id: 20,
+    quizId: 2,
+    sequenceIndex: 2,
+    points: 5,
+    question:
+        'What Daedric Realm is said to be so beautiful that mortals are half-blinded upon entering it?',
+    options: {
+      OptionIndex.A: 'Moonshadow (Azura)',
+      OptionIndex.B: 'Colored Rooms (Meridia)',
+      OptionIndex.C: 'Evergloam (Nocturnal)',
+      OptionIndex.D: 'Hunting Grounds (Hircine)',
+    },
+    correctOption: OptionIndex.A,
+  );
+
+  static const QuizQuestion scrollsQuestion3 = QuizQuestion(
+    id: 21,
+    quizId: 2,
+    sequenceIndex: 3,
+    points: 6,
+    question: 'What race worships The Twelve Divines?',
+    options: {
+      OptionIndex.A: 'Redguard',
+      OptionIndex.B: 'Dunmer (Dark Elf)',
+      OptionIndex.C: 'Khajiit',
+      OptionIndex.D: 'Breton',
+    },
+    correctOption: OptionIndex.D,
+  );
+
+  static const QuizQuestion scrollsQuestion4 = QuizQuestion(
+    id: 22,
+    quizId: 2,
+    sequenceIndex: 4,
+    points: 8,
+    question: 'What is the Argonian native language?',
+    options: {
+      OptionIndex.A: 'Jel',
+      OptionIndex.B: 'Ta\'agra',
+      OptionIndex.C: 'Tamrielic',
+      OptionIndex.D: 'Ayleidoon',
+    },
+    correctOption: OptionIndex.A,
+  );
+
+  static const QuizQuestion scrollsQuestion5 = QuizQuestion(
+    id: 23,
+    quizId: 2,
+    sequenceIndex: 5,
+    points: 10,
+    question: 'What realm/plane does the Daedric Prince Paryite command?',
+    options: {
+      OptionIndex.A: 'Deadlands',
+      OptionIndex.B: 'Ashpit',
+      OptionIndex.C: 'The Pits',
+      OptionIndex.D: 'Coldharbor',
+    },
+    correctOption: OptionIndex.C,
+  );
+
+  static const QuizQuestion scrollsQuestion6 = QuizQuestion(
+    id: 24,
+    quizId: 2,
+    sequenceIndex: 6,
+    points: 12,
+    question: 'What province in Tamriel is known for its sweets and pastries',
+    options: {
+      OptionIndex.A: 'Cyrodiil',
+      OptionIndex.B: 'Elsweyr',
+      OptionIndex.C: 'Valenwood',
+      OptionIndex.D: 'Summerset Isles',
+    },
+    correctOption: OptionIndex.B,
+  );
+
+  static const QuizQuestion scrollsQuestion7 = QuizQuestion(
+    id: 25,
+    quizId: 2,
+    sequenceIndex: 7,
+    points: 15,
+    question:
+        'Which God/Goddess is most directly responsible for the creation of Nirn?',
+    options: {
+      OptionIndex.A: 'Akatosh',
+      OptionIndex.B: 'Khyne',
+      OptionIndex.C: 'Sithis',
+      OptionIndex.D: 'Lorkhan (Shor)',
+    },
+    correctOption: OptionIndex.D,
+  );
+
+  static const QuizQuestion scrollsQuestion8 = QuizQuestion(
+    id: 26,
+    quizId: 2,
+    sequenceIndex: 8,
+    points: 18,
+    question: 'Which Daedric Prince created vampires?',
+    options: {
+      OptionIndex.A: 'Nocturnal',
+      OptionIndex.B: 'Molag Bal',
+      OptionIndex.C: 'Mephala',
+      OptionIndex.D: 'Vaermina',
+    },
+    correctOption: OptionIndex.B,
+  );
+
+  static const QuizQuestion scrollsQuestion9 = QuizQuestion(
+    id: 27,
+    quizId: 2,
+    sequenceIndex: 9,
+    points: 20,
+    question:
+        'Which of these lycans/were-creatures does NOT exist, nor have any (unproven) rumors of existence?',
+    options: {
+      OptionIndex.A: 'Wereboar',
+      OptionIndex.B: 'Werevulture',
+      OptionIndex.C: 'Wereskeever',
+      OptionIndex.D: 'Wereshark',
+    },
+    correctOption: OptionIndex.C,
+  );
+
+  static const QuizQuestion scrollsQuestion10 = QuizQuestion(
+    id: 28,
+    quizId: 2,
+    sequenceIndex: 10,
+    points: 22,
+    question: 'Which of these words in Dunmeri is an insult?',
+    options: {
+      OptionIndex.A: 'Gahmerdohn',
+      OptionIndex.B: 'Aka',
+      OptionIndex.C: 'Albumuhr',
+      OptionIndex.D: 'S\'wit',
+    },
+    correctOption: OptionIndex.D,
+  );
+
+  static const QuizQuestion scrollsQuestion11 = QuizQuestion(
+    id: 29,
+    quizId: 2,
+    sequenceIndex: 11,
+    points: 25,
+    question: 'Which of these is an alternate name for the province of Skyrim?',
+    options: {
+      OptionIndex.A: 'The Fatherland',
+      OptionIndex.B: 'Atmora',
+      OptionIndex.C: 'Hegathe',
+      OptionIndex.D: 'Volenfell',
+    },
+    correctOption: OptionIndex.A,
+  );
+
+  static const QuizQuestion scrollsQuestion12 = QuizQuestion(
+    id: 30,
+    quizId: 2,
+    sequenceIndex: 12,
+    points: 28,
+    question:
+        'During the dueal at the Tor, whose name was Pelinal Whitestrake said to have praised dispite this person not being born until thousands of years later?',
+    options: {
+      OptionIndex.A: 'Tiber Septim',
+      OptionIndex.B: 'Vivec',
+      OptionIndex.C: 'Voryn Dagoth',
+      OptionIndex.D: 'Reman Cyrodiil',
+    },
+    correctOption: OptionIndex.D,
+  );
+
+  static const QuizQuestion scrollsQuestion13 = QuizQuestion(
+    id: 31,
+    quizId: 2,
+    sequenceIndex: 13,
+    points: 30,
+    question:
+        'Who was the first known human to master the Elven methods of enchanting?',
+    options: {
+      OptionIndex.A: 'Miraak',
+      OptionIndex.B: 'Ahzidal',
+      OptionIndex.C: 'Krosis',
+      OptionIndex.D: 'Nahkriin',
+    },
+    correctOption: OptionIndex.B,
+  );
+
+  static const QuizQuestion scrollsQuestion14 = QuizQuestion(
+    id: 32,
+    quizId: 2,
+    sequenceIndex: 14,
+    points: 32,
+    question:
+        'What race was said to have created the Thrassian Plague that killed half of Tamriels population around the 1E 2200s?',
+    options: {
+      OptionIndex.A: 'Tsaesci',
+      OptionIndex.B: 'Yokudans',
+      OptionIndex.C: 'Sload',
+      OptionIndex.D: 'Altmer',
+    },
+    correctOption: OptionIndex.C,
+  );
+
+  static const QuizQuestion scrollsQuestion15 = QuizQuestion(
+    id: 33,
+    quizId: 2,
+    sequenceIndex: 15,
+    points: 35,
+    question: 'What is believed to be the oldest building in Tamriel?',
+    options: {
+      OptionIndex.A: 'Jorrvaskr',
+      OptionIndex.B: 'The White Gold Tower',
+      OptionIndex.C: 'The Adamantine Tower',
+      OptionIndex.D: 'Saarthal',
+    },
+    correctOption: OptionIndex.C,
+  );
+
+  static const List<QuizQuestion> scrollsQuestions = [
+    scrollsQuestion1,
+    scrollsQuestion2,
+    scrollsQuestion3,
+    scrollsQuestion4,
+    scrollsQuestion5,
+    scrollsQuestion6,
+    scrollsQuestion7,
+    scrollsQuestion8,
+    scrollsQuestion9,
+    scrollsQuestion10,
+    scrollsQuestion11,
+    scrollsQuestion12,
+    scrollsQuestion13,
+    scrollsQuestion14,
+    scrollsQuestion15,
+  ];
+
+  static const List<QuizQuestion> allQuestions = [
+    ...wowQuestions,
+    ...scrollsQuestions,
+  ];
 }
