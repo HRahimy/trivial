@@ -1,6 +1,7 @@
 # ToDo
 
 - [ ] add custom theme
+- [ ] add elder scrolls quiz questions
 
 ## Tests
 
