@@ -109,13 +109,16 @@ class _QuestionPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Text(
-        question.question,
-        key: QuizKeys.questionText('${question.id}'),
-        textAlign: TextAlign.center,
-        style: const TextStyle(
-          fontSize: 24,
-          fontWeight: FontWeight.w400,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: Text(
+          question.question,
+          key: QuizKeys.questionText('${question.id}'),
+          textAlign: TextAlign.center,
+          style: const TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.w400,
+          ),
         ),
       ),
     );
