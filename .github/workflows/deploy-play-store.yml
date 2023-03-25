@@ -1,0 +1,30 @@
+name: Deploy to Play Store
+on: [workflow_dispatch]
+
+# Solution adapted from:
+# https://dev.to/matijanovosel/deploying-flutter-applications-to-google-play-using-github-actions-j8a
+
+jobs:
+  version:
+    name: Create version number
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Fetch all history for all tags and branches
+        run: |
+          git config remote.origin.url https://x-access-token:${{ secrets.REPOSITORY_TOKEN }}@github.com/${{ github.repository }}
+          git fetch --prune --depth=10000
+      - name: Install GitVersion
+        uses: gittools/actions/gitversion/setup@v0.9.7
+        with:
+          versionSpec: "5.x"
+      - name: Use GitVersion
+        id: gitversion
+        uses: gittools/actions/gitversion/execute@v0.9.7
+      - name: Create version.txt with nuGetVersion
+        run: echo ${{ steps.gitversion.outputs.nuGetVersion  }} > version.txt
+      - name: Upload version.txt
+        uses: actions/upload-artifact@v2
+        with:
+          name: gitversion
+          path: version.txt
