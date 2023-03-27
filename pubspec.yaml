@@ -43,6 +43,7 @@ dependencies:
   formz: ^0.5.0+1
   repositories:
     path: packages/repositories
+  firebase_core: ^2.8.0
 
 dev_dependencies:
   flutter_test:

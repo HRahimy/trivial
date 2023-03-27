@@ -1,8 +1,8 @@
 name: Deploy to Play Store
-#on: [workflow_dispatch]
-on:
-  push:
-    branches: [main]
+on: [workflow_dispatch]
+#on:
+#  push:
+#    branches: [main]
 
 # Solution adapted from:
 # https://dev.to/matijanovosel/deploying-flutter-applications-to-google-play-using-github-actions-j8a
