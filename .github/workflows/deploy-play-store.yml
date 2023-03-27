@@ -57,7 +57,7 @@ jobs:
         uses: timheuer/base64-to-file@v1.2
         with:
           fileName: 'upload-keystore-pkcs12.jks'
-          fileDir: './android/'
+          fileDir: './android/app/'
           encodedString: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
       - name: Update KeyStore password in gradle properties
         run: sed -i 's/#{STORE_PASSWORD}#/${{ secrets.STORE_PASSWORD }}/g' android/key.properties
