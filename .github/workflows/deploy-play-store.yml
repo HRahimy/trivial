@@ -50,6 +50,8 @@ jobs:
           path: version1.txt
       - name: Update version in `pubspec.yaml`
         run: sed -i 's/99.99.99+99/${{ steps.version.outputs.content }}+${{ github.run_number }}/g' pubspec.yaml
+      - name: Create key.properties file for further use
+        run: echo -e "storePassword=#{STORE_PASSWORD}#\nkeyPassword=#{KEY_PASSWORD}#\nkeyAlias=upload" > android/key.properties
       - name: Update KeyStore password in gradle properties
         run: sed -i 's/#{KEYSTORE_PASS}#/${{ secrets.KEYSTORE_PASS }}/g' android/key.properties
       - name: Update KeyStore key password in gradle properties
