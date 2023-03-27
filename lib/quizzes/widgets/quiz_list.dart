@@ -53,15 +53,18 @@ class _QuizButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: () => Navigator.pushNamed(
-        context,
-        QuizScreen.routeName,
-        arguments: QuizScreenArgs(quizId: quiz.id),
-      ),
-      child: Text(
-        quiz.name,
-        key: QuizzesKeys.quizItemButtonText('${quiz.id}'),
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: ElevatedButton(
+        onPressed: () => Navigator.pushNamed(
+          context,
+          QuizScreen.routeName,
+          arguments: QuizScreenArgs(quizId: quiz.id),
+        ),
+        child: Text(
+          quiz.name,
+          key: QuizzesKeys.quizItemButtonText('${quiz.id}'),
+        ),
       ),
     );
   }

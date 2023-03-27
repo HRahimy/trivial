@@ -466,6 +466,9 @@ class _EndLayout extends StatelessWidget {
             key: QuizKeys.tryAgainButtonText,
           ),
         ),
+        const Padding(
+          padding: EdgeInsets.symmetric(vertical: 16),
+        ),
         ElevatedButton(
           key: QuizKeys.goodbyeButton,
           onPressed: () => Navigator.pop(context),
