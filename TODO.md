@@ -8,7 +8,7 @@
 - [ ] Add a starter menu screen to give user information and flavor for what to expect, and a button to begin the quiz. Right now quizzes begin too abruptly.
 - [ ] Increase quiz durations 30 seconds
 - [ ] Adjust vertical spacing on control buttons on quiz end screens
-- [ ] Fix reported spelling errors
+- [x] Fix reported spelling errors
 - [ ] Update logo and title for the app
 - [ ] Add panels on quiz end screen to show score, duration, and quickest question answered
 - [ ] Add option on quiz end to view answers to all questions and whether or not they were correct

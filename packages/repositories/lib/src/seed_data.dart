@@ -135,7 +135,7 @@ class SeedData {
         'How many dungeons and raids with the word \'Blackrock\' in their name exist in the game?',
     options: {
       OptionIndex.A: '6',
-      OptionIndex.B: '5',
+      OptionIndex.B: '4',
       OptionIndex.C: '3',
       OptionIndex.D: '5',
     },
@@ -498,7 +498,7 @@ class SeedData {
     sequenceIndex: 12,
     points: 28,
     question:
-        'During the duel at the Tor, whose name was Pelinal Whitestrake said to have praised dispite this person not being born until thousands of years later?',
+        'During the duel at the Tor, whose name was Pelinal Whitestrake said to have praised despite this person not being born until thousands of years later?',
     options: {
       OptionIndex.A: 'Tiber Septim',
       OptionIndex.B: 'Vivec',
@@ -530,7 +530,7 @@ class SeedData {
     sequenceIndex: 14,
     points: 32,
     question:
-        'What race was said to have created the Thrassian Plague that killed half of Tamriels population around the 1E 2200s?',
+        'What race was said to have created the Thrassian Plague that killed half of Tamriel\'s population around the 1E 2200s?',
     options: {
       OptionIndex.A: 'Tsaesci',
       OptionIndex.B: 'Yokudans',
