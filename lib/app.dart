@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:repositories/repositories.dart';
 import 'package:trivial/named_routes.dart';
 import 'package:trivial/quizzes/widgets/quiz_list_screen.dart';
+import 'package:trivial/theme.dart';
 
 class App extends StatelessWidget {
   const App({
@@ -20,9 +21,7 @@ class App extends StatelessWidget {
       ],
       child: MaterialApp(
         title: 'Trivial',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
+        theme: AppTheme().build(),
         initialRoute: QuizListScreen.routeName,
         routes: namedRoutes(context),
       ),

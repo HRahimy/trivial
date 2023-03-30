@@ -1,7 +1,14 @@
 <a name="unreleased"></a>
 ## [Unreleased]
 
+### Bug Fixes
+- **Quiz:** Fix known typos
+
+### Feature Improvements and Enhancements
+- **UI Styling:** Add new color theme and rounding to buttons
+
 ### Project Management
+- **Repository:** Initialize changelog file
 - **Repository:** Add configuration for git-chglog tool
 
 
