@@ -4,6 +4,7 @@ import 'package:formz/formz.dart';
 import 'package:repositories/repositories.dart';
 import 'package:trivial/quiz/bloc/quiz_cubit.dart';
 import 'package:trivial/quiz/quiz_keys.dart';
+import 'package:trivial/theme.dart';
 
 class QuizBody extends StatelessWidget {
   const QuizBody({Key? key}) : super(key: key);
@@ -344,7 +345,7 @@ class _OptionButton extends StatelessWidget {
       case _OptionButtonStatus.initial:
         return null;
       case _OptionButtonStatus.selected:
-        return Colors.lightBlue[400];
+        return AppTheme.complementaryColor;
       case _OptionButtonStatus.disabled:
         return Colors.grey[300];
     }
@@ -386,6 +387,11 @@ class _OptionButton extends StatelessWidget {
           child: Text(
             text,
             key: textKey,
+            style: TextStyle(
+              fontWeight: status == _OptionButtonStatus.selected
+                  ? FontWeight.bold
+                  : FontWeight.w500,
+            ),
           ),
         ),
       ),
@@ -420,7 +426,8 @@ class _ContinueButton extends StatelessWidget {
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                   ),
-                  key: QuizKeys.continueButtonText('${state.currentQuestion.id}'),
+                  key: QuizKeys.continueButtonText(
+                      '${state.currentQuestion.id}'),
                 ),
               ),
             ),

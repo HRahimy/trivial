@@ -4,13 +4,13 @@
 - [x] implement repository
 - [ ] Update the look and feel of the app
   - [x] add white-space for continue button in quiz screen
-  - [ ] change color for selected option to match the new theme
+  - [x] change color for selected option to match the new theme
   - [ ] Add loading splash screen and loading message to show on startup
   - [ ] Adjust vertical spacing on control buttons on quiz end screens
   - [ ] Adjust timer to be bigger and have more contrasting colors
   - [ ] Update logo and title for the app
   - [ ] Experiment with new colors on different UI elements. Right now UI seems a bit bland based on feedback.
-  - [ ] Bolden selected question option texts
+  - [x] Bolden selected question option texts
   - [ ] Add sparkle animations on quiz end screen
 - [ ] add clear way to quit out of running quiz
 - [ ] Add a starter menu screen to give user information and flavor for what to expect, and a button to begin the quiz. Right now quizzes begin too abruptly.
