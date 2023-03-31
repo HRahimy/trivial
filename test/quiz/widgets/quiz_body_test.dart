@@ -873,7 +873,7 @@ void main() {
         final textWidget = tester.widget(textFinder);
 
         expect(textWidget.runtimeType, equals(Text));
-        expect((textWidget as Text).data, equals('Continue'));
+        expect((textWidget as Text).data, equals('CONTINUE'));
       });
 
       testWidgets('given question is in initial state, button is disabled',

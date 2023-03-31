@@ -49,7 +49,7 @@ class _Layout extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Expanded(
-          flex: 7,
+          flex: 8,
           child: BlocBuilder<QuizCubit, QuizState>(
             buildWhen: (previous, current) =>
                 previous.questionIndex != current.questionIndex,
@@ -83,7 +83,7 @@ class _Layout extends StatelessWidget {
           height: 0,
         ),
         const Expanded(
-          flex: 7,
+          flex: 8,
           child: _OptionsGrid(),
         ),
         const Divider(
@@ -91,7 +91,7 @@ class _Layout extends StatelessWidget {
           height: 0,
         ),
         const Expanded(
-          flex: 1,
+          flex: 2,
           child: _ContinueButton(),
         ),
       ],
@@ -404,14 +404,27 @@ class _ContinueButton extends StatelessWidget {
           previous.questionDepleted != current.questionDepleted,
       builder: (context, state) {
         final bool canPress = state.choiceSelected || state.questionDepleted;
-        return ElevatedButton(
-          key: QuizKeys.continueButton('${state.currentQuestion.id}'),
-          onPressed:
-              canPress ? () => context.read<QuizCubit>().continueQuiz() : null,
-          child: Text(
-            'Continue',
-            key: QuizKeys.continueButtonText('${state.currentQuestion.id}'),
-          ),
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 32),
+              child: ElevatedButton(
+                key: QuizKeys.continueButton('${state.currentQuestion.id}'),
+                onPressed: canPress
+                    ? () => context.read<QuizCubit>().continueQuiz()
+                    : null,
+                child: Text(
+                  'CONTINUE',
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                  key: QuizKeys.continueButtonText('${state.currentQuestion.id}'),
+                ),
+              ),
+            ),
+          ],
         );
       },
     );
