@@ -7,7 +7,7 @@
   - [x] change color for selected option to match the new theme
   - [x] Add logo to splash screen
   - [x] Adjust vertical spacing on control buttons on quiz end screens
-  - [ ] Add loading indicator to splash screen
+  - [x] Add loading indicator to splash screen
   - [ ] Adjust timer to be bigger and have more contrasting colors
   - [ ] Update logo and title for the app
   - [ ] Experiment with new colors on different UI elements. Right now UI seems a bit bland based on feedback.
