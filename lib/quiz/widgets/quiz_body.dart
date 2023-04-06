@@ -184,6 +184,8 @@ class _TimerState extends State<_Timer> with TickerProviderStateMixin {
       builder: (context, child) {
         return LinearProgressIndicator(
           value: controller!.value,
+          minHeight: 16,
+          backgroundColor: AppTheme().primarySwatch.withOpacity(0.3),
         );
       },
     );

@@ -5,10 +5,12 @@
 - **Quiz:** Fix known typos
 
 ### Feature Improvements and Enhancements
+- **Quiz screen:** Adjust timer bar to be bigger and have more contrasting colors
 - **Quiz screen:** Adjust spacing between components on quiz end screen to improve visual flow
 - **Quiz screen:** Update option selection color and bolden option text
 - **Quiz screen:** Add white space around continue button
 - **UI Styling:** Add new color theme and rounding to buttons
+- **UX:** Update web splash screen to include loading message
 - **UX:** Add logo to splash screen
 
 ### Project Management
