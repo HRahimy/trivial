@@ -5,17 +5,20 @@
 - [ ] Update the look and feel of the app
   - [x] add white-space for continue button in quiz screen
   - [x] change color for selected option to match the new theme
-  - [ ] Add loading splash screen and loading message to show on startup
-  - [ ] Adjust vertical spacing on control buttons on quiz end screens
+  - [x] Add logo to splash screen
+  - [x] Adjust vertical spacing on control buttons on quiz end screens
+  - [ ] Add loading indicator to splash screen
   - [ ] Adjust timer to be bigger and have more contrasting colors
   - [ ] Update logo and title for the app
   - [ ] Experiment with new colors on different UI elements. Right now UI seems a bit bland based on feedback.
   - [x] Bolden selected question option texts
   - [ ] Add sparkle animations on quiz end screen
+  - [ ] Squish score values to ensure total scores cannot go above 100
 - [ ] add clear way to quit out of running quiz
 - [ ] Add a starter menu screen to give user information and flavor for what to expect, and a button to begin the quiz. Right now quizzes begin too abruptly.
 - [ ] Increase quiz durations 30 seconds
 - [x] Fix reported spelling errors
+- [ ] Add adaptive layout for the web and wider screens
 - [ ] Add panels on quiz end screen to show score, duration, and quickest question answered
 - [ ] Add option on quiz end to view answers to all questions and whether or not they were correct
 - [ ] Add widget on quiz screen to show current progress in the quiz (progress indicator? styled text?)

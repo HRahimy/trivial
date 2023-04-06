@@ -487,7 +487,7 @@ class _EndLayout extends StatelessWidget {
           ),
         ),
         const Padding(
-          padding: EdgeInsets.symmetric(vertical: 16),
+          padding: EdgeInsets.symmetric(vertical: 8),
         ),
         ElevatedButton(
           key: QuizKeys.goodbyeButton,
@@ -510,6 +510,9 @@ class _EndLayout extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           _flavorTextSection(context),
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 16),
+          ),
           _controls(context),
         ],
       ),

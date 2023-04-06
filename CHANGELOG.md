@@ -5,7 +5,11 @@
 - **Quiz:** Fix known typos
 
 ### Feature Improvements and Enhancements
+- **Quiz screen:** Adjust spacing between components on quiz end screen to improve visual flow
+- **Quiz screen:** Update option selection color and bolden option text
+- **Quiz screen:** Add white space around continue button
 - **UI Styling:** Add new color theme and rounding to buttons
+- **UX:** Add logo to splash screen
 
 ### Project Management
 - **Repository:** Initialize changelog file
