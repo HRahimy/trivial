@@ -5,6 +5,7 @@ import 'package:mocktail/mocktail.dart';
 import 'package:repositories/repositories.dart';
 import 'package:trivial/quiz/bloc/quiz_cubit.dart';
 import 'package:trivial/quiz/quiz_keys.dart';
+import 'package:trivial/theme.dart';
 
 import '../../mocks/quiz_cubit_mock.dart';
 import '../../tests_navigator_observer.dart';
@@ -323,7 +324,7 @@ void main() {
           expect(materialFinder, findsOneWidget);
 
           final materialWidget = tester.widget(materialFinder) as Material;
-          expect(materialWidget.color, equals(Colors.lightBlue[400]));
+          expect(materialWidget.color, equals(AppTheme.complementaryColor));
         });
 
         testWidgets(
@@ -350,7 +351,7 @@ void main() {
           expect(materialFinder, findsOneWidget);
 
           final materialWidget = tester.widget(materialFinder) as Material;
-          expect(materialWidget.color, equals(Colors.lightBlue[400]));
+          expect(materialWidget.color, equals(AppTheme.complementaryColor));
         });
 
         testWidgets(
@@ -463,7 +464,7 @@ void main() {
           expect(materialFinder, findsOneWidget);
 
           final materialWidget = tester.widget(materialFinder) as Material;
-          expect(materialWidget.color, equals(Colors.lightBlue[400]));
+          expect(materialWidget.color, equals(AppTheme.complementaryColor));
         });
 
         testWidgets(
@@ -490,7 +491,7 @@ void main() {
           expect(materialFinder, findsOneWidget);
 
           final materialWidget = tester.widget(materialFinder) as Material;
-          expect(materialWidget.color, equals(Colors.lightBlue[400]));
+          expect(materialWidget.color, equals(AppTheme.complementaryColor));
         });
 
         testWidgets(
@@ -603,7 +604,7 @@ void main() {
           expect(materialFinder, findsOneWidget);
 
           final materialWidget = tester.widget(materialFinder) as Material;
-          expect(materialWidget.color, equals(Colors.lightBlue[400]));
+          expect(materialWidget.color, equals(AppTheme.complementaryColor));
         });
 
         testWidgets(
@@ -630,7 +631,7 @@ void main() {
           expect(materialFinder, findsOneWidget);
 
           final materialWidget = tester.widget(materialFinder) as Material;
-          expect(materialWidget.color, equals(Colors.lightBlue[400]));
+          expect(materialWidget.color, equals(AppTheme.complementaryColor));
         });
 
         testWidgets(
@@ -743,7 +744,7 @@ void main() {
           expect(materialFinder, findsOneWidget);
 
           final materialWidget = tester.widget(materialFinder) as Material;
-          expect(materialWidget.color, equals(Colors.lightBlue[400]));
+          expect(materialWidget.color, equals(AppTheme.complementaryColor));
         });
 
         testWidgets(
@@ -770,7 +771,7 @@ void main() {
           expect(materialFinder, findsOneWidget);
 
           final materialWidget = tester.widget(materialFinder) as Material;
-          expect(materialWidget.color, equals(Colors.lightBlue[400]));
+          expect(materialWidget.color, equals(AppTheme.complementaryColor));
         });
 
         testWidgets(
