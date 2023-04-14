@@ -17,7 +17,7 @@ void main() {
       evenStrokeColor: Colors.white,
       oddStrokeColor: Colors.white,
       numberOfLines: 8,
-      animationDuration: const Duration(milliseconds: 500),
+      animationDuration: 500,
     );
 
     await tester.pumpWidget(MaterialApp(
@@ -55,7 +55,7 @@ void main() {
         evenStrokeColor: Colors.white,
         oddStrokeColor: Colors.white,
         numberOfLines: 8,
-        animationDuration: const Duration(milliseconds: 500),
+        animationDuration: 500,
       ),
       throwsAssertionError,
     );

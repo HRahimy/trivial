@@ -11,8 +11,13 @@ class TwinkleStar extends StatefulWidget {
     required this.oddStrokeLength,
     required this.evenStrokeColor,
     required this.oddStrokeColor,
-    this.animationDuration = const Duration(milliseconds: 700),
+    this.animationDuration = 700,
   })  : assert(evenStrokeLength > oddStrokeLength),
+        assert(evenStrokeLength > 0),
+        assert(oddStrokeLength > 0),
+        assert(numberOfLines % 2 == 0),
+        assert(initialRadius > 0),
+        assert(animationDuration > 100),
         super(key: key);
 
   final int numberOfLines;
@@ -22,7 +27,9 @@ class TwinkleStar extends StatefulWidget {
   final double oddStrokeLength;
   final Color evenStrokeColor;
   final Color oddStrokeColor;
-  final Duration animationDuration;
+
+  /// In milliseconds
+  final int animationDuration;
 
   @override
   createState() => _TwinkleStarState();
@@ -40,7 +47,7 @@ class _TwinkleStarState extends State<TwinkleStar>
 
     _animationController = AnimationController(
       vsync: this,
-      duration: widget.animationDuration,
+      duration: Duration(milliseconds: widget.animationDuration),
     )..addListener(() {
         setState(() {
           _currentRadius = _radiusAnimation.value;
@@ -70,7 +77,6 @@ class _TwinkleStarState extends State<TwinkleStar>
     final boxDimensions = 2 *
         (widget.initialRadius +
             math.max(widget.evenStrokeLength, widget.oddStrokeLength));
-    debugPrint('$boxDimensions');
     return FittedBox(
       fit: BoxFit.scaleDown,
       child: SizedBox(
