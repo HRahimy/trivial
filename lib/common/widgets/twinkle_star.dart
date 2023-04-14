@@ -12,7 +12,8 @@ class TwinkleStar extends StatefulWidget {
     required this.evenStrokeColor,
     required this.oddStrokeColor,
     this.animationDuration = const Duration(milliseconds: 700),
-  }) : super(key: key);
+  })  : assert(evenStrokeLength > oddStrokeLength),
+        super(key: key);
 
   final int numberOfLines;
   final double initialRadius;

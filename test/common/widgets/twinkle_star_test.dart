@@ -37,4 +37,27 @@ void main() {
       equals(2 * (initialRadius + math.max(evenStrokeLength, oddStrokeLength))),
     );
   });
+
+  testWidgets(
+      'TwinkleStar widget throws error if oddStrokeLength > evenStrokeLength',
+      (WidgetTester tester) async {
+    final double initialRadius = 8.0;
+    final double evenStrokeLength = math.Random().nextDouble() * 150;
+    final double oddStrokeLength =
+        math.Random().nextDouble() * 100 + evenStrokeLength;
+
+    expect(
+      () => TwinkleStar(
+        initialRadius: initialRadius,
+        evenStrokeLength: evenStrokeLength,
+        oddStrokeLength: oddStrokeLength,
+        strokeWidth: 1.0,
+        evenStrokeColor: Colors.white,
+        oddStrokeColor: Colors.white,
+        numberOfLines: 8,
+        animationDuration: const Duration(milliseconds: 500),
+      ),
+      throwsAssertionError,
+    );
+  });
 }
