@@ -70,7 +70,7 @@ class _TwinkleStarState extends State<TwinkleStar>
       animation: _animationController,
       builder: (context, child) {
         return CustomPaint(
-          painter: RadialLinesPainter(
+          painter: _TwinkleLinesPainter(
             numberOfLines: widget.numberOfLines,
             initialRadius: widget.initialRadius,
             currentRadius: _currentRadius,
@@ -86,8 +86,8 @@ class _TwinkleStarState extends State<TwinkleStar>
   }
 }
 
-class RadialLinesPainter extends CustomPainter {
-  RadialLinesPainter({
+class _TwinkleLinesPainter extends CustomPainter {
+  _TwinkleLinesPainter({
     required this.numberOfLines,
     required this.initialRadius,
     required this.currentRadius,
@@ -164,5 +164,5 @@ class RadialLinesPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(RadialLinesPainter oldDelegate) => true;
+  bool shouldRepaint(_TwinkleLinesPainter oldDelegate) => true;
 }
