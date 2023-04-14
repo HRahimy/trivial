@@ -66,22 +66,33 @@ class _TwinkleStarState extends State<TwinkleStar>
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: _animationController,
-      builder: (context, child) {
-        return CustomPaint(
-          painter: _TwinkleLinesPainter(
-            numberOfLines: widget.numberOfLines,
-            initialRadius: widget.initialRadius,
-            currentRadius: _currentRadius,
-            strokeWidth: widget.strokeWidth,
-            evenStrokeLength: widget.evenStrokeLength,
-            oddStrokeLength: widget.oddStrokeLength,
-            evenStrokeColor: widget.evenStrokeColor,
-            oddStrokeColor: widget.oddStrokeColor,
-          ),
-        );
-      },
+    final boxDimensions = 2 *
+        (widget.initialRadius +
+            math.max(widget.evenStrokeLength, widget.oddStrokeLength));
+    debugPrint('$boxDimensions');
+    return FittedBox(
+      fit: BoxFit.scaleDown,
+      child: SizedBox(
+        height: boxDimensions,
+        width: boxDimensions,
+        child: AnimatedBuilder(
+          animation: _animationController,
+          builder: (context, child) {
+            return CustomPaint(
+              painter: _TwinkleLinesPainter(
+                numberOfLines: widget.numberOfLines,
+                initialRadius: widget.initialRadius,
+                currentRadius: _currentRadius,
+                strokeWidth: widget.strokeWidth,
+                evenStrokeLength: widget.evenStrokeLength,
+                oddStrokeLength: widget.oddStrokeLength,
+                evenStrokeColor: widget.evenStrokeColor,
+                oddStrokeColor: widget.oddStrokeColor,
+              ),
+            );
+          },
+        ),
+      ),
     );
   }
 }
