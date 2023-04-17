@@ -1,24 +1,24 @@
 import 'dart:math' as math;
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:trivial/theme.dart';
 
-class TwinkleStar extends StatefulWidget {
-  const TwinkleStar({
-    Key? key,
-    required this.numberOfLines,
-    required this.initialRadius,
-    required this.strokeWidth,
-    required this.evenStrokeLength,
-    required this.oddStrokeLength,
-    required this.evenStrokeColor,
-    required this.oddStrokeColor,
+class TwinkleStarStyle extends Equatable {
+  const TwinkleStarStyle({
+    this.numberOfLines = 8,
+    this.initialRadius = 8,
+    this.strokeWidth = 2,
+    this.evenStrokeLength = 20,
+    this.oddStrokeLength = 17,
+    this.evenStrokeColor = AppTheme.primaryColor,
+    this.oddStrokeColor = AppTheme.complementaryColor,
     this.animationDuration = 700,
   })  : assert(evenStrokeLength > oddStrokeLength),
         assert(evenStrokeLength > 0),
         assert(oddStrokeLength > 0),
         assert(numberOfLines % 2 == 0),
         assert(initialRadius > 0),
-        assert(animationDuration > 100),
-        super(key: key);
+        assert(animationDuration > 100);
 
   final int numberOfLines;
   final double initialRadius;
@@ -32,6 +32,34 @@ class TwinkleStar extends StatefulWidget {
   final int animationDuration;
 
   @override
+  List<Object> get props => [
+        numberOfLines,
+        initialRadius,
+        strokeWidth,
+        evenStrokeLength,
+        oddStrokeLength,
+        evenStrokeColor,
+        oddStrokeColor,
+      ];
+}
+
+class TwinkleStar extends StatefulWidget {
+  const TwinkleStar({
+    Key? key,
+    this.style = const TwinkleStarStyle(),
+    this.onComplete,
+  }) : super(key: key);
+
+  final TwinkleStarStyle style;
+  final Function()? onComplete;
+
+  double get boxDimensions {
+    return 2 *
+        (style.initialRadius +
+            math.max(style.evenStrokeLength, style.oddStrokeLength));
+  }
+
+  @override
   createState() => _TwinkleStarState();
 }
 
@@ -40,26 +68,33 @@ class _TwinkleStarState extends State<TwinkleStar>
   late AnimationController _animationController;
   late Animation<double> _radiusAnimation;
   double _currentRadius = 0;
+  bool _animationComplete = false;
 
   @override
   void initState() {
     super.initState();
-
     _animationController = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: widget.animationDuration),
+      duration: Duration(milliseconds: widget.style.animationDuration),
     )..addListener(() {
         setState(() {
           _currentRadius = _radiusAnimation.value;
         });
+
+        if (!_animationComplete && _animationController.isCompleted) {
+          if (widget.onComplete != null) {
+            widget.onComplete!();
+          }
+          _animationComplete = true;
+        }
       });
 
     final double maxRadius = math.max(
-      widget.evenStrokeLength,
-      widget.oddStrokeLength,
+      widget.style.evenStrokeLength,
+      widget.style.oddStrokeLength,
     );
     _radiusAnimation = Tween<double>(
-      begin: widget.initialRadius,
+      begin: widget.style.initialRadius,
       end: maxRadius,
     ).animate(_animationController);
 
@@ -74,27 +109,24 @@ class _TwinkleStarState extends State<TwinkleStar>
 
   @override
   Widget build(BuildContext context) {
-    final boxDimensions = 2 *
-        (widget.initialRadius +
-            math.max(widget.evenStrokeLength, widget.oddStrokeLength));
     return FittedBox(
       fit: BoxFit.scaleDown,
       child: SizedBox(
-        height: boxDimensions,
-        width: boxDimensions,
+        height: widget.boxDimensions,
+        width: widget.boxDimensions,
         child: AnimatedBuilder(
           animation: _animationController,
           builder: (context, child) {
             return CustomPaint(
               painter: _TwinkleLinesPainter(
-                numberOfLines: widget.numberOfLines,
-                initialRadius: widget.initialRadius,
+                numberOfLines: widget.style.numberOfLines,
+                initialRadius: widget.style.initialRadius,
                 currentRadius: _currentRadius,
-                strokeWidth: widget.strokeWidth,
-                evenStrokeLength: widget.evenStrokeLength,
-                oddStrokeLength: widget.oddStrokeLength,
-                evenStrokeColor: widget.evenStrokeColor,
-                oddStrokeColor: widget.oddStrokeColor,
+                strokeWidth: widget.style.strokeWidth,
+                evenStrokeLength: widget.style.evenStrokeLength,
+                oddStrokeLength: widget.style.oddStrokeLength,
+                evenStrokeColor: widget.style.evenStrokeColor,
+                oddStrokeColor: widget.style.oddStrokeColor,
               ),
             );
           },
