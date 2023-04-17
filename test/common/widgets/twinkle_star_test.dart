@@ -6,10 +6,10 @@ import 'package:trivial/common/widgets/twinkle_star.dart';
 void main() {
   testWidgets('TwinkleStar widget has correct size',
       (WidgetTester tester) async {
-    final double initialRadius = 8.0;
-    final double evenStrokeLength = 150.0;
-    final double oddStrokeLength = 100.0;
-    final twinkleStar = TwinkleStar(
+    const double initialRadius = 8.0;
+    const double evenStrokeLength = 150.0;
+    const double oddStrokeLength = 100.0;
+    const twinkleStar = TwinkleStar(
       initialRadius: initialRadius,
       evenStrokeLength: evenStrokeLength,
       oddStrokeLength: oddStrokeLength,
@@ -20,7 +20,7 @@ void main() {
       animationDuration: 500,
     );
 
-    await tester.pumpWidget(MaterialApp(
+    await tester.pumpWidget(const MaterialApp(
       home: Scaffold(
         body: twinkleStar,
       ),
@@ -41,7 +41,7 @@ void main() {
   testWidgets(
       'TwinkleStar widget throws error if oddStrokeLength > evenStrokeLength',
       (WidgetTester tester) async {
-    final double initialRadius = 8.0;
+    const double initialRadius = 8.0;
     final double evenStrokeLength = math.Random().nextDouble() * 150;
     final double oddStrokeLength =
         math.Random().nextDouble() * 100 + evenStrokeLength;
