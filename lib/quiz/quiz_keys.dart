@@ -64,6 +64,7 @@ class QuizKeys {
 
   //region Quiz end screen
   static const Key quizEndBody = Key('__quizEndBody__');
+  static const Key twinkleContainer = Key('__twinkleContainer__');
 
   static const Key quizEndFlavorTextSection =
       Key('__quizEndFlavorTextSection__');

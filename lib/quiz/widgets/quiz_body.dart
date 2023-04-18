@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:repositories/repositories.dart';
+import 'package:trivial/common/widgets/twinkle_container.dart';
 import 'package:trivial/quiz/bloc/quiz_cubit.dart';
 import 'package:trivial/quiz/quiz_keys.dart';
 import 'package:trivial/theme.dart';
@@ -505,18 +506,22 @@ class _EndLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 32),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          _flavorTextSection(context),
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: 16),
-          ),
-          _controls(context),
-        ],
+    return TwinkleContainer(
+      key: QuizKeys.twinkleContainer,
+      spawnAreaHeight: MediaQuery.of(context).size.height / 3,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 32),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            _flavorTextSection(context),
+            const Padding(
+              padding: EdgeInsets.symmetric(vertical: 16),
+            ),
+            _controls(context),
+          ],
+        ),
       ),
     );
   }
