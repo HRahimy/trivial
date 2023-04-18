@@ -49,6 +49,7 @@ class TwinkleContainer extends StatefulWidget {
 
 class _TwinkleContainerState extends State<TwinkleContainer> {
   List<int> _twinkleIds = [];
+  Timer? _timer;
 
   @override
   void initState() {
@@ -62,7 +63,7 @@ class _TwinkleContainerState extends State<TwinkleContainer> {
       intermediateIds.remove(id);
       _twinkleIds = intermediateIds;
 
-      Timer(
+      _timer = Timer(
         Duration(milliseconds: widget.twinkleWaitDuration),
         () => startTwinkle(id + 1),
       );
@@ -73,6 +74,15 @@ class _TwinkleContainerState extends State<TwinkleContainer> {
     setState(() {
       _twinkleIds = [..._twinkleIds, id];
     });
+  }
+
+  @override
+  void dispose() {
+    if (_timer != null && _timer!.isActive) {
+      _timer!.cancel();
+    }
+
+    super.dispose();
   }
 
   @override
