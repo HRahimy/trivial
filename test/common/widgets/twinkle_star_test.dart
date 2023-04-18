@@ -10,14 +10,16 @@ void main() {
     const double evenStrokeLength = 150.0;
     const double oddStrokeLength = 100.0;
     const twinkleStar = TwinkleStar(
-      initialRadius: initialRadius,
-      evenStrokeLength: evenStrokeLength,
-      oddStrokeLength: oddStrokeLength,
-      strokeWidth: 1.0,
-      evenStrokeColor: Colors.white,
-      oddStrokeColor: Colors.white,
-      numberOfLines: 8,
-      animationDuration: 500,
+      style: TwinkleStarStyle(
+        initialRadius: initialRadius,
+        evenStrokeLength: evenStrokeLength,
+        oddStrokeLength: oddStrokeLength,
+        strokeWidth: 1.0,
+        evenStrokeColor: Colors.white,
+        oddStrokeColor: Colors.white,
+        numberOfLines: 8,
+        animationDuration: 500,
+      ),
     );
 
     await tester.pumpWidget(const MaterialApp(
@@ -48,14 +50,16 @@ void main() {
 
     expect(
       () => TwinkleStar(
-        initialRadius: initialRadius,
-        evenStrokeLength: evenStrokeLength,
-        oddStrokeLength: oddStrokeLength,
-        strokeWidth: 1.0,
-        evenStrokeColor: Colors.white,
-        oddStrokeColor: Colors.white,
-        numberOfLines: 8,
-        animationDuration: 500,
+        style: TwinkleStarStyle(
+          initialRadius: initialRadius,
+          evenStrokeLength: evenStrokeLength,
+          oddStrokeLength: oddStrokeLength,
+          strokeWidth: 1.0,
+          evenStrokeColor: Colors.white,
+          oddStrokeColor: Colors.white,
+          numberOfLines: 8,
+          animationDuration: 500,
+        ),
       ),
       throwsAssertionError,
     );
