@@ -100,8 +100,8 @@ void main() {
             tester.widget(find.byKey(containerKey)) as TwinkleContainer;
         final star = tester.widget(starFinder) as TwinkleStar;
 
-        expect(widget.starStyle, equals(TwinkleStarStyle()));
-        expect(star.style, equals(TwinkleStarStyle()));
+        expect(widget.starStyle, equals(const TwinkleStarStyle()));
+        expect(star.style, equals(const TwinkleStarStyle()));
       },
     );
 
@@ -141,59 +141,60 @@ void main() {
       },
     );
 
-    // testWidgets(
-    //     'TwinkleContainer should spawn twinkles within the specified spawn area',
-    //     (WidgetTester tester) async {
-    //   final spawnAreaHeight = 200.0;
-    //   final spawnAreaWidth = 300.0;
-    //   final verticalAreaInset = 20.0;
-    //   final horizontalAreaInset = 40.0;
-    //   await tester.pumpWidget(
-    //     MaterialApp(
-    //       home: Scaffold(
-    //         body: TwinkleContainer(
-    //           spawnAreaHeight: spawnAreaHeight,
-    //           spawnAreaWidth: spawnAreaWidth,
-    //           verticalAreaInset: verticalAreaInset,
-    //           horizontalAreaInset: horizontalAreaInset,
-    //           child: Container(),
-    //         ),
-    //       ),
-    //     ),
-    //   );
-    //
-    //   await tester.pumpAndSettle(const Duration(milliseconds: 1000));
-    //
-    //   final twinkleFinder = find.byType(TwinkleContainer);
-    //   final twinkleContainer = tester.widget<TwinkleContainer>(twinkleFinder);
-    //
-    //   // Get the list of spawned twinkles
-    //   final twinkleStarFinder = find.byType(TwinkleStar);
-    //   final twinkleStars =
-    //       tester.widgetList(twinkleStarFinder).toList();
-    //
-    //   // Verify that all spawned twinkles are within the specified spawn area and area insets
-    //   for (final twinkleStar in twinkleStars) {
-    //     final position = tester.getTopLeft(find.byWidget(twinkleStar));
-    //     expect(
-    //       position.dx,
-    //       greaterThanOrEqualTo((twinkleStar as TwinkleStar).boxDimensions + horizontalAreaInset),
-    //     );
-    //     expect(
-    //       position.dx,
-    //       lessThanOrEqualTo(spawnAreaWidth -
-    //           (twinkleStar.boxDimensions + horizontalAreaInset)),
-    //     );
-    //     expect(
-    //       position.dy,
-    //       greaterThanOrEqualTo(twinkleStar.boxDimensions + verticalAreaInset),
-    //     );
-    //     expect(
-    //       position.dy,
-    //       lessThanOrEqualTo(spawnAreaHeight -
-    //           (twinkleStar.boxDimensions + verticalAreaInset)),
-    //     );
-    //   }
-    // });
+    testWidgets('spawns twinkles within the specified spawn area across at least 50 iterations',
+        (WidgetTester tester) async {
+      const spawnAreaHeight = 200.0;
+      const spawnAreaWidth = 300.0;
+      const verticalAreaInset = 20.0;
+      const horizontalAreaInset = 40.0;
+      const animationDuration = 700;
+      const waitDuration = 300;
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: TwinkleContainer(
+              spawnAreaHeight: spawnAreaHeight,
+              spawnAreaWidth: spawnAreaWidth,
+              verticalAreaInset: verticalAreaInset,
+              horizontalAreaInset: horizontalAreaInset,
+              twinkleWaitDuration: waitDuration,
+              starStyle: const TwinkleStarStyle(
+                animationDuration: animationDuration,
+              ),
+              child: Container(),
+            ),
+          ),
+        ),
+      );
+
+      for (int i = 0; i < 50; i++) {
+        // Get the list of spawned twinkles
+        final twinkleStarFinder = find.byType(TwinkleStar);
+        final twinkleStar = tester.widget(twinkleStarFinder) as TwinkleStar;
+
+        // Verify that all spawned twinkles are within the specified spawn area and area insets
+        final position = tester.getTopLeft(find.byWidget(twinkleStar));
+        expect(
+          position.dx,
+          greaterThanOrEqualTo(twinkleStar.boxDimensions + horizontalAreaInset),
+        );
+        expect(
+          position.dx,
+          lessThanOrEqualTo(spawnAreaWidth -
+              (twinkleStar.boxDimensions + horizontalAreaInset)),
+        );
+        expect(
+          position.dy,
+          greaterThanOrEqualTo(twinkleStar.boxDimensions + verticalAreaInset),
+        );
+        expect(
+          position.dy,
+          lessThanOrEqualTo(spawnAreaHeight -
+              (twinkleStar.boxDimensions + verticalAreaInset)),
+        );
+        await tester.pump(const Duration(milliseconds: animationDuration + 5));
+        await tester.pump(const Duration(milliseconds: waitDuration));
+      }
+    });
   });
 }
