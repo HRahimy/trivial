@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:trivial/common/widgets/twinkle_container.dart';
+import 'package:trivial/common/widgets/twinkle_star.dart';
 
 void main() {
   group('[TwinkleContainer]', () {
@@ -35,6 +36,44 @@ void main() {
         expect(childWidget.runtimeType, equals(Center));
       });
     });
+
+    testWidgets(
+      'Twinkles are spawned at the correct rate specified by `twinkleWaitDuration` and `style.animationDuration`',
+      (tester) async {
+        const int animationDuration = 700;
+        const int waitDuration = 300;
+        const Key containerKey = Key('__twinkleContainer__');
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: TwinkleContainer(
+                key: containerKey,
+                twinkleWaitDuration: waitDuration,
+                starStyle: const TwinkleStarStyle(
+                  animationDuration: animationDuration,
+                ),
+                child: Container(),
+              ),
+            ),
+          ),
+        );
+
+        final twinkleFinder = find.descendant(
+          of: find.byKey(containerKey),
+          matching: find.byType(TwinkleStar),
+        );
+
+        expect(twinkleFinder, findsOneWidget);
+
+        await tester.pump(const Duration(milliseconds: animationDuration + 5));
+
+        expect(twinkleFinder, findsNothing);
+
+        await tester.pump(const Duration(milliseconds: waitDuration));
+
+        expect(twinkleFinder, findsOneWidget);
+      },
+    );
 
     // testWidgets(
     //     'TwinkleContainer should spawn twinkles within the specified spawn area',
