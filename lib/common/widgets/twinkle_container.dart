@@ -8,7 +8,7 @@ import 'package:trivial/common/widgets/twinkle_star.dart';
 class TwinkleContainer extends StatefulWidget {
   const TwinkleContainer({
     Key? key,
-    this.starStyle,
+    this.starStyle = const TwinkleStarStyle(),
     this.spawnAreaHeight,
     this.spawnAreaWidth,
     this.verticalAreaInset = 0,
@@ -23,7 +23,7 @@ class TwinkleContainer extends StatefulWidget {
   final int twinkleWaitDuration;
 
   /// Spawned twinkles will use given [starStyle]
-  final TwinkleStarStyle? starStyle;
+  final TwinkleStarStyle starStyle;
 
   /// An optional [spawnAreaHeight] will set the height of the area
   /// within which twinkles can spawn.
@@ -98,7 +98,7 @@ class _TwinkleContainerState extends State<TwinkleContainer> {
           final star = TwinkleStar(
             key: Key('${widget.key.toString()}__twinkleStar_$e'),
             onComplete: () => endTwinkle(e),
-            style: widget.starStyle ?? const TwinkleStarStyle(),
+            style: widget.starStyle,
           );
 
           // Get max and min values for height and width

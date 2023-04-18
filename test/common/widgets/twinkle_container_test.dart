@@ -75,6 +75,72 @@ void main() {
       },
     );
 
+    testWidgets(
+      'when the starStyle parameter is not passed in, the default TwinkleStarStyle is used',
+      (tester) async {
+        const Key containerKey = Key('__twinkleContainer__');
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: TwinkleContainer(
+                key: containerKey,
+                child: Container(),
+              ),
+            ),
+          ),
+        );
+
+        final containerFinder = find.byKey(containerKey);
+        final starFinder = find.descendant(
+          of: containerFinder,
+          matching: find.byType(TwinkleStar),
+        );
+
+        final widget =
+            tester.widget(find.byKey(containerKey)) as TwinkleContainer;
+        final star = tester.widget(starFinder) as TwinkleStar;
+
+        expect(widget.starStyle, equals(TwinkleStarStyle()));
+        expect(star.style, equals(TwinkleStarStyle()));
+      },
+    );
+
+    testWidgets(
+      'when the starStyle parameter is passed in, spawns stars using it',
+      (tester) async {
+        const Key containerKey = Key('__twinkleContainer__');
+        const TwinkleStarStyle testStyle = TwinkleStarStyle(
+          animationDuration: 152,
+          evenStrokeLength: 32,
+          oddStrokeLength: 15,
+        );
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: TwinkleContainer(
+                key: containerKey,
+                starStyle: testStyle,
+                child: Container(),
+              ),
+            ),
+          ),
+        );
+
+        final containerFinder = find.byKey(containerKey);
+        final starFinder = find.descendant(
+          of: containerFinder,
+          matching: find.byType(TwinkleStar),
+        );
+
+        final widget =
+            tester.widget(find.byKey(containerKey)) as TwinkleContainer;
+        final star = tester.widget(starFinder) as TwinkleStar;
+
+        expect(widget.starStyle, equals(testStyle));
+        expect(star.style, equals(testStyle));
+      },
+    );
+
     // testWidgets(
     //     'TwinkleContainer should spawn twinkles within the specified spawn area',
     //     (WidgetTester tester) async {

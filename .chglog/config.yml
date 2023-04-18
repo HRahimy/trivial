@@ -13,6 +13,7 @@ options:
         - perf
         - refactor
         - mgmt
+        - qa
   commit_groups:
     title_maps:
       feat: Features
@@ -21,6 +22,7 @@ options:
       perf: Performance Improvements
       refactor: Code Refactoring
       mgmt: Project Management
+      qa: Testing and Quality Assurance
   header:
     pattern: "^(\\w*)(?:\\(([\\w\\$\\.\\-\\*\\s]*)\\))?\\:\\s(.*)$"
     pattern_maps:
