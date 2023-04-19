@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:trivial/common/widgets/twinkle_container.dart';
@@ -141,7 +143,8 @@ void main() {
       },
     );
 
-    testWidgets('spawns twinkles within the specified spawn area across at least 50 iterations',
+    testWidgets(
+        'spawns twinkles within the specified spawn area across at least 50 iterations',
         (WidgetTester tester) async {
       const spawnAreaHeight = 200.0;
       const spawnAreaWidth = 300.0;
@@ -192,6 +195,42 @@ void main() {
           lessThanOrEqualTo(spawnAreaHeight -
               (twinkleStar.boxDimensions + verticalAreaInset)),
         );
+        await tester.pump(const Duration(milliseconds: animationDuration + 5));
+        await tester.pump(const Duration(milliseconds: waitDuration));
+      }
+    });
+
+    testWidgets('each spawned twinkle is assigned a unique key',
+        (WidgetTester tester) async {
+      const animationDuration = 700;
+      const waitDuration = 300;
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: TwinkleContainer(
+              twinkleWaitDuration: waitDuration,
+              starStyle: const TwinkleStarStyle(
+                animationDuration: animationDuration,
+              ),
+              child: Container(),
+            ),
+          ),
+        ),
+      );
+
+      List<String> keys = [];
+
+      for (int i = 0; i < 50; i++) {
+        // Get the list of spawned twinkles
+        final twinkleStarFinder = find.byType(TwinkleStar);
+        final twinkleStar = tester.widget(twinkleStarFinder) as TwinkleStar;
+
+        final newKey = twinkleStar.key.toString();
+
+        expect(keys.any((element) => element == newKey), equals(false));
+
+        keys.add(twinkleStar.key.toString());
+
         await tester.pump(const Duration(milliseconds: animationDuration + 5));
         await tester.pump(const Duration(milliseconds: waitDuration));
       }
