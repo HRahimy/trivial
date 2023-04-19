@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:trivial/common/widgets/twinkle_container.dart';
@@ -144,12 +142,10 @@ void main() {
     );
 
     testWidgets(
-        'spawns twinkles within the specified spawn area across at least 50 iterations',
+        'given default alignment, spawns twinkles within the specified spawn area across at least 50 iterations',
         (WidgetTester tester) async {
       const spawnAreaHeight = 200.0;
       const spawnAreaWidth = 300.0;
-      const verticalAreaInset = 20.0;
-      const horizontalAreaInset = 40.0;
       const animationDuration = 700;
       const waitDuration = 300;
       await tester.pumpWidget(
@@ -158,8 +154,6 @@ void main() {
             body: TwinkleContainer(
               spawnAreaHeight: spawnAreaHeight,
               spawnAreaWidth: spawnAreaWidth,
-              verticalAreaInset: verticalAreaInset,
-              horizontalAreaInset: horizontalAreaInset,
               twinkleWaitDuration: waitDuration,
               starStyle: const TwinkleStarStyle(
                 animationDuration: animationDuration,
@@ -179,21 +173,11 @@ void main() {
         final position = tester.getTopLeft(find.byWidget(twinkleStar));
         expect(
           position.dx,
-          greaterThanOrEqualTo(twinkleStar.boxDimensions + horizontalAreaInset),
-        );
-        expect(
-          position.dx,
-          lessThanOrEqualTo(spawnAreaWidth -
-              (twinkleStar.boxDimensions + horizontalAreaInset)),
+          lessThanOrEqualTo(spawnAreaWidth - (twinkleStar.boxDimensions)),
         );
         expect(
           position.dy,
-          greaterThanOrEqualTo(twinkleStar.boxDimensions + verticalAreaInset),
-        );
-        expect(
-          position.dy,
-          lessThanOrEqualTo(spawnAreaHeight -
-              (twinkleStar.boxDimensions + verticalAreaInset)),
+          lessThanOrEqualTo(spawnAreaHeight - (twinkleStar.boxDimensions)),
         );
         await tester.pump(const Duration(milliseconds: animationDuration + 5));
         await tester.pump(const Duration(milliseconds: waitDuration));

@@ -2,17 +2,18 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:trivial/common/common_keys.dart';
 import 'package:trivial/common/widgets/twinkle_star.dart';
 
-/// Randomly spawns [TwinkleStar] widgets in containing area
+/// Randomly spawns [TwinkleStar] widgets in defined spawn area
 class TwinkleContainer extends StatefulWidget {
   const TwinkleContainer({
-    Key? key,
+    Key key = CommonKeys.twinkleContainer,
     this.starStyle = const TwinkleStarStyle(),
+    this.spawnAreaPadding = const EdgeInsets.symmetric(),
+    this.spawnAreaAlignment = const Alignment(-1, -1),
     this.spawnAreaHeight,
     this.spawnAreaWidth,
-    this.verticalAreaInset = 0,
-    this.horizontalAreaInset = 0,
     required this.child,
     this.twinkleWaitDuration = 300,
   }) : super(key: key);
@@ -35,13 +36,9 @@ class TwinkleContainer extends StatefulWidget {
   /// - The current width of the screen will be used by default.
   final double? spawnAreaWidth;
 
-  /// Reduces the area within which twinkles can spawn from the top
-  /// and bottom by the given [verticalAreaInset]
-  final double verticalAreaInset;
+  final EdgeInsets spawnAreaPadding;
 
-  /// Reduces the area within which twinkles can spawn from the left
-  /// and right by the given [horizontalAreaInset]
-  final double horizontalAreaInset;
+  final Alignment spawnAreaAlignment;
 
   @override
   State<StatefulWidget> createState() => _TwinkleContainerState();
@@ -85,42 +82,57 @@ class _TwinkleContainerState extends State<TwinkleContainer> {
     super.dispose();
   }
 
-  @override
-  Widget build(BuildContext context) {
+  Widget buildSpawnArea(BuildContext context) {
     final spawnAreaHeight =
         widget.spawnAreaHeight ?? (MediaQuery.of(context).size.height / 2);
     final spawnAreaWidth =
         widget.spawnAreaWidth ?? MediaQuery.of(context).size.width;
 
+    final containerWidget = Align(
+      alignment: widget.spawnAreaAlignment,
+      child: SizedBox(
+        key: CommonKeys.twinkleContainerSpawnArea,
+        height: spawnAreaHeight,
+        width: spawnAreaWidth,
+        child: Stack(
+          children: [
+            ..._twinkleIds.map((e) {
+              final star = TwinkleStar(
+                key: CommonKeys.twinkleContainerStar('$e'),
+                onComplete: () => endTwinkle(e),
+                style: widget.starStyle,
+              );
+
+              // Get max and min values for height and width
+              final maxHeight = spawnAreaHeight - star.boxDimensions;
+              final maxWidth = spawnAreaWidth - star.boxDimensions;
+
+              // Get random top and left values within area
+              final rTop = Random().nextInt(maxHeight.toInt()).toDouble();
+              final rLeft = Random().nextInt(maxWidth.toInt()).toDouble();
+
+              return Positioned(
+                top: rTop,
+                left: rLeft,
+                child: star,
+              );
+            }).toList(),
+          ],
+        ),
+      ),
+    );
+
+    return Padding(
+      padding: widget.spawnAreaPadding,
+      child: containerWidget,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Stack(
       children: [
-        ..._twinkleIds.map((e) {
-          final star = TwinkleStar(
-            key: Key('${widget.key.toString()}__twinkleStar_$e'),
-            onComplete: () => endTwinkle(e),
-            style: widget.starStyle,
-          );
-
-          // Get max and min values for height and width
-          final minHeight = star.boxDimensions + widget.verticalAreaInset;
-          final maxHeight =
-              spawnAreaHeight - (star.boxDimensions + widget.verticalAreaInset);
-          final minWidth = star.boxDimensions + widget.horizontalAreaInset;
-          final maxWidth = spawnAreaWidth -
-              (star.boxDimensions + widget.horizontalAreaInset);
-
-          // Get random top and left values within area
-          final rTop = minHeight +
-              Random().nextInt((maxHeight - minHeight).toInt()).toDouble();
-          final rLeft = minWidth +
-              Random().nextInt((maxWidth - minWidth).toInt()).toDouble();
-
-          return Positioned(
-            top: rTop,
-            left: rLeft,
-            child: star,
-          );
-        }).toList(),
+        buildSpawnArea(context),
         widget.child,
       ],
     );
