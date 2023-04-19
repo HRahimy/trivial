@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:trivial/common/common_keys.dart';
 import 'package:trivial/common/widgets/twinkle_container.dart';
 import 'package:trivial/common/widgets/twinkle_star.dart';
 
@@ -218,6 +219,102 @@ void main() {
         await tester.pump(const Duration(milliseconds: animationDuration + 5));
         await tester.pump(const Duration(milliseconds: waitDuration));
       }
+    });
+
+    group('[spawnAreaHeight] param', () {
+      testWidgets(
+        'when passed in, used to set the height of spawnArea container',
+        (tester) async {
+          const spawnAreaHeight = 200.0;
+          await tester.pumpWidget(
+            MaterialApp(
+              home: Scaffold(
+                body: TwinkleContainer(
+                  spawnAreaHeight: spawnAreaHeight,
+                  child: Container(),
+                ),
+              ),
+            ),
+          );
+
+          final size =
+              tester.getSize(find.byKey(CommonKeys.twinkleContainerSpawnArea));
+
+          expect(size.height, equals(spawnAreaHeight));
+        },
+      );
+
+      testWidgets(
+        'when not passed in, the default height (half the screen height) is used',
+        (tester) async {
+          await tester.pumpWidget(
+            MaterialApp(
+              home: Scaffold(
+                body: TwinkleContainer(
+                  child: Container(),
+                ),
+              ),
+            ),
+          );
+
+          // Get height of the render area
+          final top = tester.getTopLeft(find.byType(MaterialApp));
+          final bottom = tester.getBottomLeft(find.byType(MaterialApp));
+          final screenHeight = (top - bottom).distance;
+
+          final size =
+              tester.getSize(find.byKey(CommonKeys.twinkleContainerSpawnArea));
+          expect(size.height, equals(screenHeight / 2));
+        },
+      );
+    });
+
+    group('[spawnAreaWidth] param', () {
+      testWidgets(
+        'when passed in, used to set the height of spawnArea container',
+        (tester) async {
+          const spawnAreaWidth = 200.0;
+          await tester.pumpWidget(
+            MaterialApp(
+              home: Scaffold(
+                body: TwinkleContainer(
+                  spawnAreaWidth: spawnAreaWidth,
+                  child: Container(),
+                ),
+              ),
+            ),
+          );
+
+          final size =
+              tester.getSize(find.byKey(CommonKeys.twinkleContainerSpawnArea));
+
+          expect(size.width, equals(spawnAreaWidth));
+        },
+      );
+
+      testWidgets(
+        'when not passed in, the default width (screen width) is used',
+        (tester) async {
+          await tester.pumpWidget(
+            MaterialApp(
+              home: Scaffold(
+                body: TwinkleContainer(
+                  child: Container(),
+                ),
+              ),
+            ),
+          );
+
+          // Get width of the render area
+          final left = tester.getTopLeft(find.byType(MaterialApp));
+          final right = tester.getTopRight(find.byType(MaterialApp));
+          final screenWidth = (left - right).distance;
+
+          final size =
+              tester.getSize(find.byKey(CommonKeys.twinkleContainerSpawnArea));
+          expect(size.width, equals(screenWidth));
+        },
+      );
     });
   });
 }
