@@ -38,6 +38,74 @@ void main() {
       });
     });
 
+    group('[keys]', () {
+      testWidgets(
+          '`twinkleContainer` exists and is an instance of TwinkleContainer',
+          (tester) async {
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: TwinkleContainer(
+                child: Container(),
+              ),
+            ),
+          ),
+        );
+
+        final finder = find.byKey(CommonKeys.twinkleContainer);
+
+        expect(finder, findsOneWidget);
+
+        final widget = tester.widget(finder);
+
+        expect(widget.runtimeType, TwinkleContainer);
+      });
+
+      testWidgets('`spawnArea` widget exists and is a SizedBox',
+          (tester) async {
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: TwinkleContainer(
+                child: Container(),
+              ),
+            ),
+          ),
+        );
+
+        final spawnAreaFinder =
+            find.byKey(CommonKeys.twinkleContainerSpawnArea);
+
+        expect(spawnAreaFinder, findsOneWidget);
+
+        final widget = tester.widget(spawnAreaFinder);
+
+        expect(widget.runtimeType, SizedBox);
+      });
+
+      testWidgets(
+          'first `twinkleStar` widget exists and is a TwinkleStar object',
+          (tester) async {
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: TwinkleContainer(
+                child: Container(),
+              ),
+            ),
+          ),
+        );
+
+        final finder = find.byKey(CommonKeys.twinkleContainerStar('1'));
+
+        expect(finder, findsOneWidget);
+
+        final widget = tester.widget(finder);
+
+        expect(widget.runtimeType, TwinkleStar);
+      });
+    });
+
     testWidgets(
       'Twinkles are spawned at the correct rate specified by `twinkleWaitDuration` and `style.animationDuration`',
       (tester) async {
