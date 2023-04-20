@@ -1081,4 +1081,66 @@ void main() {
       expect(navObserver.poppedCount, equals(1));
     });
   });
+
+  group('[Abort]', () {
+    testWidgets(
+        'given quiz is not complete, button and components are rendered',
+        (tester) async {
+      when(() => cubit.state).thenReturn(loadedState.copyWith(complete: false));
+
+      await tester.pumpWidget(QuizBodyFixture(quizCubit: cubit));
+
+      final buttonFinder = find.byKey(QuizKeys.abortButton);
+      final iconFinder = find.descendant(
+        of: buttonFinder,
+        matching: find.byKey(QuizKeys.abortButtonIcon),
+      );
+      final textFinder = find.descendant(
+        of: buttonFinder,
+        matching: find.byKey(QuizKeys.abortButtonText),
+      );
+
+      expect(buttonFinder, findsOneWidget);
+      expect(iconFinder, findsOneWidget);
+      expect(textFinder, findsOneWidget);
+
+      final buttonWidget = tester.widget(buttonFinder);
+      final iconWidget = tester.widget(iconFinder);
+      final textWidget = tester.widget(textFinder);
+
+      expect(buttonWidget, findsOneWidget);
+      expect(
+        buttonWidget.runtimeType,
+        FloatingActionButton,
+        reason: 'design requires floating action button',
+      );
+
+      expect(iconWidget, findsOneWidget);
+      expect(iconWidget.runtimeType, Icon);
+
+      expect(textWidget, findsOneWidget);
+      expect(textWidget.runtimeType, Text);
+    });
+
+    testWidgets('given quiz is complete, button does not exist',
+        (tester) async {
+      when(() => cubit.state).thenReturn(loadedState.copyWith(complete: true));
+
+      await tester.pumpWidget(QuizBodyFixture(quizCubit: cubit));
+
+      final buttonFinder = find.byKey(QuizKeys.abortButton);
+      final iconFinder = find.descendant(
+        of: buttonFinder,
+        matching: find.byKey(QuizKeys.abortButtonIcon),
+      );
+      final textFinder = find.descendant(
+        of: buttonFinder,
+        matching: find.byKey(QuizKeys.abortButtonText),
+      );
+
+      expect(buttonFinder, findsNothing);
+      expect(iconFinder, findsNothing);
+      expect(textFinder, findsNothing);
+    });
+  });
 }
