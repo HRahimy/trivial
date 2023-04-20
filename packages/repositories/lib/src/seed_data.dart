@@ -21,7 +21,7 @@ class SeedData {
     id: 1,
     quizId: 1,
     sequenceIndex: 1,
-    points: 10,
+    points: 2,
     question: 'Who was the High Chieftain of the Tauren before Baine Bloodhoof',
     options: {
       OptionIndex.A: 'Cairne Bloodhoof',
@@ -36,7 +36,7 @@ class SeedData {
     id: 2,
     quizId: 1,
     sequenceIndex: 2,
-    points: 15,
+    points: 2,
     question: 'Which of these creatures are native to Elwynn Forest?',
     options: {
       OptionIndex.A: 'Quillboar',
@@ -51,7 +51,7 @@ class SeedData {
     id: 3,
     quizId: 1,
     sequenceIndex: 3,
-    points: 20,
+    points: 2,
     question: 'What is the title of Stormwind\'s ruling monarch?',
     options: {
       OptionIndex.A: 'High Priest',
@@ -66,7 +66,7 @@ class SeedData {
     id: 4,
     quizId: 1,
     sequenceIndex: 4,
-    points: 25,
+    points: 3,
     question:
         'The primary means of aerial zone-to-zone travel on Azeroth and beyond is managed by a group of NPCs called',
     options: {
@@ -82,7 +82,7 @@ class SeedData {
     id: 5,
     quizId: 1,
     sequenceIndex: 5,
-    points: 30,
+    points: 3,
     question:
         'The ranks of which of these covenants consist of manual workers which bear a strong visual resemblance to owls?',
     options: {
@@ -98,7 +98,7 @@ class SeedData {
     id: 6,
     quizId: 1,
     sequenceIndex: 6,
-    points: 35,
+    points: 3,
     question:
         'In the context of today\'s state of the game (9.0.2), which of these words portends doom in the eyes of most PvP enthusiasts when facing a feathered beast?',
     options: {
@@ -114,7 +114,7 @@ class SeedData {
     id: 7,
     quizId: 1,
     sequenceIndex: 7,
-    points: 40,
+    points: 5,
     question:
         'The name \'Coldheart Interstitia\' is associated with which of these options?',
     options: {
@@ -130,7 +130,7 @@ class SeedData {
     id: 8,
     quizId: 1,
     sequenceIndex: 8,
-    points: 45,
+    points: 5,
     question:
         'How many dungeons and raids with the word \'Blackrock\' in their name exist in the game?',
     options: {
@@ -146,7 +146,7 @@ class SeedData {
     id: 9,
     quizId: 1,
     sequenceIndex: 9,
-    points: 50,
+    points: 5,
     question:
         'In which year was World of Warcraft: Mists of Pandaria released?',
     options: {
@@ -162,7 +162,7 @@ class SeedData {
     id: 10,
     quizId: 1,
     sequenceIndex: 10,
-    points: 55,
+    points: 6,
     question:
         'What is the name of the disease strain which Vectis in Uldir infects players during its encounter?',
     options: {
@@ -178,7 +178,7 @@ class SeedData {
     id: 11,
     quizId: 1,
     sequenceIndex: 11,
-    points: 60,
+    points: 6,
     question:
         'Which electric term inspired the name of the first boss encounter of The Mechanar',
     options: {
@@ -194,7 +194,7 @@ class SeedData {
     id: 12,
     quizId: 1,
     sequenceIndex: 12,
-    points: 65,
+    points: 6,
     question:
         'What was the name of the Iron Horde\'s expeditionary force tasked with invading Azeroth?',
     options: {
@@ -210,7 +210,7 @@ class SeedData {
     id: 13,
     quizId: 1,
     sequenceIndex: 13,
-    points: 70,
+    points: 10,
     question:
         'Players who wish to reach the peak of Mount Neverest by foot must begin their ascent from which side of the mountain\'s base?',
     options: {
@@ -226,7 +226,7 @@ class SeedData {
     id: 14,
     quizId: 1,
     sequenceIndex: 14,
-    points: 75,
+    points: 10,
     question:
         'Which of these green dragons, once guardians of the outdoor Emerald Dream portals, appears in the Emerald Nightmare raid instance?',
     options: {
@@ -242,7 +242,7 @@ class SeedData {
     id: 15,
     quizId: 1,
     sequenceIndex: 15,
-    points: 80,
+    points: 10,
     question:
         'In which expansion did the Ankylodon specie make it\'s first appearance in-game?',
     options: {
@@ -258,7 +258,7 @@ class SeedData {
     id: 16,
     quizId: 1,
     sequenceIndex: 16,
-    points: 85,
+    points: 10,
     question:
         'Which of these pieces of the Ironweave Battlesuit set is still obtainable in the retail version of World of Warcraft?',
     options: {
@@ -274,7 +274,7 @@ class SeedData {
     id: 17,
     quizId: 1,
     sequenceIndex: 17,
-    points: 90,
+    points: 10,
     question:
         'In which month of the year 2016 did Chris Metzen announce his retirement from Blizzard Entertainment',
     options: {
@@ -290,7 +290,7 @@ class SeedData {
     id: 18,
     quizId: 1,
     sequenceIndex: 18,
-    points: 95,
+    points: 12,
     question:
         'In the fateful story of Pyramond and Theleste, what was it about the latter that prompted Pyramond\'s parents to disallow their son from meeting Theleste?',
     options: {
@@ -327,7 +327,7 @@ class SeedData {
     id: 19,
     quizId: 2,
     sequenceIndex: 1,
-    points: 1,
+    points: 2,
     question:
         'By what title was the Guild Master of the Thieves Guild once known?',
     options: {
@@ -343,7 +343,7 @@ class SeedData {
     id: 20,
     quizId: 2,
     sequenceIndex: 2,
-    points: 5,
+    points: 2,
     question:
         'What Daedric Realm is said to be so beautiful that mortals are half-blinded upon entering it?',
     options: {
@@ -359,7 +359,7 @@ class SeedData {
     id: 21,
     quizId: 2,
     sequenceIndex: 3,
-    points: 6,
+    points: 2,
     question: 'What race worships The Twelve Divines?',
     options: {
       OptionIndex.A: 'Redguard',
@@ -374,7 +374,7 @@ class SeedData {
     id: 22,
     quizId: 2,
     sequenceIndex: 4,
-    points: 8,
+    points: 3,
     question: 'What is the Argonian native language?',
     options: {
       OptionIndex.A: 'Jel',
@@ -389,7 +389,7 @@ class SeedData {
     id: 23,
     quizId: 2,
     sequenceIndex: 5,
-    points: 10,
+    points: 3,
     question: 'What realm/plane does the Daedric Prince Paryite command?',
     options: {
       OptionIndex.A: 'Deadlands',
@@ -404,7 +404,7 @@ class SeedData {
     id: 24,
     quizId: 2,
     sequenceIndex: 6,
-    points: 12,
+    points: 3,
     question: 'What province in Tamriel is known for its sweets and pastries',
     options: {
       OptionIndex.A: 'Cyrodiil',
@@ -419,7 +419,7 @@ class SeedData {
     id: 25,
     quizId: 2,
     sequenceIndex: 7,
-    points: 15,
+    points: 5,
     question:
         'Which God/Goddess is most directly responsible for the creation of Nirn?',
     options: {
@@ -435,7 +435,7 @@ class SeedData {
     id: 26,
     quizId: 2,
     sequenceIndex: 8,
-    points: 18,
+    points: 5,
     question: 'Which Daedric Prince created vampires?',
     options: {
       OptionIndex.A: 'Nocturnal',
@@ -450,7 +450,7 @@ class SeedData {
     id: 27,
     quizId: 2,
     sequenceIndex: 9,
-    points: 20,
+    points: 5,
     question:
         'Which of these lycans/were-creatures does NOT exist, nor have any (unproven) rumors of existence?',
     options: {
@@ -466,7 +466,7 @@ class SeedData {
     id: 28,
     quizId: 2,
     sequenceIndex: 10,
-    points: 22,
+    points: 6,
     question: 'Which of these words in Dunmeri is an insult?',
     options: {
       OptionIndex.A: 'Gahmerdohn',
@@ -481,7 +481,7 @@ class SeedData {
     id: 29,
     quizId: 2,
     sequenceIndex: 11,
-    points: 25,
+    points: 6,
     question: 'Which of these is an alternate name for the province of Skyrim?',
     options: {
       OptionIndex.A: 'The Fatherland',
@@ -496,7 +496,7 @@ class SeedData {
     id: 30,
     quizId: 2,
     sequenceIndex: 12,
-    points: 28,
+    points: 6,
     question:
         'During the duel at the Tor, whose name was Pelinal Whitestrake said to have praised despite this person not being born until thousands of years later?',
     options: {
@@ -512,7 +512,7 @@ class SeedData {
     id: 31,
     quizId: 2,
     sequenceIndex: 13,
-    points: 30,
+    points: 10,
     question:
         'Who was the first known human to master the Elven methods of enchanting?',
     options: {
@@ -528,7 +528,7 @@ class SeedData {
     id: 32,
     quizId: 2,
     sequenceIndex: 14,
-    points: 32,
+    points: 10,
     question:
         'What race was said to have created the Thrassian Plague that killed half of Tamriel\'s population around the 1E 2200s?',
     options: {
@@ -544,7 +544,7 @@ class SeedData {
     id: 33,
     quizId: 2,
     sequenceIndex: 15,
-    points: 35,
+    points: 12,
     question: 'What is believed to be the oldest building in Tamriel?',
     options: {
       OptionIndex.A: 'Jorrvaskr',
