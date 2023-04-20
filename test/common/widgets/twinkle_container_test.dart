@@ -501,5 +501,43 @@ void main() {
         expect(widget.alignment, equals(Alignment.topLeft));
       });
     });
+
+    group('Exceptions', () {
+      test(
+          'a value lesser than 50 for `twinkleWaitDuration` throws assertion error',
+          () {
+        expect(
+          () => TwinkleContainer(
+            twinkleWaitDuration: 32,
+            child: Container(),
+          ),
+          throwsAssertionError,
+        );
+      });
+
+      testWidgets(
+          'passing a value of 0 or less for `spawnAreaHeight` throws assertion error',
+          (tester) async {
+        expect(
+          () => TwinkleContainer(
+            spawnAreaHeight: -5,
+            child: Container(),
+          ),
+          throwsAssertionError,
+        );
+      });
+
+      testWidgets(
+          'passing a value of 0 or less for `spawnAreaWidth` throws assertion error',
+          (tester) async {
+        expect(
+          () => TwinkleContainer(
+            spawnAreaWidth: -5,
+            child: Container(),
+          ),
+          throwsAssertionError,
+        );
+      });
+    });
   });
 }

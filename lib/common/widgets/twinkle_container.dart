@@ -16,7 +16,16 @@ class TwinkleContainer extends StatefulWidget {
     this.spawnAreaWidth,
     required this.child,
     this.twinkleWaitDuration = 300,
-  }) : super(key: key);
+  })  : assert(twinkleWaitDuration > 50),
+        assert(
+          spawnAreaHeight == null || spawnAreaHeight > 0,
+          'If spawnAreaHeight is provided, it must be greater than 0.',
+        ),
+        assert(
+          spawnAreaWidth == null || spawnAreaWidth > 0,
+          'If spawnAreaWidth is provided, it must be greater than 0.',
+        ),
+        super(key: key);
 
   final Widget child;
 
