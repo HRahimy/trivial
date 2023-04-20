@@ -384,5 +384,122 @@ void main() {
         },
       );
     });
+
+    group('[spawnAreaPadding] param', () {
+      testWidgets('when passed in, correct padding is added around spawn area',
+          (tester) async {
+        const testPadding = EdgeInsets.all(32);
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: TwinkleContainer(
+                spawnAreaPadding: testPadding,
+                child: Container(),
+              ),
+            ),
+          ),
+        );
+
+        final finder = find.descendant(
+          of: find.byKey(CommonKeys.twinkleContainer),
+          matching: find.ancestor(
+            of: find.byKey(CommonKeys.twinkleContainerSpawnArea),
+            matching: find.byType(Padding),
+          ),
+        );
+
+        expect(finder, findsOneWidget);
+
+        final widget = tester.widget(finder) as Padding;
+
+        expect(widget.padding, equals(testPadding));
+      });
+
+      testWidgets('when not passed in, no padding is added around spawn area',
+          (tester) async {
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: TwinkleContainer(
+                child: Container(),
+              ),
+            ),
+          ),
+        );
+
+        final finder = find.descendant(
+          of: find.byKey(CommonKeys.twinkleContainer),
+          matching: find.ancestor(
+            of: find.byKey(CommonKeys.twinkleContainerSpawnArea),
+            matching: find.byType(Padding),
+          ),
+        );
+
+        expect(finder, findsOneWidget);
+
+        final widget = tester.widget(finder) as Padding;
+
+        expect(widget.padding, equals(EdgeInsets.zero));
+      });
+    });
+
+    group('[spawnAreaAlignment] param', () {
+      testWidgets('when passed in, alignment is applied to spawn area',
+          (tester) async {
+        const testAlignment = Alignment.bottomRight;
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: TwinkleContainer(
+                spawnAreaAlignment: testAlignment,
+                child: Container(),
+              ),
+            ),
+          ),
+        );
+
+        final finder = find.descendant(
+          of: find.byKey(CommonKeys.twinkleContainer),
+          matching: find.ancestor(
+            of: find.byKey(CommonKeys.twinkleContainerSpawnArea),
+            matching: find.byType(Align),
+          ),
+        );
+
+        expect(finder, findsOneWidget);
+
+        final widget = tester.widget(finder) as Align;
+
+        expect(widget.alignment, equals(testAlignment));
+      });
+
+      testWidgets(
+          'when not passed in, default (top-left) alignment is applied to spawn area',
+          (tester) async {
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: TwinkleContainer(
+                child: Container(),
+              ),
+            ),
+          ),
+        );
+
+        final finder = find.descendant(
+          of: find.byKey(CommonKeys.twinkleContainer),
+          matching: find.ancestor(
+            of: find.byKey(CommonKeys.twinkleContainerSpawnArea),
+            matching: find.byType(Align),
+          ),
+        );
+
+        expect(finder, findsOneWidget);
+
+        final widget = tester.widget(finder) as Align;
+
+        expect(widget.alignment, equals(Alignment.topLeft));
+      });
+    });
   });
 }
