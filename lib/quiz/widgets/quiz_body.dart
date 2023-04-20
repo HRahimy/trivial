@@ -13,6 +13,28 @@ class QuizBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // Reference to fix for FAB highlight color change:
+      // https://stackoverflow.com/a/54613679/5472560
+      floatingActionButton: Theme(
+        data: Theme.of(context).copyWith(highlightColor: Colors.transparent),
+        child: FloatingActionButton.extended(
+          onPressed: () {},
+          elevation: 2,
+          disabledElevation: 2,
+          focusElevation: 2,
+          highlightElevation: 2,
+          backgroundColor: Theme.of(context).cardColor,
+          label: const Text(
+            'Abort',
+            style: TextStyle(color: Colors.red),
+          ),
+          icon: const Icon(
+            Icons.close_rounded,
+            color: Colors.red,
+          ),
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
       body: Center(
         child: BlocBuilder<QuizCubit, QuizState>(
           buildWhen: (previous, current) =>

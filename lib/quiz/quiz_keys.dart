@@ -3,6 +3,22 @@ import 'package:flutter/widgets.dart';
 class QuizKeys {
   static const Key quizBody = Key('__quizBody__');
 
+  //region Abort button
+  static const Key abortButton = Key('__abortButton__');
+  static const Key abortButtonText = Key('__abortButtonText__');
+  static const Key abortButtonIcon = Key('__abortButtonIcon__');
+  static const Key abortDialog = Key('__abortDialog__');
+  static const Key abortDialogTitle = Key('__abortDialogTitle__');
+  static const Key abortDialogSubtitle = Key('__abortDialogSubtitle__');
+  static const Key abortDialogCancelButton = Key('__abortDialogCancelButton__');
+  static const Key abortDialogCancelButtonText =
+      Key('__abortDialogCancelButtonText__');
+  static const Key abortDialogAcceptButton = Key('__abortDialogAcceptButton__');
+  static const Key abortDialogAcceptButtonText =
+      Key('__abortDialogAcceptButtonText__');
+
+  //endregion
+
   //region Question panel
   static Function(String) get questionPanel =>
       (String id) => Key('__questionPanel_${id}__');
