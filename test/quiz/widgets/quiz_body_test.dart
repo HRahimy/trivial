@@ -5,6 +5,7 @@ import 'package:mocktail/mocktail.dart';
 import 'package:repositories/repositories.dart';
 import 'package:trivial/quiz/bloc/quiz_cubit.dart';
 import 'package:trivial/quiz/quiz_keys.dart';
+import 'package:trivial/quiz/widgets/abort_confirm_dialog.dart';
 import 'package:trivial/theme.dart';
 
 import '../../mocks/quiz_cubit_mock.dart';
@@ -1141,6 +1142,25 @@ void main() {
       expect(buttonFinder, findsNothing);
       expect(iconFinder, findsNothing);
       expect(textFinder, findsNothing);
+    });
+
+    testWidgets('pressing abort button opens up confirmation dialog',
+        (tester) async {
+      when(() => cubit.state).thenReturn(loadedState.copyWith(complete: true));
+
+      await tester.pumpWidget(QuizBodyFixture(quizCubit: cubit));
+
+      await tester.tap(find.byKey(QuizKeys.abortButton));
+
+      await tester.pumpAndSettle();
+
+      final finder = find.byKey(QuizKeys.abortDialog);
+
+      expect(finder, findsOneWidget);
+
+      final widget = tester.widget(finder);
+
+      expect(widget.runtimeType, equals(AbortConfirmDialog));
     });
   });
 }
