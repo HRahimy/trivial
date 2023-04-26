@@ -3,12 +3,19 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:trivial/quiz/quiz_keys.dart';
 import 'package:trivial/quiz/widgets/abort_confirm_dialog.dart';
 
+import '../../tests_navigator_observer.dart';
 import '../fixtures/abort_confirm_dialog_fixture.dart';
 
 void main() {
+  late TestsNavigatorObserver navObserver;
+
+  setUp(() {
+    navObserver = TestsNavigatorObserver();
+  });
+
   group('[AbortConfirmDialog]', () {
     testWidgets('renders expected components', (tester) async {
-      await tester.pumpWidget(const AbortConfirmDialogFixture());
+      await tester.pumpWidget(AbortConfirmDialogFixture());
 
       final widgetFinder = find.byType(AbortConfirmDialog);
       final dialogFinder = find.descendant(
@@ -67,7 +74,7 @@ void main() {
     });
 
     testWidgets('verify text widgets are correct', (tester) async {
-      await tester.pumpWidget(const AbortConfirmDialogFixture());
+      await tester.pumpWidget(AbortConfirmDialogFixture());
 
       final titleWidget =
           tester.widget(find.byKey(QuizKeys.abortDialogTitle)) as Text;
@@ -84,6 +91,18 @@ void main() {
       final acceptButtonText = tester
           .widget(find.byKey(QuizKeys.abortDialogAcceptButtonText)) as Text;
       expect(acceptButtonText.data, equals('Yep'));
+    });
+
+    testWidgets('pressing cancel button triggers navigator pop',
+        (tester) async {
+      await tester.pumpWidget(AbortConfirmDialogFixture(
+        navigatorObserver: navObserver,
+      ));
+
+      await tester.tap(find.byKey(QuizKeys.abortDialogCancelButton));
+      await tester.pumpAndSettle();
+
+      expect(navObserver.poppedCount, equals(1));
     });
   });
 }
