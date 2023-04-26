@@ -1162,5 +1162,23 @@ void main() {
 
       expect(widget.runtimeType, equals(AbortConfirmDialog));
     });
+
+    testWidgets('tapping outside the alert dialog closes it', (tester) async {
+      when(() => cubit.state).thenReturn(loadedState.copyWith(complete: true));
+
+      await tester.pumpWidget(QuizBodyFixture(quizCubit: cubit));
+
+      await tester.tap(find.byKey(QuizKeys.abortButton));
+
+      await tester.pumpAndSettle();
+
+      final finder = find.byKey(QuizKeys.abortDialog);
+
+      expect(finder, findsOneWidget);
+
+      await tester.tapAt(const Offset(1, 1));
+
+      expect(finder, findsNothing);
+    });
   });
 }
