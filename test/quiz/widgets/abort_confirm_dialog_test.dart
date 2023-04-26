@@ -65,5 +65,25 @@ void main() {
       expect(acceptButtonWidget.runtimeType, equals(TextButton));
       expect(acceptButtonTextWidget.runtimeType, equals(TextButton));
     });
+
+    testWidgets('verify text widgets are correct', (tester) async {
+      await tester.pumpWidget(const AbortConfirmDialogFixture());
+
+      final titleWidget =
+          tester.widget(find.byKey(QuizKeys.abortDialogTitle)) as Text;
+      expect(titleWidget.data, equals('Are you sure?'));
+
+      final subtitleWidget =
+          tester.widget(find.byKey(QuizKeys.abortDialogSubtitle)) as Text;
+      expect(subtitleWidget.data, equals('You will lose all progress'));
+
+      final cancelButtonText = tester
+          .widget(find.byKey(QuizKeys.abortDialogCancelButtonText)) as Text;
+      expect(cancelButtonText.data, equals('Cancel'));
+
+      final acceptButtonText = tester
+          .widget(find.byKey(QuizKeys.abortDialogAcceptButtonText)) as Text;
+      expect(acceptButtonText.data, equals('Yep'));
+    });
   });
 }
