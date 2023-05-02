@@ -104,5 +104,17 @@ void main() {
 
       expect(navObserver.poppedCount, equals(1));
     });
+
+    testWidgets('pressing accept button triggers two navigation pops',
+        (tester) async {
+      await tester.pumpWidget(AbortConfirmDialogFixture(
+        navigatorObserver: navObserver,
+      ));
+
+      await tester.tap(find.byKey(QuizKeys.abortDialogAcceptButton));
+      await tester.pumpAndSettle();
+
+      expect(navObserver.poppedCount, equals(2));
+    });
   });
 }
