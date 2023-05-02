@@ -5,6 +5,7 @@ import 'package:repositories/repositories.dart';
 import 'package:trivial/common/widgets/twinkle_container.dart';
 import 'package:trivial/quiz/bloc/quiz_cubit.dart';
 import 'package:trivial/quiz/quiz_keys.dart';
+import 'package:trivial/quiz/widgets/abort_confirm_dialog.dart';
 import 'package:trivial/theme.dart';
 
 class QuizBody extends StatelessWidget {
@@ -12,52 +13,70 @@ class QuizBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      // Reference to fix for FAB highlight color change:
-      // https://stackoverflow.com/a/54613679/5472560
-      floatingActionButton: Theme(
-        data: Theme.of(context).copyWith(highlightColor: Colors.transparent),
-        child: FloatingActionButton.extended(
-          onPressed: () {},
-          elevation: 2,
-          disabledElevation: 2,
-          focusElevation: 2,
-          highlightElevation: 2,
-          backgroundColor: Theme.of(context).cardColor,
-          label: const Text(
-            'Abort',
-            style: TextStyle(color: Colors.red),
-          ),
-          icon: const Icon(
-            Icons.close_rounded,
-            color: Colors.red,
-          ),
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
-      body: Center(
-        child: BlocBuilder<QuizCubit, QuizState>(
-          buildWhen: (previous, current) =>
-              previous.status != current.status ||
-              previous.complete != current.complete,
-          builder: (context, state) {
-            if (state.status == FormzSubmissionStatus.inProgress ||
-                state.status == FormzSubmissionStatus.initial) {
-              return const CircularProgressIndicator();
-            } else if (state.status == FormzSubmissionStatus.failure) {
-              return Text(state.error);
-            } else {
-              return state.complete
-                  ? const _EndLayout(
-                      key: QuizKeys.quizEndBody,
-                    )
-                  : const _Layout(
-                      key: QuizKeys.quizBody,
-                    );
-            }
-          },
-        ),
-      ),
+    return BlocBuilder<QuizCubit, QuizState>(
+      buildWhen: (previous, current) =>
+          previous.status != current.status ||
+          previous.complete != current.complete,
+      builder: (context, state) {
+        late Widget body;
+        late Widget? actionButton;
+
+        if (state.status == FormzSubmissionStatus.inProgress ||
+            state.status == FormzSubmissionStatus.initial) {
+          body = const CircularProgressIndicator();
+        } else if (state.status == FormzSubmissionStatus.failure) {
+          body = Text(state.error);
+        } else {
+          body = state.complete
+              ? const _EndLayout(
+                  key: QuizKeys.quizEndBody,
+                )
+              : const _Layout(
+                  key: QuizKeys.quizBody,
+                );
+        }
+
+        actionButton = state.complete
+            ? null
+            : Theme(
+                data: Theme.of(context)
+                    .copyWith(highlightColor: Colors.transparent),
+                child: FloatingActionButton.extended(
+                  key: QuizKeys.abortButton,
+                  onPressed: () => showDialog(
+                    context: context,
+                    barrierDismissible: true,
+                    builder: (context) => const AbortConfirmDialog(
+                      key: QuizKeys.abortDialog,
+                    ),
+                  ),
+                  elevation: 2,
+                  disabledElevation: 2,
+                  focusElevation: 2,
+                  highlightElevation: 2,
+                  backgroundColor: Theme.of(context).cardColor,
+                  label: const Text(
+                    'Abort',
+                    key: QuizKeys.abortButtonText,
+                    style: TextStyle(color: Colors.red),
+                  ),
+                  icon: const Icon(
+                    Icons.close_rounded,
+                    color: Colors.red,
+                    key: QuizKeys.abortButtonIcon,
+                  ),
+                ),
+              );
+
+        return Scaffold(
+          // Reference to fix for FAB highlight color change:
+          // https://stackoverflow.com/a/54613679/5472560
+          floatingActionButton: actionButton,
+          floatingActionButtonLocation:
+              state.complete ? null : FloatingActionButtonLocation.endTop,
+          body: body,
+        );
+      },
     );
   }
 }

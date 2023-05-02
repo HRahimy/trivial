@@ -70,7 +70,7 @@ void main() {
       expect(cancelButtonWidget.runtimeType, equals(TextButton));
       expect(cancelButtonTextWidget.runtimeType, equals(Text));
       expect(acceptButtonWidget.runtimeType, equals(TextButton));
-      expect(acceptButtonTextWidget.runtimeType, equals(TextButton));
+      expect(acceptButtonTextWidget.runtimeType, equals(Text));
     });
 
     testWidgets('verify text widgets are correct', (tester) async {
@@ -103,18 +103,6 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(navObserver.poppedCount, equals(1));
-    });
-
-    testWidgets('pressing accept button triggers two navigation pops',
-        (tester) async {
-      await tester.pumpWidget(AbortConfirmDialogFixture(
-        navigatorObserver: navObserver,
-      ));
-
-      await tester.tap(find.byKey(QuizKeys.abortDialogAcceptButton));
-      await tester.pumpAndSettle();
-
-      expect(navObserver.poppedCount, equals(2));
     });
   });
 }

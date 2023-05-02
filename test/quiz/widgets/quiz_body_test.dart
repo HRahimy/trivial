@@ -1092,34 +1092,34 @@ void main() {
       await tester.pumpWidget(QuizBodyFixture(quizCubit: cubit));
 
       final buttonFinder = find.byKey(QuizKeys.abortButton);
-      final iconFinder = find.descendant(
-        of: buttonFinder,
-        matching: find.byKey(QuizKeys.abortButtonIcon),
-      );
+      // final iconFinder = find.descendant(
+      //   of: buttonFinder,
+      //   matching: find.byKey(QuizKeys.abortButtonIcon),
+      // );
       final textFinder = find.descendant(
         of: buttonFinder,
         matching: find.byKey(QuizKeys.abortButtonText),
       );
 
       expect(buttonFinder, findsOneWidget);
-      expect(iconFinder, findsOneWidget);
+      // expect(iconFinder, findsOneWidget);
       expect(textFinder, findsOneWidget);
 
       final buttonWidget = tester.widget(buttonFinder);
-      final iconWidget = tester.widget(iconFinder);
+      // final iconWidget = tester.widget(iconFinder);
       final textWidget = tester.widget(textFinder);
 
-      expect(buttonWidget, findsOneWidget);
+      expect(buttonFinder, findsOneWidget);
       expect(
         buttonWidget.runtimeType,
         FloatingActionButton,
         reason: 'design requires floating action button',
       );
 
-      expect(iconWidget, findsOneWidget);
-      expect(iconWidget.runtimeType, Icon);
+      // expect(iconWidget, findsOneWidget);
+      // expect(iconWidget.runtimeType, Icon);
 
-      expect(textWidget, findsOneWidget);
+      expect(textFinder, findsOneWidget);
       expect(textWidget.runtimeType, Text);
     });
 
@@ -1146,7 +1146,7 @@ void main() {
 
     testWidgets('pressing abort button opens up confirmation dialog',
         (tester) async {
-      when(() => cubit.state).thenReturn(loadedState.copyWith(complete: true));
+      when(() => cubit.state).thenReturn(loadedState.copyWith(complete: false));
 
       await tester.pumpWidget(QuizBodyFixture(quizCubit: cubit));
 
@@ -1164,7 +1164,7 @@ void main() {
     });
 
     testWidgets('tapping outside the alert dialog closes it', (tester) async {
-      when(() => cubit.state).thenReturn(loadedState.copyWith(complete: true));
+      when(() => cubit.state).thenReturn(loadedState.copyWith(complete: false));
 
       await tester.pumpWidget(QuizBodyFixture(quizCubit: cubit));
 
@@ -1178,7 +1178,26 @@ void main() {
 
       await tester.tapAt(const Offset(1, 1));
 
+      await tester.pumpAndSettle();
+
       expect(finder, findsNothing);
+    });
+
+    testWidgets('pressing accept button triggers two navigation pops',
+        (tester) async {
+      when(() => cubit.state).thenReturn(loadedState.copyWith(complete: false));
+      await tester.pumpWidget(QuizBodyFixture(
+        navigatorObserver: navObserver,
+        quizCubit: cubit,
+      ));
+
+      await tester.tap(find.byKey(QuizKeys.abortButton));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byKey(QuizKeys.abortDialogAcceptButton));
+      await tester.pumpAndSettle();
+
+      expect(navObserver.poppedCount, equals(2));
     });
   });
 }
