@@ -46,8 +46,12 @@ class QuizBody extends StatelessWidget {
                   onPressed: () => showDialog(
                     context: context,
                     barrierDismissible: true,
-                    builder: (context) => const AbortConfirmDialog(
+                    builder: (context) => AbortConfirmDialog(
                       key: QuizKeys.abortDialog,
+                      onAccept: () {
+                        Navigator.pop(context);
+                        Navigator.pop(context);
+                      },
                     ),
                   ),
                   elevation: 2,

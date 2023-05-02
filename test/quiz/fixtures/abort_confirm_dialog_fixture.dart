@@ -7,17 +7,21 @@ class AbortConfirmDialogFixture extends StatelessWidget {
   AbortConfirmDialogFixture({
     Key? key,
     NavigatorObserver? navigatorObserver,
+    this.onAccept,
   })  : _navigatorObserver = navigatorObserver ?? TestsNavigatorObserver(),
         super(key: key);
 
   final NavigatorObserver _navigatorObserver;
+  final Function()? onAccept;
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       navigatorObservers: [_navigatorObserver],
-      home: const Scaffold(
-        body: AbortConfirmDialog(),
+      home: Scaffold(
+        body: AbortConfirmDialog(
+          onAccept: onAccept,
+        ),
       ),
     );
   }

@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:trivial/quiz/quiz_keys.dart';
 
 class AbortConfirmDialog extends StatelessWidget {
-  const AbortConfirmDialog({Key? key}) : super(key: key);
+  const AbortConfirmDialog({
+    Key? key,
+    this.onAccept,
+  }) : super(key: key);
+  final Function()? onAccept;
 
   @override
   Widget build(BuildContext context) {
@@ -26,10 +30,7 @@ class AbortConfirmDialog extends StatelessWidget {
         ),
         TextButton(
           key: QuizKeys.abortDialogAcceptButton,
-          onPressed: () {
-            Navigator.pop(context);
-            Navigator.pop(context);
-          },
+          onPressed: onAccept,
           child: const Text(
             'Yep',
             key: QuizKeys.abortDialogAcceptButtonText,

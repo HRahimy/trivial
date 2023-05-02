@@ -104,5 +104,20 @@ void main() {
 
       expect(navObserver.poppedCount, equals(1));
     });
+
+    testWidgets('pressing accept button triggers `onAccept` callback',
+        (tester) async {
+      bool triggered = false;
+      onAccept() => triggered = true;
+
+      await tester.pumpWidget(AbortConfirmDialogFixture(
+        onAccept: onAccept,
+      ));
+
+      await tester.tap(find.byKey(QuizKeys.abortDialogAcceptButton));
+      await tester.pumpAndSettle();
+
+      expect(triggered, isTrue, reason: 'onAccept MUST be wired to trigger on button press');
+    });
   });
 }
