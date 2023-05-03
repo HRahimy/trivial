@@ -20,7 +20,7 @@ void main() {
   const QuizState successLoadedSeedState = QuizState(
     quiz: SeedData.wowQuiz,
     quizQuestions: SeedData.wowQuestions,
-    status: FormzSubmissionStatus.success,
+    loadingStatus: FormzSubmissionStatus.success,
     questionIndex: 1,
     error: '',
   );
@@ -42,7 +42,7 @@ void main() {
   );
 
   QuizState failLoadedSeedState = QuizState(
-    status: FormzSubmissionStatus.failure,
+    loadingStatus: FormzSubmissionStatus.failure,
     error: getQuizFailedException.toString(),
   );
 
@@ -89,9 +89,9 @@ void main() {
           contextCubit.loadQuiz();
         },
         expect: () => <QuizState>[
-          const QuizState(status: FormzSubmissionStatus.inProgress),
+          const QuizState(loadingStatus: FormzSubmissionStatus.inProgress),
           const QuizState(
-            status: FormzSubmissionStatus.success,
+            loadingStatus: FormzSubmissionStatus.success,
             quiz: SeedData.wowQuiz,
             quizQuestions: SeedData.wowQuestions,
             questionIndex: 1,
@@ -108,9 +108,9 @@ void main() {
           contextCubit.loadQuiz();
         },
         expect: () => <QuizState>[
-          const QuizState(status: FormzSubmissionStatus.inProgress),
+          const QuizState(loadingStatus: FormzSubmissionStatus.inProgress),
           QuizState(
-            status: FormzSubmissionStatus.failure,
+            loadingStatus: FormzSubmissionStatus.failure,
             error: getQuizFailedException.toString(),
           ),
         ],
@@ -126,9 +126,9 @@ void main() {
           contextCubit.loadQuiz();
         },
         expect: () => <QuizState>[
-          const QuizState(status: FormzSubmissionStatus.inProgress),
+          const QuizState(loadingStatus: FormzSubmissionStatus.inProgress),
           QuizState(
-            status: FormzSubmissionStatus.failure,
+            loadingStatus: FormzSubmissionStatus.failure,
             error: getQuestionsFailedException.toString(),
           ),
         ],
@@ -176,7 +176,8 @@ void main() {
     group('[continueQuestion()]', () {
       blocTest(
         'given quiz is complete, does nothing',
-        seed: () => successLoadedSeedState.copyWith(complete: true),
+        seed: () =>
+            successLoadedSeedState.copyWith(status: QuizStatus.complete),
         build: () => cubit,
         act: (contextCubit) => contextCubit.continueQuiz(),
         expect: () => <QuizState>[],
@@ -285,7 +286,7 @@ void main() {
         expect: () => <QuizState>[
           successLoadedSeedState.copyWith(
             questionIndex: lastQuestionIndex,
-            complete: true,
+            status: QuizStatus.complete,
           ),
         ],
       );
@@ -299,7 +300,7 @@ void main() {
           lastQuestionWithCorrectChoiceSelected.copyWith(
             score: lastQuestionWithCorrectChoiceSelected.score +
                 lastQuestionWithCorrectChoiceSelected.currentQuestion.points,
-            complete: true,
+            status: QuizStatus.complete,
             choiceSelected: false,
           ),
         ],
@@ -318,7 +319,7 @@ void main() {
           successLoadedSeedState.copyWith(
             questionIndex: lastQuestionIndex,
             selectedOption: OptionIndex.C,
-            complete: true,
+            status: QuizStatus.complete,
           ),
         ],
       );

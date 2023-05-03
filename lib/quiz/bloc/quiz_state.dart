@@ -1,5 +1,7 @@
 part of 'quiz_cubit.dart';
 
+enum QuizStatus { initial, started, complete }
+
 class QuizState extends Equatable {
   const QuizState({
     this.quiz = Quiz.empty,
@@ -10,8 +12,8 @@ class QuizState extends Equatable {
     this.choiceSelected = false,
     this.questionDepleted = false,
     OptionIndex? selectedOption = OptionIndex.A,
-    this.complete = false,
-    this.status = FormzSubmissionStatus.initial,
+    this.status = QuizStatus.initial,
+    this.loadingStatus = FormzSubmissionStatus.initial,
     this.error = '',
   }) : _selectedOption = selectedOption ?? OptionIndex.A;
 
@@ -23,8 +25,8 @@ class QuizState extends Equatable {
   final bool choiceSelected;
   final bool questionDepleted;
   final OptionIndex _selectedOption;
-  final bool complete;
-  final FormzSubmissionStatus status;
+  final QuizStatus status;
+  final FormzSubmissionStatus loadingStatus;
   final String error;
 
   QuizQuestion get currentQuestion {
@@ -45,8 +47,8 @@ class QuizState extends Equatable {
     bool? choiceSelected,
     bool? questionDepleted,
     OptionIndex? selectedOption,
-    bool? complete,
-    FormzSubmissionStatus? status,
+    QuizStatus? status,
+    FormzSubmissionStatus? loadingStatus,
     String? error,
   }) {
     return QuizState(
@@ -58,8 +60,8 @@ class QuizState extends Equatable {
       choiceSelected: choiceSelected ?? this.choiceSelected,
       questionDepleted: questionDepleted ?? this.questionDepleted,
       selectedOption: selectedOption ?? _selectedOption,
-      complete: complete ?? this.complete,
       status: status ?? this.status,
+      loadingStatus: loadingStatus ?? this.loadingStatus,
       error: error ?? this.error,
     );
   }
@@ -74,8 +76,8 @@ class QuizState extends Equatable {
         choiceSelected,
         questionDepleted,
         _selectedOption,
-        complete,
         status,
+        loadingStatus,
         error,
       ];
 }

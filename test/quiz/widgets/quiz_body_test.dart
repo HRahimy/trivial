@@ -19,7 +19,7 @@ void main() {
     quiz: SeedData.wowQuiz,
     quizQuestions: SeedData.wowQuestions,
     questionIndex: 1,
-    status: FormzSubmissionStatus.success,
+    loadingStatus: FormzSubmissionStatus.success,
   );
   setUp(() {
     cubit = QuizCubitMock();
@@ -955,10 +955,10 @@ void main() {
   });
 
   group('[EndBody]', () {
-    testWidgets('given quiz is incomplete, body does not exist',
+    testWidgets('given quiz is incomplete, EndBody does not exist',
         (tester) async {
       when(() => cubit.state).thenReturn(loadedState.copyWith(
-        complete: false,
+        status: QuizStatus.complete,
       ));
 
       await tester.pumpWidget(QuizBodyFixture(
@@ -971,7 +971,7 @@ void main() {
     testWidgets('given quiz is complete, body components are rendered',
         (tester) async {
       when(() => cubit.state).thenReturn(loadedState.copyWith(
-        complete: true,
+        status: QuizStatus.complete,
       ));
 
       await tester.pumpWidget(QuizBodyFixture(
@@ -1035,7 +1035,7 @@ void main() {
 
     testWidgets('quiz end score text is correct', (tester) async {
       when(() => cubit.state).thenReturn(loadedState.copyWith(
-        complete: true,
+        status: QuizStatus.complete,
         score: 32,
       ));
 
@@ -1052,7 +1052,7 @@ void main() {
     testWidgets('pressing "Try Again!" button triggers load event in state',
         (tester) async {
       when(() => cubit.state).thenReturn(loadedState.copyWith(
-        complete: true,
+        status: QuizStatus.complete,
         score: 32,
       ));
 
@@ -1067,7 +1067,7 @@ void main() {
     testWidgets('pressing "Goodbye!" button triggers `pop` event in navigator',
         (tester) async {
       when(() => cubit.state).thenReturn(loadedState.copyWith(
-        complete: true,
+        status: QuizStatus.complete,
         score: 32,
       ));
 
@@ -1087,7 +1087,9 @@ void main() {
     testWidgets(
         'given quiz is not complete, button and components are rendered',
         (tester) async {
-      when(() => cubit.state).thenReturn(loadedState.copyWith(complete: false));
+      when(() => cubit.state).thenReturn(loadedState.copyWith(
+        status: QuizStatus.complete,
+      ));
 
       await tester.pumpWidget(QuizBodyFixture(quizCubit: cubit));
 
@@ -1125,7 +1127,9 @@ void main() {
 
     testWidgets('given quiz is complete, button does not exist',
         (tester) async {
-      when(() => cubit.state).thenReturn(loadedState.copyWith(complete: true));
+      when(() => cubit.state).thenReturn(loadedState.copyWith(
+        status: QuizStatus.complete,
+      ));
 
       await tester.pumpWidget(QuizBodyFixture(quizCubit: cubit));
 
@@ -1146,7 +1150,9 @@ void main() {
 
     testWidgets('pressing abort button opens up confirmation dialog',
         (tester) async {
-      when(() => cubit.state).thenReturn(loadedState.copyWith(complete: false));
+      when(() => cubit.state).thenReturn(loadedState.copyWith(
+        status: QuizStatus.complete,
+      ));
 
       await tester.pumpWidget(QuizBodyFixture(quizCubit: cubit));
 
@@ -1164,7 +1170,9 @@ void main() {
     });
 
     testWidgets('tapping outside the alert dialog closes it', (tester) async {
-      when(() => cubit.state).thenReturn(loadedState.copyWith(complete: false));
+      when(() => cubit.state).thenReturn(loadedState.copyWith(
+        status: QuizStatus.complete,
+      ));
 
       await tester.pumpWidget(QuizBodyFixture(quizCubit: cubit));
 
@@ -1185,7 +1193,9 @@ void main() {
 
     testWidgets('pressing accept button triggers two navigation pops',
         (tester) async {
-      when(() => cubit.state).thenReturn(loadedState.copyWith(complete: false));
+      when(() => cubit.state).thenReturn(loadedState.copyWith(
+        status: QuizStatus.complete,
+      ));
       await tester.pumpWidget(QuizBodyFixture(
         navigatorObserver: navObserver,
         quizCubit: cubit,

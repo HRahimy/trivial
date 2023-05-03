@@ -15,19 +15,19 @@ class QuizBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<QuizCubit, QuizState>(
       buildWhen: (previous, current) =>
-          previous.status != current.status ||
-          previous.complete != current.complete,
+          previous.loadingStatus != current.loadingStatus ||
+          previous.status != current.status,
       builder: (context, state) {
         late Widget body;
         late Widget? actionButton;
 
-        if (state.status == FormzSubmissionStatus.inProgress ||
-            state.status == FormzSubmissionStatus.initial) {
+        if (state.loadingStatus == FormzSubmissionStatus.inProgress ||
+            state.loadingStatus == FormzSubmissionStatus.initial) {
           body = const CircularProgressIndicator();
-        } else if (state.status == FormzSubmissionStatus.failure) {
+        } else if (state.loadingStatus == FormzSubmissionStatus.failure) {
           body = Text(state.error);
         } else {
-          body = state.complete
+          body = state.status == QuizStatus.complete
               ? const _EndLayout(
                   key: QuizKeys.quizEndBody,
                 )
@@ -36,7 +36,7 @@ class QuizBody extends StatelessWidget {
                 );
         }
 
-        actionButton = state.complete
+        actionButton = state.status == QuizStatus.complete
             ? null
             : Theme(
                 data: Theme.of(context)
@@ -76,8 +76,9 @@ class QuizBody extends StatelessWidget {
           // Reference to fix for FAB highlight color change:
           // https://stackoverflow.com/a/54613679/5472560
           floatingActionButton: actionButton,
-          floatingActionButtonLocation:
-              state.complete ? null : FloatingActionButtonLocation.endTop,
+          floatingActionButtonLocation: state.status == QuizStatus.complete
+              ? null
+              : FloatingActionButtonLocation.endTop,
           body: body,
         );
       },

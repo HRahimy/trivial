@@ -98,11 +98,11 @@ void main() {
       );
 
       test(
-        'given [complete] param passed, returns object with updated complete',
+        'given [status] param passed, returns object with updated status',
         () {
           expect(
-            const QuizState().copyWith(complete: true),
-            const QuizState(complete: true),
+            const QuizState().copyWith(status: QuizStatus.complete),
+            const QuizState(status: QuizStatus.complete),
           );
         },
       );
@@ -112,8 +112,8 @@ void main() {
         () {
           expect(
             const QuizState()
-                .copyWith(status: FormzSubmissionStatus.inProgress),
-            const QuizState(status: FormzSubmissionStatus.inProgress),
+                .copyWith(loadingStatus: FormzSubmissionStatus.inProgress),
+            const QuizState(loadingStatus: FormzSubmissionStatus.inProgress),
           );
         },
       );

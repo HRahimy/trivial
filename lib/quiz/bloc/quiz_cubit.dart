@@ -17,11 +17,11 @@ class QuizCubit extends Cubit<QuizState> {
   final QuizRepository _repository;
 
   void loadQuiz() {
-    if (state.complete) {
+    if (state.status == QuizStatus.complete) {
       emit(const QuizState());
     }
     emit(state.copyWith(
-      status: FormzSubmissionStatus.inProgress,
+      loadingStatus: FormzSubmissionStatus.inProgress,
     ));
     try {
       final Quiz quiz = _repository.getQuiz(_quizId);
@@ -31,12 +31,12 @@ class QuizCubit extends Cubit<QuizState> {
         quiz: quiz,
         quizQuestions: questions,
         questionIndex: 1,
-        status: FormzSubmissionStatus.success,
+        loadingStatus: FormzSubmissionStatus.success,
         error: '',
       ));
     } catch (e) {
       emit(state.copyWith(
-        status: FormzSubmissionStatus.failure,
+        loadingStatus: FormzSubmissionStatus.failure,
         error: e.toString(),
       ));
     }
@@ -44,7 +44,7 @@ class QuizCubit extends Cubit<QuizState> {
 
   void selectAnswer(OptionIndex choice) {
     if (state.questionDepleted ||
-        state.status != FormzSubmissionStatus.success) {
+        state.loadingStatus != FormzSubmissionStatus.success) {
       return;
     }
 
@@ -55,7 +55,7 @@ class QuizCubit extends Cubit<QuizState> {
   }
 
   void continueQuiz() {
-    if (state.complete) {
+    if (state.status == QuizStatus.complete) {
       return;
     }
 
@@ -73,7 +73,7 @@ class QuizCubit extends Cubit<QuizState> {
     if (!state.quizQuestions
         .any((element) => element.sequenceIndex > state.questionIndex)) {
       emit(newState.copyWith(
-        complete: true,
+        status: QuizStatus.complete,
         choiceSelected: false,
         questionDepleted: false,
       ));
