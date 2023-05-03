@@ -5,11 +5,17 @@ class SeedData {
   static const Quiz wowQuiz = Quiz(
     id: 1,
     name: 'World of Warcraft',
+    description:
+        'Test your knowledge of the World of Warcraft lore. For beginners to the universe.',
+    difficulty: QuizDifficulty.normal,
   );
 
   static const Quiz elderScrollsQuiz = Quiz(
     id: 2,
     name: 'Elder Scrolls',
+    description:
+        'Test your knowledge of the Elder Scrolls lore. For beginners to the universe.',
+    difficulty: QuizDifficulty.normal,
   );
 
   static const List<Quiz> quizzes = [
