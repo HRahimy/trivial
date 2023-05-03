@@ -958,7 +958,7 @@ void main() {
     testWidgets('given quiz is incomplete, EndBody does not exist',
         (tester) async {
       when(() => cubit.state).thenReturn(loadedState.copyWith(
-        status: QuizStatus.complete,
+        status: QuizStatus.started,
       ));
 
       await tester.pumpWidget(QuizBodyFixture(
@@ -1088,7 +1088,7 @@ void main() {
         'given quiz is not complete, button and components are rendered',
         (tester) async {
       when(() => cubit.state).thenReturn(loadedState.copyWith(
-        status: QuizStatus.complete,
+        status: QuizStatus.started,
       ));
 
       await tester.pumpWidget(QuizBodyFixture(quizCubit: cubit));
@@ -1151,7 +1151,7 @@ void main() {
     testWidgets('pressing abort button opens up confirmation dialog',
         (tester) async {
       when(() => cubit.state).thenReturn(loadedState.copyWith(
-        status: QuizStatus.complete,
+        status: QuizStatus.started,
       ));
 
       await tester.pumpWidget(QuizBodyFixture(quizCubit: cubit));
@@ -1171,7 +1171,7 @@ void main() {
 
     testWidgets('tapping outside the alert dialog closes it', (tester) async {
       when(() => cubit.state).thenReturn(loadedState.copyWith(
-        status: QuizStatus.complete,
+        status: QuizStatus.started,
       ));
 
       await tester.pumpWidget(QuizBodyFixture(quizCubit: cubit));
@@ -1194,7 +1194,7 @@ void main() {
     testWidgets('pressing accept button triggers two navigation pops',
         (tester) async {
       when(() => cubit.state).thenReturn(loadedState.copyWith(
-        status: QuizStatus.complete,
+        status: QuizStatus.started,
       ));
       await tester.pumpWidget(QuizBodyFixture(
         navigatorObserver: navObserver,
