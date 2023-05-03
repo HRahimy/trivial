@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:formz/formz.dart';
@@ -20,6 +22,7 @@ void main() {
   const QuizState successLoadedSeedState = QuizState(
     quiz: SeedData.wowQuiz,
     quizQuestions: SeedData.wowQuestions,
+    status: QuizStatus.initial,
     loadingStatus: FormzSubmissionStatus.success,
     questionIndex: 1,
     error: '',
@@ -80,7 +83,7 @@ void main() {
       );
 
       blocTest(
-        'given successful load from repo, loads correct order of statuses',
+        'given successful load from repo, loads correct order of `loadStatus`',
         build: () => cubit,
         act: (contextCubit) {
           when(() => repository.getQuiz(quizId)).thenReturn(SeedData.wowQuiz);
@@ -100,7 +103,7 @@ void main() {
       );
 
       blocTest(
-        'given `repo.getQuiz()` failure, loads correct order of statuses',
+        'given `repo.getQuiz()` failure, loads correct order of `loadStatus`',
         build: () => cubit,
         act: (contextCubit) {
           when(() => repository.getQuiz(quizId))
@@ -117,7 +120,7 @@ void main() {
       );
 
       blocTest(
-        'given `repo.getQuestions()` failure, loads correct order of statuses',
+        'given `repo.getQuestions()` failure, loads correct order of `loadStatus`',
         build: () => cubit,
         act: (contextCubit) {
           when(() => repository.getQuiz(quizId)).thenReturn(SeedData.wowQuiz);
@@ -131,6 +134,88 @@ void main() {
             loadingStatus: FormzSubmissionStatus.failure,
             error: getQuestionsFailedException.toString(),
           ),
+        ],
+      );
+
+      blocTest(
+        'given current `status` is complete, emits new state with initial `status`',
+        build: () => cubit,
+        seed: () => lastQuestionWithCorrectChoiceSelected.copyWith(
+          status: QuizStatus.complete,
+        ),
+        act: (contextCubit) {
+          when(() => repository.getQuiz(quizId)).thenReturn(SeedData.wowQuiz);
+          when(() => repository.getQuestions(quizId))
+              .thenReturn(SeedData.wowQuestions);
+          contextCubit.loadQuiz();
+        },
+        expect: () => <QuizState>[
+          const QuizState(status: QuizStatus.initial),
+          const QuizState(
+            loadingStatus: FormzSubmissionStatus.inProgress,
+            status: QuizStatus.initial,
+          ),
+          const QuizState(
+            loadingStatus: FormzSubmissionStatus.success,
+            status: QuizStatus.initial,
+            quiz: SeedData.wowQuiz,
+            quizQuestions: SeedData.wowQuestions,
+            questionIndex: 1,
+          ),
+        ],
+      );
+
+      blocTest(
+        'given current `status` is started, does nothing',
+        build: () => cubit,
+        seed: () => successLoadedSeedState.copyWith(status: QuizStatus.started),
+        act: (contextCubit) => contextCubit.loadQuiz(),
+        verify: (contextCubit) {
+          verifyNever(() => repository.getQuiz(quizId));
+          verifyNever(() => repository.getQuestions(quizId));
+        },
+        expect: () => <QuizState>[],
+      );
+    });
+
+    group('[startQuiz()]', () {
+      blocTest(
+        'given `status` is not initial, does nothing',
+        build: () => cubit,
+        seed: () {
+          final possibleValues = QuizStatus.values
+              .where((element) => element != QuizStatus.initial)
+              .toList();
+          final randomValue =
+              possibleValues[Random().nextInt(possibleValues.length)];
+          return QuizState(status: randomValue);
+        },
+        act: (contextCubit) => contextCubit.startQuiz(),
+        expect: () => <QuizState>[],
+      );
+
+      blocTest(
+        'given `loadStatus` is not success, does nothing',
+        build: () => cubit,
+        seed: () {
+          final possibleValues = FormzSubmissionStatus.values
+              .where((element) => element != FormzSubmissionStatus.success)
+              .toList();
+          final randomValue =
+              possibleValues[Random().nextInt(possibleValues.length)];
+          return QuizState(loadingStatus: randomValue);
+        },
+        act: (contextCubit) => contextCubit.startQuiz(),
+        expect: () => <QuizState>[],
+      );
+
+      blocTest(
+        'given `loadStatus` is success and `status` is initial, emits new state with started `status`',
+        build: () => cubit,
+        seed: () => successLoadedSeedState,
+        act: (contextCubit) => contextCubit.startQuiz(),
+        expect: () => <QuizState>[
+          successLoadedSeedState.copyWith(status: QuizStatus.started),
         ],
       );
     });

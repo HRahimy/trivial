@@ -42,6 +42,10 @@ class QuizCubit extends Cubit<QuizState> {
     }
   }
 
+  void startQuiz() {
+    throw UnimplementedError();
+  }
+
   void selectAnswer(OptionIndex choice) {
     if (state.questionDepleted ||
         state.loadingStatus != FormzSubmissionStatus.success) {
