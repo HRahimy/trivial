@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:repositories/repositories.dart';
 import 'package:trivial/named_routes.dart';
 import 'package:trivial/quiz/bloc/quiz_cubit.dart';
-import 'package:trivial/quiz/widgets/quiz_body.dart';
+import 'package:trivial/quiz/widgets/quiz_screen.dart';
 
 import '../../mocks/quiz_cubit_mock.dart';
 import '../../mocks/quiz_repository_mock.dart';

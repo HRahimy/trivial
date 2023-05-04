@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 
 class QuizKeys {
-  static const Key quizBody = Key('__quizBody__');
+  static const Key quizRunningBody = Key('__quizRunningBody__');
 
   //region Quiz start menu
   static const Key quizStartMenu = Key('__quizStartMenu__');

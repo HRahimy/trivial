@@ -6,7 +6,7 @@ import 'package:repositories/repositories.dart';
 import 'package:trivial/quiz/bloc/quiz_cubit.dart';
 import 'package:trivial/quiz/quiz_keys.dart';
 import 'package:trivial/quiz/widgets/abort_confirm_dialog.dart';
-import 'package:trivial/quiz/widgets/quiz_body.dart';
+import 'package:trivial/quiz/widgets/quiz_running_body.dart';
 import 'package:trivial/theme.dart';
 
 import '../../mocks/quiz_cubit_mock.dart';
@@ -37,11 +37,11 @@ void main() {
       for (var status in possibleStatuses) {
         when(() => cubit.state).thenReturn(QuizState(status: status));
 
-        tester.pumpWidget(QuizBodyFixture(
+        await tester.pumpWidget(QuizBodyFixture(
           quizCubit: cubit,
         ));
 
-        expect(find.byKey(QuizKeys.quizBody), findsNothing);
+        expect(find.byKey(QuizKeys.quizRunningBody), findsNothing);
       }
     });
     testWidgets('given `state.status` is started, quiz body exists',
@@ -52,13 +52,13 @@ void main() {
         quizCubit: cubit,
       ));
 
-      final bodyFinder = find.byKey(QuizKeys.quizBody);
+      final bodyFinder = find.byKey(QuizKeys.quizRunningBody);
       expect(bodyFinder, findsOneWidget);
       expect(find.byKey(QuizKeys.quizEndBody), findsNothing);
       expect(find.byKey(QuizKeys.quizStartMenu), findsNothing);
 
       final widget = tester.widget(bodyFinder);
-      expect(widget.runtimeType, equals(QuizBody));
+      expect(widget.runtimeType, equals(QuizRunningBody));
     });
 
     group('[QuestionPanel]', () {
@@ -71,7 +71,7 @@ void main() {
 
         //region question section
         final sectionFinder = find.descendant(
-          of: find.byKey(QuizKeys.quizBody),
+          of: find.byKey(QuizKeys.quizRunningBody),
           matching: find.byKey(
               QuizKeys.questionPanel('${loadedState.currentQuestion.id}')),
         );
@@ -218,7 +218,7 @@ void main() {
           quizCubit: cubit,
         ));
         final finder = find.descendant(
-          of: find.byKey(QuizKeys.quizBody),
+          of: find.byKey(QuizKeys.quizRunningBody),
           matching: find.byKey(QuizKeys.scorePanel),
         );
         expect(finder, findsOneWidget);

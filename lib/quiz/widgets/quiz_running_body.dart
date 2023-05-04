@@ -8,80 +8,48 @@ import 'package:trivial/quiz/quiz_keys.dart';
 import 'package:trivial/quiz/widgets/abort_confirm_dialog.dart';
 import 'package:trivial/theme.dart';
 
-class QuizBody extends StatelessWidget {
-  const QuizBody({Key? key}) : super(key: key);
+class QuizRunningBody extends StatelessWidget {
+  const QuizRunningBody({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<QuizCubit, QuizState>(
-      buildWhen: (previous, current) =>
-          previous.loadingStatus != current.loadingStatus ||
-          previous.status != current.status,
-      builder: (context, state) {
-        late Widget body;
-        late Widget? actionButton;
-
-        if (state.loadingStatus == FormzSubmissionStatus.inProgress ||
-            state.loadingStatus == FormzSubmissionStatus.initial) {
-          body = const CircularProgressIndicator();
-        } else if (state.loadingStatus == FormzSubmissionStatus.failure) {
-          body = Text(state.error);
-        } else {
-          body = state.status == QuizStatus.complete
-              ? const _EndLayout(
-                  key: QuizKeys.quizEndBody,
-                )
-              : const _Layout(
-                  key: QuizKeys.quizBody,
-                );
-        }
-
-        actionButton = state.status == QuizStatus.complete
-            ? null
-            : Theme(
-                data: Theme.of(context)
-                    .copyWith(highlightColor: Colors.transparent),
-                child: FloatingActionButton.extended(
-                  key: QuizKeys.abortButton,
-                  onPressed: () => showDialog(
-                    context: context,
-                    barrierDismissible: true,
-                    builder: (context) => AbortConfirmDialog(
-                      key: QuizKeys.abortDialog,
-                      onAccept: () {
-                        Navigator.pop(context);
-                        Navigator.pop(context);
-                      },
-                    ),
-                  ),
-                  elevation: 2,
-                  disabledElevation: 2,
-                  focusElevation: 2,
-                  highlightElevation: 2,
-                  backgroundColor: Theme.of(context).cardColor,
-                  label: const Text(
-                    'Abort',
-                    key: QuizKeys.abortButtonText,
-                    style: TextStyle(color: Colors.red),
-                  ),
-                  icon: const Icon(
-                    Icons.close_rounded,
-                    color: Colors.red,
-                    key: QuizKeys.abortButtonIcon,
-                  ),
-                ),
-              );
-
-        return Scaffold(
-          // Reference to fix for FAB highlight color change:
-          // https://stackoverflow.com/a/54613679/5472560
-          floatingActionButton: actionButton,
-          floatingActionButtonLocation: state.status == QuizStatus.complete
-              ? null
-              : FloatingActionButtonLocation.endTop,
-          body: body,
-        );
-      },
+    return Scaffold(
+      // Reference to fix for FAB highlight color change:
+      // https://stackoverflow.com/a/54613679/5472560
+      floatingActionButton: Theme(
+        data: Theme.of(context).copyWith(highlightColor: Colors.transparent),
+        child: FloatingActionButton.extended(
+          key: QuizKeys.abortButton,
+          onPressed: () => showDialog(
+            context: context,
+            barrierDismissible: true,
+            builder: (context) => AbortConfirmDialog(
+              key: QuizKeys.abortDialog,
+              onAccept: () {
+                Navigator.pop(context);
+                Navigator.pop(context);
+              },
+            ),
+          ),
+          elevation: 2,
+          disabledElevation: 2,
+          focusElevation: 2,
+          highlightElevation: 2,
+          backgroundColor: Theme.of(context).cardColor,
+          label: const Text(
+            'Abort',
+            key: QuizKeys.abortButtonText,
+            style: TextStyle(color: Colors.red),
+          ),
+          icon: const Icon(
+            Icons.close_rounded,
+            color: Colors.red,
+            key: QuizKeys.abortButtonIcon,
+          ),
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
+      body: const _Layout(),
     );
   }
 }
@@ -483,92 +451,6 @@ class _ContinueButton extends StatelessWidget {
           ],
         );
       },
-    );
-  }
-}
-
-class _EndLayout extends StatelessWidget {
-  const _EndLayout({Key? key}) : super(key: key);
-
-  Column _flavorTextSection(BuildContext context) {
-    return Column(
-      key: QuizKeys.quizEndFlavorTextSection,
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        const Text(
-          'Congratulations!',
-          key: QuizKeys.quizEndFlavorText,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.w400,
-          ),
-        ),
-        BlocBuilder<QuizCubit, QuizState>(
-          builder: (context, state) {
-            return Text(
-              'You reached level ${state.score}',
-              key: QuizKeys.quizEndScoreText,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: 16,
-              ),
-            );
-          },
-        ),
-      ],
-    );
-  }
-
-  Column _controls(BuildContext context) {
-    return Column(
-      key: QuizKeys.quizEndControlsSection,
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        ElevatedButton(
-          key: QuizKeys.tryAgainButton,
-          onPressed: () => context.read<QuizCubit>().restartQuiz(),
-          child: const Text(
-            'Try Again!',
-            key: QuizKeys.tryAgainButtonText,
-          ),
-        ),
-        const Padding(
-          padding: EdgeInsets.symmetric(vertical: 8),
-        ),
-        ElevatedButton(
-          key: QuizKeys.goodbyeButton,
-          onPressed: () => Navigator.pop(context),
-          child: const Text(
-            'Goodbye!',
-            key: QuizKeys.goodbyeButtonText,
-          ),
-        ),
-      ],
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return TwinkleContainer(
-      key: QuizKeys.twinkleContainer,
-      spawnAreaHeight: MediaQuery.of(context).size.height / 3,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 32),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            _flavorTextSection(context),
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 16),
-            ),
-            _controls(context),
-          ],
-        ),
-      ),
     );
   }
 }
