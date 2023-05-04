@@ -162,5 +162,32 @@ void main() {
       expect((backTextWidget as Text).data, equals('Back'));
       //endregion
     });
+
+    testWidgets('pressing back button triggers pop event in navigation',
+        (tester) async {
+      when(() => cubit.state).thenReturn(loadedState);
+      await tester.pumpWidget(QuizBodyFixture(
+        quizCubit: cubit,
+        navigatorObserver: navObserver,
+      ));
+
+      await tester.tap(find.byKey(QuizKeys.startMenuBackButton));
+      await tester.pumpAndSettle();
+
+      expect(navObserver.poppedCount, equals(1));
+    });
+
+    testWidgets('pressing play button triggers `startQuiz()` function in cubit',
+        (tester) async {
+      when(() => cubit.state).thenReturn(loadedState);
+      await tester.pumpWidget(QuizBodyFixture(
+        quizCubit: cubit,
+      ));
+
+      await tester.tap(find.byKey(QuizKeys.startMenuPlayButton));
+      await tester.pumpAndSettle();
+
+      verify(() => cubit.startQuiz()).called(1);
+    });
   });
 }
