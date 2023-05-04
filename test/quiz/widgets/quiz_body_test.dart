@@ -6,6 +6,7 @@ import 'package:repositories/repositories.dart';
 import 'package:trivial/quiz/bloc/quiz_cubit.dart';
 import 'package:trivial/quiz/quiz_keys.dart';
 import 'package:trivial/quiz/widgets/abort_confirm_dialog.dart';
+import 'package:trivial/quiz/widgets/quiz_body.dart';
 import 'package:trivial/theme.dart';
 
 import '../../mocks/quiz_cubit_mock.dart';
@@ -19,6 +20,7 @@ void main() {
     quiz: SeedData.wowQuiz,
     quizQuestions: SeedData.wowQuestions,
     questionIndex: 1,
+    status: QuizStatus.started,
     loadingStatus: FormzSubmissionStatus.success,
   );
   setUp(() {
@@ -27,14 +29,36 @@ void main() {
   });
 
   group('[QuizBody] while running ', () {
-    testWidgets('quiz body exists', (tester) async {
+    testWidgets('given `state.status` is not started, quiz body does not exist',
+        (tester) async {
+      final possibleStatuses = QuizStatus.values
+          .where((element) => element != QuizStatus.started)
+          .toList();
+      for (var status in possibleStatuses) {
+        when(() => cubit.state).thenReturn(QuizState(status: status));
+
+        tester.pumpWidget(QuizBodyFixture(
+          quizCubit: cubit,
+        ));
+
+        expect(find.byKey(QuizKeys.quizBody), findsNothing);
+      }
+    });
+    testWidgets('given `state.status` is started, quiz body exists',
+        (tester) async {
       when(() => cubit.state).thenReturn(loadedState);
 
       await tester.pumpWidget(QuizBodyFixture(
         quizCubit: cubit,
       ));
 
-      expect(find.byKey(QuizKeys.quizBody), findsOneWidget);
+      final bodyFinder = find.byKey(QuizKeys.quizBody);
+      expect(bodyFinder, findsOneWidget);
+      expect(find.byKey(QuizKeys.quizEndBody), findsNothing);
+      expect(find.byKey(QuizKeys.quizStartMenu), findsNothing);
+
+      final widget = tester.widget(bodyFinder);
+      expect(widget.runtimeType, equals(QuizBody));
     });
 
     group('[QuestionPanel]', () {
