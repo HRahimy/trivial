@@ -19,10 +19,6 @@ class QuizCubit extends Cubit<QuizState> {
   final QuizRepository _repository;
 
   void loadQuiz() {
-    if (state.status == QuizStatus.started) return;
-    if (state.status == QuizStatus.complete) {
-      emit(const QuizState());
-    }
     emit(state.copyWith(
       loadingStatus: FormzSubmissionStatus.inProgress,
     ));
@@ -53,6 +49,14 @@ class QuizCubit extends Cubit<QuizState> {
     }
 
     emit(state.copyWith(status: QuizStatus.started));
+  }
+
+  /// Resets state back to initial and begins loading
+  void restartQuiz() {
+    if (state.status != QuizStatus.complete) return;
+
+    emit(const QuizState());
+    loadQuiz();
   }
 
   void selectAnswer(OptionIndex choice) {

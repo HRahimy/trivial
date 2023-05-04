@@ -1049,7 +1049,7 @@ void main() {
       expect((text as Text).data, equals('You reached level 32'));
     });
 
-    testWidgets('pressing "Try Again!" button triggers load event in state',
+    testWidgets('pressing "Try Again!" button triggers restart event in state',
         (tester) async {
       when(() => cubit.state).thenReturn(loadedState.copyWith(
         status: QuizStatus.complete,
@@ -1061,7 +1061,7 @@ void main() {
       ));
 
       await tester.tap(find.byKey(QuizKeys.tryAgainButton));
-      verify(() => cubit.loadQuiz()).called(1);
+      verify(() => cubit.restartQuiz()).called(1);
     });
 
     testWidgets('pressing "Goodbye!" button triggers `pop` event in navigator',

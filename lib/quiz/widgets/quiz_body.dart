@@ -529,7 +529,7 @@ class _EndLayout extends StatelessWidget {
       children: [
         ElevatedButton(
           key: QuizKeys.tryAgainButton,
-          onPressed: () => context.read<QuizCubit>().loadQuiz(),
+          onPressed: () => context.read<QuizCubit>().restartQuiz(),
           child: const Text(
             'Try Again!',
             key: QuizKeys.tryAgainButtonText,
