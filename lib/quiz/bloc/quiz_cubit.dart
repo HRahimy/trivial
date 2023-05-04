@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
@@ -17,6 +19,7 @@ class QuizCubit extends Cubit<QuizState> {
   final QuizRepository _repository;
 
   void loadQuiz() {
+    if (state.status == QuizStatus.started) return;
     if (state.status == QuizStatus.complete) {
       emit(const QuizState());
     }
@@ -43,7 +46,13 @@ class QuizCubit extends Cubit<QuizState> {
   }
 
   void startQuiz() {
-    throw UnimplementedError();
+    if (state.status == QuizStatus.started ||
+        state.status == QuizStatus.complete ||
+        state.loadingStatus != FormzSubmissionStatus.success) {
+      return;
+    }
+
+    emit(state.copyWith(status: QuizStatus.started));
   }
 
   void selectAnswer(OptionIndex choice) {
