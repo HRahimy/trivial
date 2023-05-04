@@ -18,6 +18,8 @@ void main() {
     quiz: SeedData.wowQuiz,
     quizQuestions: SeedData.wowQuestions,
     questionIndex: 1,
+    status: QuizStatus.complete,
+    score: 32,
     loadingStatus: FormzSubmissionStatus.success,
   );
   setUp(() {
@@ -25,24 +27,28 @@ void main() {
     navObserver = TestsNavigatorObserver();
   });
   group('[EndBody]', () {
-    testWidgets('given quiz is incomplete, EndBody does not exist',
+    testWidgets('given `state.status` is not complete, EndBody does not exist',
         (tester) async {
-      when(() => cubit.state).thenReturn(loadedState.copyWith(
-        status: QuizStatus.started,
-      ));
+      final possibleStatuses = QuizStatus.values
+          .where((element) => element != QuizStatus.complete)
+          .toList();
 
-      await tester.pumpWidget(QuizBodyFixture(
-        quizCubit: cubit,
-      ));
+      for (var status in possibleStatuses) {
+        when(() => cubit.state).thenReturn(loadedState.copyWith(
+          status: status,
+        ));
 
-      expect(find.byKey(QuizKeys.quizEndBody), findsNothing);
+        await tester.pumpWidget(QuizBodyFixture(
+          quizCubit: cubit,
+        ));
+
+        expect(find.byKey(QuizKeys.quizEndBody), findsNothing);
+      }
     });
 
     testWidgets('given quiz is complete, body components are rendered',
         (tester) async {
-      when(() => cubit.state).thenReturn(loadedState.copyWith(
-        status: QuizStatus.complete,
-      ));
+      when(() => cubit.state).thenReturn(loadedState.copyWith());
 
       await tester.pumpWidget(QuizBodyFixture(
         quizCubit: cubit,
@@ -108,10 +114,7 @@ void main() {
     });
 
     testWidgets('quiz end score text is correct', (tester) async {
-      when(() => cubit.state).thenReturn(loadedState.copyWith(
-        status: QuizStatus.complete,
-        score: 32,
-      ));
+      when(() => cubit.state).thenReturn(loadedState.copyWith());
 
       await tester.pumpWidget(QuizBodyFixture(
         quizCubit: cubit,
@@ -125,10 +128,7 @@ void main() {
 
     testWidgets('pressing "Try Again!" button triggers restart event in state',
         (tester) async {
-      when(() => cubit.state).thenReturn(loadedState.copyWith(
-        status: QuizStatus.complete,
-        score: 32,
-      ));
+      when(() => cubit.state).thenReturn(loadedState.copyWith());
 
       await tester.pumpWidget(QuizBodyFixture(
         quizCubit: cubit,
@@ -140,10 +140,7 @@ void main() {
 
     testWidgets('pressing "Goodbye!" button triggers `pop` event in navigator',
         (tester) async {
-      when(() => cubit.state).thenReturn(loadedState.copyWith(
-        status: QuizStatus.complete,
-        score: 32,
-      ));
+      when(() => cubit.state).thenReturn(loadedState.copyWith());
 
       await tester.pumpWidget(QuizBodyFixture(
         quizCubit: cubit,
