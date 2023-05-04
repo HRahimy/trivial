@@ -3,6 +3,19 @@ import 'package:flutter/widgets.dart';
 class QuizKeys {
   static const Key quizBody = Key('__quizBody__');
 
+  //region Quiz start menu
+  static const Key quizStartMenu = Key('__quizStartMenu__');
+  static const Key startMenuTitle = Key('__startMenuTitle__');
+  static const Key startMenuDescriptionText = Key('__startMenuDescription__');
+  static const Key startMenuQuestionsText = Key('__startMenuQuestionsText__');
+  static const Key startMenuScoreText = Key('__startMenuScoreText__');
+  static const Key startMenuPlayButton = Key('__startMenuPlayButton__');
+  static const Key startMenuPlayButtonText = Key('__startMenuPlayButtonText__');
+  static const Key startMenuBackButton = Key('__startMenuBackButton__');
+  static const Key startMenuBackButtonText = Key('__startMenuBackButtonText__');
+
+  //endregion
+
   //region Abort button
   static const Key abortButton = Key('__abortButton__');
   static const Key abortButtonText = Key('__abortButtonText__');
