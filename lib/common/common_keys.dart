@@ -14,13 +14,12 @@ class CommonKeys {
 
   //region Error display
   static const Key errorDisplay = Key('__errorDisplay__');
-  static const Key errorSummaryTile = Key('__errorSummaryTile__');
-  static const Key errorTitle = Key('__errorTitle__');
+  static const Key errorAppBarTitle = Key('__errorAppBarTitle__');
   static const Key errorIcon = Key('__errorIcon__');
-  static const Key errorExpandButton = Key('__errorExpandButton__');
-  static const Key errorCollapseButton = Key('__errorCollapseButton__');
   static const Key errorContent = Key('__errorContent__');
   static const Key errorCopyButton = Key('__errorCopyButton__');
   static const Key errorCopyButtonText = Key('__errorCopyButtonText__');
+  static const Key errorCopySnackbar = Key('__errorCopySnackbar__');
+  static const Key errorCopySnackbarText = Key('__errorCopySnackbarText__');
 //endregion
 }
