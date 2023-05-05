@@ -182,15 +182,9 @@ void main() {
 
     group('[restartQuiz()]', () {
       blocTest(
-        'given current `status` is not complete, does nothing',
+        'given current `status` initial, does nothing',
         build: () => cubit,
-        seed: () {
-          final possibleValues = QuizStatus.values
-              .where((element) => element != QuizStatus.complete)
-              .toList();
-          final value = possibleValues[Random().nextInt(possibleValues.length)];
-          return successLoadedSeedState.copyWith(status: value);
-        },
+        seed: () => successLoadedSeedState.copyWith(status: QuizStatus.initial),
         act: (contextCubit) => contextCubit.restartQuiz(),
         verify: (contextCubit) {
           verifyNever(() => repository.getQuiz(quizId));
@@ -199,33 +193,40 @@ void main() {
         expect: () => <QuizState>[],
       );
 
-      blocTest(
-        'given current `status` is complete, emits new state with initial `status`',
-        build: () => cubit,
-        seed: () => lastQuestionWithCorrectChoiceSelected.copyWith(
-          status: QuizStatus.complete,
-        ),
-        act: (contextCubit) {
-          when(() => repository.getQuiz(quizId)).thenReturn(SeedData.wowQuiz);
-          when(() => repository.getQuestions(quizId))
-              .thenReturn(SeedData.wowQuestions);
-          contextCubit.restartQuiz();
-        },
-        expect: () => <QuizState>[
-          const QuizState(status: QuizStatus.initial),
-          const QuizState(
-            loadingStatus: FormzSubmissionStatus.inProgress,
-            status: QuizStatus.initial,
-          ),
-          const QuizState(
-            loadingStatus: FormzSubmissionStatus.success,
-            status: QuizStatus.initial,
-            quiz: SeedData.wowQuiz,
-            quizQuestions: SeedData.wowQuestions,
-            questionIndex: 1,
-          ),
-        ],
-      );
+      group('given current `status` is not initial', () {
+        final possibleStatuses =
+            QuizStatus.values.where((element) => element != QuizStatus.initial);
+
+        for (var status in possibleStatuses) {
+          blocTest(
+            'with `status` being ${status.toString()}, emits new state with initial `status`',
+            build: () => cubit,
+            seed: () =>
+                lastQuestionWithCorrectChoiceSelected.copyWith(status: status),
+            act: (contextCubit) {
+              when(() => repository.getQuiz(quizId))
+                  .thenReturn(SeedData.wowQuiz);
+              when(() => repository.getQuestions(quizId))
+                  .thenReturn(SeedData.wowQuestions);
+              contextCubit.restartQuiz();
+            },
+            expect: () => <QuizState>[
+              const QuizState(status: QuizStatus.initial),
+              const QuizState(
+                loadingStatus: FormzSubmissionStatus.inProgress,
+                status: QuizStatus.initial,
+              ),
+              const QuizState(
+                loadingStatus: FormzSubmissionStatus.success,
+                status: QuizStatus.initial,
+                quiz: SeedData.wowQuiz,
+                quizQuestions: SeedData.wowQuestions,
+                questionIndex: 1,
+              ),
+            ],
+          );
+        }
+      });
     });
 
     group('[selectAnswer()]', () {

@@ -1092,7 +1092,6 @@ void main() {
         status: QuizStatus.started,
       ));
       await tester.pumpWidget(QuizBodyFixture(
-        navigatorObserver: navObserver,
         quizCubit: cubit,
       ));
 
@@ -1102,7 +1101,7 @@ void main() {
       await tester.tap(find.byKey(QuizKeys.abortDialogAcceptButton));
       await tester.pumpAndSettle();
 
-      expect(navObserver.poppedCount, equals(2));
+      verify(() => cubit.restartQuiz()).called(1);
     });
   });
 }
