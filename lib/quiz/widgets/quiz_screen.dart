@@ -35,13 +35,21 @@ class QuizScreen extends StatelessWidget {
         quizId: args.quizId,
         quizRepository: RepositoryProvider.of<QuizRepository>(context),
       )..loadQuiz(),
-      child: const QuizBody(),
+      child: const LoadedQuizScreen(),
     );
   }
 }
 
-class QuizBody extends StatelessWidget {
-  const QuizBody({super.key});
+class LoadableQuizScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    throw UnimplementedError();
+  }
+}
+
+class LoadedQuizScreen extends StatelessWidget {
+  const LoadedQuizScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

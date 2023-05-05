@@ -9,8 +9,8 @@ import '../../mocks/quiz_cubit_mock.dart';
 import '../../mocks/quiz_repository_mock.dart';
 import '../../tests_navigator_observer.dart';
 
-class QuizBodyFixture extends StatelessWidget {
-  QuizBodyFixture({
+class LoadedQuizScreenFixture extends StatelessWidget {
+  LoadedQuizScreenFixture({
     Key? key,
     QuizCubit? quizCubit,
     QuizRepository? quizRepository,
@@ -31,7 +31,7 @@ class QuizBodyFixture extends StatelessWidget {
       child: BlocProvider<QuizCubit>.value(
         value: _cubit,
         child: MaterialApp(
-          home: const QuizBody(),
+          home: const LoadedQuizScreen(),
           routes: namedRoutes(context),
           navigatorObservers: [_navigatorObserver],
         ),

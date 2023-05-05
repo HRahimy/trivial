@@ -9,7 +9,7 @@ import 'package:trivial/quiz/widgets/quiz_end_body.dart';
 
 import '../../mocks/quiz_cubit_mock.dart';
 import '../../tests_navigator_observer.dart';
-import '../fixtures/quiz_body_fixture.dart';
+import '../fixtures/loaded_quiz_screen_fixture.dart';
 
 void main() {
   late TestsNavigatorObserver navObserver;
@@ -38,7 +38,7 @@ void main() {
           status: status,
         ));
 
-        await tester.pumpWidget(QuizBodyFixture(
+        await tester.pumpWidget(LoadedQuizScreenFixture(
           quizCubit: cubit,
         ));
 
@@ -50,7 +50,7 @@ void main() {
         (tester) async {
       when(() => cubit.state).thenReturn(loadedState.copyWith());
 
-      await tester.pumpWidget(QuizBodyFixture(
+      await tester.pumpWidget(LoadedQuizScreenFixture(
         quizCubit: cubit,
       ));
 
@@ -116,7 +116,7 @@ void main() {
     testWidgets('quiz end score text is correct', (tester) async {
       when(() => cubit.state).thenReturn(loadedState.copyWith());
 
-      await tester.pumpWidget(QuizBodyFixture(
+      await tester.pumpWidget(LoadedQuizScreenFixture(
         quizCubit: cubit,
       ));
 
@@ -130,7 +130,7 @@ void main() {
         (tester) async {
       when(() => cubit.state).thenReturn(loadedState.copyWith());
 
-      await tester.pumpWidget(QuizBodyFixture(
+      await tester.pumpWidget(LoadedQuizScreenFixture(
         quizCubit: cubit,
       ));
 
@@ -142,7 +142,7 @@ void main() {
         (tester) async {
       when(() => cubit.state).thenReturn(loadedState.copyWith());
 
-      await tester.pumpWidget(QuizBodyFixture(
+      await tester.pumpWidget(LoadedQuizScreenFixture(
         quizCubit: cubit,
         navigatorObserver: navObserver,
       ));

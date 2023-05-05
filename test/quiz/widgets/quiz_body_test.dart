@@ -11,7 +11,7 @@ import 'package:trivial/theme.dart';
 
 import '../../mocks/quiz_cubit_mock.dart';
 import '../../tests_navigator_observer.dart';
-import '../fixtures/quiz_body_fixture.dart';
+import '../fixtures/loaded_quiz_screen_fixture.dart';
 
 void main() {
   late TestsNavigatorObserver navObserver;
@@ -37,7 +37,7 @@ void main() {
       for (var status in possibleStatuses) {
         when(() => cubit.state).thenReturn(QuizState(status: status));
 
-        await tester.pumpWidget(QuizBodyFixture(
+        await tester.pumpWidget(LoadedQuizScreenFixture(
           quizCubit: cubit,
         ));
 
@@ -48,7 +48,7 @@ void main() {
         (tester) async {
       when(() => cubit.state).thenReturn(loadedState);
 
-      await tester.pumpWidget(QuizBodyFixture(
+      await tester.pumpWidget(LoadedQuizScreenFixture(
         quizCubit: cubit,
       ));
 
@@ -65,7 +65,7 @@ void main() {
       testWidgets('question text section exists', (tester) async {
         when(() => cubit.state).thenReturn(loadedState);
 
-        await tester.pumpWidget(QuizBodyFixture(
+        await tester.pumpWidget(LoadedQuizScreenFixture(
           quizCubit: cubit,
         ));
 
@@ -91,7 +91,7 @@ void main() {
       testWidgets('question text is correct', (tester) async {
         when(() => cubit.state).thenReturn(loadedState);
 
-        await tester.pumpWidget(QuizBodyFixture(
+        await tester.pumpWidget(LoadedQuizScreenFixture(
           quizCubit: cubit,
         ));
 
@@ -109,7 +109,7 @@ void main() {
       testWidgets('widget exists', (tester) async {
         when(() => cubit.state).thenReturn(loadedState);
 
-        await tester.pumpWidget(QuizBodyFixture(
+        await tester.pumpWidget(LoadedQuizScreenFixture(
           quizCubit: cubit,
         ));
 
@@ -134,7 +134,7 @@ void main() {
       testWidgets('timer starts full', (tester) async {
         when(() => cubit.state).thenReturn(loadedState);
 
-        await tester.pumpWidget(QuizBodyFixture(
+        await tester.pumpWidget(LoadedQuizScreenFixture(
           quizCubit: cubit,
         ));
 
@@ -156,7 +156,7 @@ void main() {
       testWidgets('timer goes down', (tester) async {
         when(() => cubit.state).thenReturn(loadedState);
 
-        await tester.pumpWidget(QuizBodyFixture(
+        await tester.pumpWidget(LoadedQuizScreenFixture(
           quizCubit: cubit,
         ));
 
@@ -182,7 +182,7 @@ void main() {
           (tester) async {
         when(() => cubit.state).thenReturn(loadedState);
 
-        await tester.pumpWidget(QuizBodyFixture(
+        await tester.pumpWidget(LoadedQuizScreenFixture(
           quizCubit: cubit,
         ));
 
@@ -194,7 +194,7 @@ void main() {
       testWidgets('timer is 15 seconds ', (tester) async {
         when(() => cubit.state).thenReturn(loadedState);
 
-        await tester.pumpWidget(QuizBodyFixture(
+        await tester.pumpWidget(LoadedQuizScreenFixture(
           quizCubit: cubit,
         ));
 
@@ -214,7 +214,7 @@ void main() {
       testWidgets('score panel exists', (tester) async {
         when(() => cubit.state).thenReturn(loadedState);
 
-        await tester.pumpWidget(QuizBodyFixture(
+        await tester.pumpWidget(LoadedQuizScreenFixture(
           quizCubit: cubit,
         ));
         final finder = find.descendant(
@@ -227,7 +227,7 @@ void main() {
       testWidgets('score panel text exists', (tester) async {
         when(() => cubit.state).thenReturn(loadedState);
 
-        await tester.pumpWidget(QuizBodyFixture(
+        await tester.pumpWidget(LoadedQuizScreenFixture(
           quizCubit: cubit,
         ));
         final finder = find.descendant(
@@ -240,7 +240,7 @@ void main() {
       testWidgets('score panel shows correct text', (tester) async {
         when(() => cubit.state).thenReturn(loadedState);
 
-        await tester.pumpWidget(QuizBodyFixture(
+        await tester.pumpWidget(LoadedQuizScreenFixture(
           quizCubit: cubit,
         ));
 
@@ -256,7 +256,7 @@ void main() {
       testWidgets('options panel exists', (tester) async {
         when(() => cubit.state).thenReturn(loadedState);
 
-        await tester.pumpWidget(QuizBodyFixture(
+        await tester.pumpWidget(LoadedQuizScreenFixture(
           quizCubit: cubit,
         ));
 
@@ -270,7 +270,7 @@ void main() {
       testWidgets('panel contains option buttons', (tester) async {
         when(() => cubit.state).thenReturn(loadedState);
 
-        await tester.pumpWidget(QuizBodyFixture(
+        await tester.pumpWidget(LoadedQuizScreenFixture(
           quizCubit: cubit,
         ));
 
@@ -307,7 +307,7 @@ void main() {
         testWidgets('contains text and is correct', (tester) async {
           when(() => cubit.state).thenReturn(loadedState);
 
-          await tester.pumpWidget(QuizBodyFixture(
+          await tester.pumpWidget(LoadedQuizScreenFixture(
             quizCubit: cubit,
           ));
 
@@ -334,7 +334,7 @@ void main() {
             selectedOption: OptionIndex.A,
           ));
 
-          await tester.pumpWidget(QuizBodyFixture(
+          await tester.pumpWidget(LoadedQuizScreenFixture(
             quizCubit: cubit,
           ));
 
@@ -361,7 +361,7 @@ void main() {
             questionDepleted: true,
           ));
 
-          await tester.pumpWidget(QuizBodyFixture(
+          await tester.pumpWidget(LoadedQuizScreenFixture(
             quizCubit: cubit,
           ));
 
@@ -386,7 +386,7 @@ void main() {
             questionDepleted: false,
           ));
 
-          await tester.pumpWidget(QuizBodyFixture(
+          await tester.pumpWidget(LoadedQuizScreenFixture(
             quizCubit: cubit,
           ));
 
@@ -416,7 +416,7 @@ void main() {
             questionDepleted: true,
           ));
 
-          await tester.pumpWidget(QuizBodyFixture(
+          await tester.pumpWidget(LoadedQuizScreenFixture(
             quizCubit: cubit,
           ));
 
@@ -447,7 +447,7 @@ void main() {
         testWidgets('contains text and is correct', (tester) async {
           when(() => cubit.state).thenReturn(loadedState);
 
-          await tester.pumpWidget(QuizBodyFixture(
+          await tester.pumpWidget(LoadedQuizScreenFixture(
             quizCubit: cubit,
           ));
 
@@ -474,7 +474,7 @@ void main() {
             selectedOption: OptionIndex.B,
           ));
 
-          await tester.pumpWidget(QuizBodyFixture(
+          await tester.pumpWidget(LoadedQuizScreenFixture(
             quizCubit: cubit,
           ));
 
@@ -501,7 +501,7 @@ void main() {
             questionDepleted: true,
           ));
 
-          await tester.pumpWidget(QuizBodyFixture(
+          await tester.pumpWidget(LoadedQuizScreenFixture(
             quizCubit: cubit,
           ));
 
@@ -526,7 +526,7 @@ void main() {
             questionDepleted: false,
           ));
 
-          await tester.pumpWidget(QuizBodyFixture(
+          await tester.pumpWidget(LoadedQuizScreenFixture(
             quizCubit: cubit,
           ));
 
@@ -556,7 +556,7 @@ void main() {
             questionDepleted: true,
           ));
 
-          await tester.pumpWidget(QuizBodyFixture(
+          await tester.pumpWidget(LoadedQuizScreenFixture(
             quizCubit: cubit,
           ));
 
@@ -587,7 +587,7 @@ void main() {
         testWidgets('contains text and is correct', (tester) async {
           when(() => cubit.state).thenReturn(loadedState);
 
-          await tester.pumpWidget(QuizBodyFixture(
+          await tester.pumpWidget(LoadedQuizScreenFixture(
             quizCubit: cubit,
           ));
 
@@ -614,7 +614,7 @@ void main() {
             selectedOption: OptionIndex.C,
           ));
 
-          await tester.pumpWidget(QuizBodyFixture(
+          await tester.pumpWidget(LoadedQuizScreenFixture(
             quizCubit: cubit,
           ));
 
@@ -641,7 +641,7 @@ void main() {
             questionDepleted: true,
           ));
 
-          await tester.pumpWidget(QuizBodyFixture(
+          await tester.pumpWidget(LoadedQuizScreenFixture(
             quizCubit: cubit,
           ));
 
@@ -666,7 +666,7 @@ void main() {
             questionDepleted: false,
           ));
 
-          await tester.pumpWidget(QuizBodyFixture(
+          await tester.pumpWidget(LoadedQuizScreenFixture(
             quizCubit: cubit,
           ));
 
@@ -696,7 +696,7 @@ void main() {
             questionDepleted: true,
           ));
 
-          await tester.pumpWidget(QuizBodyFixture(
+          await tester.pumpWidget(LoadedQuizScreenFixture(
             quizCubit: cubit,
           ));
 
@@ -727,7 +727,7 @@ void main() {
         testWidgets('contains text and is correct', (tester) async {
           when(() => cubit.state).thenReturn(loadedState);
 
-          await tester.pumpWidget(QuizBodyFixture(
+          await tester.pumpWidget(LoadedQuizScreenFixture(
             quizCubit: cubit,
           ));
 
@@ -754,7 +754,7 @@ void main() {
             selectedOption: OptionIndex.D,
           ));
 
-          await tester.pumpWidget(QuizBodyFixture(
+          await tester.pumpWidget(LoadedQuizScreenFixture(
             quizCubit: cubit,
           ));
 
@@ -781,7 +781,7 @@ void main() {
             questionDepleted: true,
           ));
 
-          await tester.pumpWidget(QuizBodyFixture(
+          await tester.pumpWidget(LoadedQuizScreenFixture(
             quizCubit: cubit,
           ));
 
@@ -806,7 +806,7 @@ void main() {
             questionDepleted: false,
           ));
 
-          await tester.pumpWidget(QuizBodyFixture(
+          await tester.pumpWidget(LoadedQuizScreenFixture(
             quizCubit: cubit,
           ));
 
@@ -836,7 +836,7 @@ void main() {
             questionDepleted: true,
           ));
 
-          await tester.pumpWidget(QuizBodyFixture(
+          await tester.pumpWidget(LoadedQuizScreenFixture(
             quizCubit: cubit,
           ));
 
@@ -868,7 +868,7 @@ void main() {
       testWidgets('widget exists', (tester) async {
         when(() => cubit.state).thenReturn(loadedState);
 
-        await tester.pumpWidget(QuizBodyFixture(
+        await tester.pumpWidget(LoadedQuizScreenFixture(
           quizCubit: cubit,
         ));
 
@@ -883,7 +883,7 @@ void main() {
       testWidgets('text exists and is correct', (tester) async {
         when(() => cubit.state).thenReturn(loadedState);
 
-        await tester.pumpWidget(QuizBodyFixture(
+        await tester.pumpWidget(LoadedQuizScreenFixture(
           quizCubit: cubit,
         ));
 
@@ -906,7 +906,7 @@ void main() {
           (tester) async {
         when(() => cubit.state).thenReturn(loadedState);
 
-        await tester.pumpWidget(QuizBodyFixture(
+        await tester.pumpWidget(LoadedQuizScreenFixture(
           quizCubit: cubit,
         ));
 
@@ -926,7 +926,7 @@ void main() {
           selectedOption: OptionIndex.C,
         ));
 
-        await tester.pumpWidget(QuizBodyFixture(
+        await tester.pumpWidget(LoadedQuizScreenFixture(
           quizCubit: cubit,
         ));
 
@@ -945,7 +945,7 @@ void main() {
           questionDepleted: true,
         ));
 
-        await tester.pumpWidget(QuizBodyFixture(
+        await tester.pumpWidget(LoadedQuizScreenFixture(
           quizCubit: cubit,
         ));
 
@@ -965,7 +965,7 @@ void main() {
           questionDepleted: true,
         ));
 
-        await tester.pumpWidget(QuizBodyFixture(
+        await tester.pumpWidget(LoadedQuizScreenFixture(
           quizCubit: cubit,
         ));
 
@@ -986,7 +986,7 @@ void main() {
         status: QuizStatus.started,
       ));
 
-      await tester.pumpWidget(QuizBodyFixture(quizCubit: cubit));
+      await tester.pumpWidget(LoadedQuizScreenFixture(quizCubit: cubit));
 
       final buttonFinder = find.byKey(QuizKeys.abortButton);
       // final iconFinder = find.descendant(
@@ -1026,7 +1026,7 @@ void main() {
         status: QuizStatus.complete,
       ));
 
-      await tester.pumpWidget(QuizBodyFixture(quizCubit: cubit));
+      await tester.pumpWidget(LoadedQuizScreenFixture(quizCubit: cubit));
 
       final buttonFinder = find.byKey(QuizKeys.abortButton);
       final iconFinder = find.descendant(
@@ -1049,7 +1049,7 @@ void main() {
         status: QuizStatus.started,
       ));
 
-      await tester.pumpWidget(QuizBodyFixture(quizCubit: cubit));
+      await tester.pumpWidget(LoadedQuizScreenFixture(quizCubit: cubit));
 
       await tester.tap(find.byKey(QuizKeys.abortButton));
 
@@ -1069,7 +1069,7 @@ void main() {
         status: QuizStatus.started,
       ));
 
-      await tester.pumpWidget(QuizBodyFixture(quizCubit: cubit));
+      await tester.pumpWidget(LoadedQuizScreenFixture(quizCubit: cubit));
 
       await tester.tap(find.byKey(QuizKeys.abortButton));
 
@@ -1091,7 +1091,7 @@ void main() {
       when(() => cubit.state).thenReturn(loadedState.copyWith(
         status: QuizStatus.started,
       ));
-      await tester.pumpWidget(QuizBodyFixture(
+      await tester.pumpWidget(LoadedQuizScreenFixture(
         quizCubit: cubit,
       ));
 

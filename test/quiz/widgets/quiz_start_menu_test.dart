@@ -9,7 +9,7 @@ import 'package:trivial/quiz/widgets/quiz_start_menu.dart';
 
 import '../../mocks/quiz_cubit_mock.dart';
 import '../../tests_navigator_observer.dart';
-import '../fixtures/quiz_body_fixture.dart';
+import '../fixtures/loaded_quiz_screen_fixture.dart';
 
 void main() {
   late TestsNavigatorObserver navObserver;
@@ -37,7 +37,7 @@ void main() {
       for (var status in possibleStatuses) {
         when(() => cubit.state)
             .thenReturn(loadedState.copyWith(status: status));
-        await tester.pumpWidget(QuizBodyFixture(
+        await tester.pumpWidget(LoadedQuizScreenFixture(
           quizCubit: cubit,
         ));
 
@@ -48,7 +48,7 @@ void main() {
     testWidgets('given `status` is initial, renders start menu correctly',
         (tester) async {
       when(() => cubit.state).thenReturn(loadedState);
-      await tester.pumpWidget(QuizBodyFixture(
+      await tester.pumpWidget(LoadedQuizScreenFixture(
         quizCubit: cubit,
       ));
 
@@ -166,7 +166,7 @@ void main() {
     testWidgets('pressing back button triggers pop event in navigation',
         (tester) async {
       when(() => cubit.state).thenReturn(loadedState);
-      await tester.pumpWidget(QuizBodyFixture(
+      await tester.pumpWidget(LoadedQuizScreenFixture(
         quizCubit: cubit,
         navigatorObserver: navObserver,
       ));
@@ -180,7 +180,7 @@ void main() {
     testWidgets('pressing play button triggers `startQuiz()` function in cubit',
         (tester) async {
       when(() => cubit.state).thenReturn(loadedState);
-      await tester.pumpWidget(QuizBodyFixture(
+      await tester.pumpWidget(LoadedQuizScreenFixture(
         quizCubit: cubit,
       ));
 
