@@ -5,6 +5,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:formz/formz.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:repositories/repositories.dart';
+import 'package:trivial/common/common_keys.dart';
+import 'package:trivial/common/widgets/error_display.dart';
 import 'package:trivial/quiz/bloc/quiz_cubit.dart';
 import 'package:trivial/quiz/quiz_keys.dart';
 import 'package:trivial/quiz/widgets/quiz_screen.dart';
@@ -14,6 +16,13 @@ import '../fixtures/loadable_quiz_screen_fixture.dart';
 
 void main() {
   late QuizCubit cubit;
+  const QuizState loadedState = QuizState(
+    quiz: SeedData.wowQuiz,
+    quizQuestions: SeedData.wowQuestions,
+    questionIndex: 1,
+    status: QuizStatus.initial,
+    loadingStatus: FormzSubmissionStatus.success,
+  );
   setUp(() {
     cubit = QuizCubitMock();
   });
@@ -67,6 +76,35 @@ void main() {
 
       expect(progressFinder, findsOneWidget);
       expect(centerFinder, findsOneWidget);
+    });
+
+    testWidgets('given `loadStatus` is errored, shows `ErrorDisplay`',
+        (tester) async {
+      const String errorText = 'Test content error';
+      when(() => cubit.state).thenReturn(const QuizState(
+        loadingStatus: FormzSubmissionStatus.failure,
+        error: errorText,
+      ));
+      await tester.pumpWidget(LoadableQuizScreenFixture(cubit: cubit));
+
+      final errorFinder = find.byType(ErrorDisplay);
+      expect(errorFinder, findsOneWidget);
+
+      final errorTextWidget =
+          tester.widget(find.byKey(CommonKeys.errorContent)) as Text;
+      expect(errorTextWidget.data, equals(errorText));
+    });
+
+    testWidgets('given `loadStatus` is success, shows `LoadedQuizScreen`',
+        (tester) async {
+      when(() => cubit.state).thenReturn(loadedState);
+      await tester.pumpWidget(LoadableQuizScreenFixture(cubit: cubit));
+
+      final screenFinder = find.byKey(QuizKeys.loadedQuizScreen);
+      final screenWidget = tester.widget(screenFinder);
+
+      expect(screenFinder, findsOneWidget);
+      expect(screenWidget.runtimeType, equals(LoadedQuizScreen));
     });
   });
 }
