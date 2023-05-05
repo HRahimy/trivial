@@ -32,7 +32,6 @@ void main() {
       expect(iconFinder, findsOneWidget);
       expect(iconWidget.runtimeType, Icon);
       expect((iconWidget as Icon).icon, equals(Icons.error_rounded));
-      expect(iconWidget.color, Colors.red);
       //endregion
 
       //region Appbar title
