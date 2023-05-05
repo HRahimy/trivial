@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:repositories/repositories.dart';
+import 'package:trivial/common/widgets/error_display.dart';
 import 'package:trivial/quiz/bloc/quiz_cubit.dart';
 import 'package:trivial/quiz/quiz_keys.dart';
 import 'package:trivial/quiz/widgets/abort_confirm_dialog.dart';
@@ -35,7 +36,7 @@ class QuizScreen extends StatelessWidget {
         quizId: args.quizId,
         quizRepository: RepositoryProvider.of<QuizRepository>(context),
       )..loadQuiz(),
-      child: const LoadedQuizScreen(),
+      child: const LoadableQuizScreen(key: QuizKeys.loadableQuizScreen),
     );
   }
 }
@@ -45,8 +46,30 @@ class LoadableQuizScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    throw UnimplementedError();
+    return BlocBuilder<QuizCubit, QuizState>(
+      buildWhen: (previous, current) =>
+          previous.loadingStatus != current.loadingStatus,
+      builder: (context, state) {
+        switch (state.loadingStatus) {
+          case FormzSubmissionStatus.initial:
+            return const Scaffold(backgroundColor: Colors.grey);
+          case FormzSubmissionStatus.inProgress:
+            return const Scaffold(
+              body: Center(child: CircularProgressIndicator()),
+            );
+          case FormzSubmissionStatus.success:
+            return const LoadedQuizScreen(
+              key: QuizKeys.loadedQuizScreen,
+            );
+          case FormzSubmissionStatus.failure:
+            return ErrorDisplay(content: state.error);
+          case FormzSubmissionStatus.canceled:
+            return const ErrorDisplay(
+              content: 'Quiz loading operation cancelled',
+            );
+        }
+      },
+    );
   }
 }
 
@@ -56,24 +79,15 @@ class LoadedQuizScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<QuizCubit, QuizState>(
-      buildWhen: (previous, current) =>
-          previous.loadingStatus != current.loadingStatus ||
-          previous.status != current.status,
+      buildWhen: (previous, current) => previous.status != current.status,
       builder: (context, state) {
-        if (state.loadingStatus == FormzSubmissionStatus.inProgress ||
-            state.loadingStatus == FormzSubmissionStatus.initial) {
-          return const CircularProgressIndicator();
-        } else if (state.loadingStatus == FormzSubmissionStatus.failure) {
-          return Text(state.error);
-        } else {
-          switch (state.status) {
-            case QuizStatus.initial:
-              return const QuizStartMenu(key: QuizKeys.quizStartMenu);
-            case QuizStatus.started:
-              return const QuizRunningBody(key: QuizKeys.quizRunningBody);
-            case QuizStatus.complete:
-              return const QuizEndBody(key: QuizKeys.quizEndBody);
-          }
+        switch (state.status) {
+          case QuizStatus.initial:
+            return const QuizStartMenu(key: QuizKeys.quizStartMenu);
+          case QuizStatus.started:
+            return const QuizRunningBody(key: QuizKeys.quizRunningBody);
+          case QuizStatus.complete:
+            return const QuizEndBody(key: QuizKeys.quizEndBody);
         }
       },
     );
