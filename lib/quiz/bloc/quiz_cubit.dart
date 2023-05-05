@@ -53,7 +53,7 @@ class QuizCubit extends Cubit<QuizState> {
 
   /// Resets state back to initial and begins loading
   void restartQuiz() {
-    if (state.status != QuizStatus.complete) return;
+    if (state.status == QuizStatus.initial) return;
 
     emit(const QuizState());
     loadQuiz();

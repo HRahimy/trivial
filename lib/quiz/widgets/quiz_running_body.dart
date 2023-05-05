@@ -23,11 +23,11 @@ class QuizRunningBody extends StatelessWidget {
           onPressed: () => showDialog(
             context: context,
             barrierDismissible: true,
-            builder: (context) => AbortConfirmDialog(
+            builder: (childContext) => AbortConfirmDialog(
               key: QuizKeys.abortDialog,
               onAccept: () {
-                Navigator.pop(context);
-                Navigator.pop(context);
+                Navigator.pop(childContext);
+                context.read<QuizCubit>().restartQuiz();
               },
             ),
           ),
