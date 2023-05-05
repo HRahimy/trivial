@@ -41,6 +41,8 @@ class QuizScreen extends StatelessWidget {
 }
 
 class LoadableQuizScreen extends StatelessWidget {
+  const LoadableQuizScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
