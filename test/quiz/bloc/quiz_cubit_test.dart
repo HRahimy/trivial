@@ -230,21 +230,25 @@ void main() {
     });
 
     group('[selectAnswer()]', () {
-      blocTest(
-        'given valid choice, emits new state with choice and `choiceSelected=true`',
-        seed: () => successLoadedSeedState,
-        build: () => cubit,
-        act: (contextCubit) => contextCubit.selectAnswer(OptionIndex.C),
-        expect: () => <QuizState>[
-          successLoadedSeedState.copyWith(
-            selectedOption: OptionIndex.C,
-            choiceSelected: true,
-          ),
-        ],
-      );
+      group('with current `answerStatus` being initial', () {
+        final randomChoice =
+            OptionIndex.values[Random().nextInt(OptionIndex.values.length)];
+        blocTest(
+          'given valid choice, emits state with updated `selectedOption` and sets `answerStatus` to selected',
+          seed: () => successLoadedSeedState,
+          build: () => cubit,
+          act: (contextCubit) => contextCubit.selectAnswer(randomChoice),
+          expect: () => <QuizState>[
+            successLoadedSeedState.copyWith(
+              selectedOption: randomChoice,
+              answerStatus: AnswerStatus.selected,
+            ),
+          ],
+        );
+      });
 
       blocTest(
-        'given question depleted, does not emit new state',
+        'given question depleted, does nothing',
         seed: () => successLoadedSeedState.copyWith(questionDepleted: true),
         build: () => cubit,
         act: (contextCubit) => contextCubit.selectAnswer(OptionIndex.C),
@@ -252,19 +256,42 @@ void main() {
       );
 
       blocTest(
-        'given quiz not loaded, does not emit new state',
+        'given question confirmed, does nothing',
+        seed: () => successLoadedSeedState.copyWith(questionDepleted: true),
         build: () => cubit,
         act: (contextCubit) => contextCubit.selectAnswer(OptionIndex.C),
         expect: () => <QuizState>[],
       );
 
       blocTest(
-        'given quiz load failure, does not emit new state',
-        seed: () => failLoadedSeedState,
+        'given current answer status is selected, emits new state with updated option',
+        seed: () => successLoadedSeedState.copyWith(
+          answerStatus: AnswerStatus.selected,
+          selectedOption: OptionIndex.B,
+        ),
         build: () => cubit,
         act: (contextCubit) => contextCubit.selectAnswer(OptionIndex.C),
-        expect: () => <QuizState>[],
+        expect: () => <QuizState>[
+          successLoadedSeedState.copyWith(
+            answerStatus: AnswerStatus.selected,
+            selectedOption: OptionIndex.C,
+          ),
+        ],
       );
+
+      group('given `loadStatus` is not success', () {
+        final statuses = FormzSubmissionStatus.values
+            .where((element) => element != FormzSubmissionStatus.success)
+            .toList();
+        for (var status in statuses) {
+          blocTest(
+            'with `loadStatus` being ${status.toString()}, does nothing',
+            build: () => cubit,
+            act: (contextCubit) => contextCubit.selectAnswer(OptionIndex.C),
+            expect: () => <QuizState>[],
+          );
+        }
+      });
     });
 
     group('[continueQuestion()]', () {
@@ -419,27 +446,37 @@ void main() {
       );
     });
 
-    group('[depleteQuestion()]', () {
+    group('[terminateTime()]', () {
+      group('given question is confirmed or depleted', () {
+        final List<AnswerStatus> possibleStatuses = [
+          AnswerStatus.confirmed,
+          AnswerStatus.depleted,
+        ];
+        for (var status in possibleStatuses) {
+          blocTest(
+            'with status being ${status.toString()}, does nothing',
+            build: () => cubit,
+            act: (contextCubit) => contextCubit.terminateTime(),
+            expect: () => <QuizState>[],
+          );
+        }
+      });
+
+      blocTest(
+        'given current status is initial, depletes question',
+        build: () => cubit,
+      );
+
       blocTest(
         'given question not depleted, emits new state with marking question depleted',
         seed: () => successLoadedSeedState,
         build: () => cubit,
-        act: (contextCubit) => contextCubit.depleteQuestion(),
+        act: (contextCubit) => contextCubit.terminateTime(),
         expect: () => <QuizState>[
           successLoadedSeedState.copyWith(
             questionDepleted: true,
           ),
         ],
-      );
-
-      blocTest(
-        'given question depleted, does nothing',
-        seed: () => successLoadedSeedState.copyWith(
-          questionDepleted: true,
-        ),
-        build: () => cubit,
-        act: (contextCubit) => contextCubit.depleteQuestion(),
-        expect: () => <QuizState>[],
       );
     });
   });
