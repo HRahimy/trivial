@@ -58,6 +58,7 @@ class QuizCubit extends Cubit<QuizState> {
   }
 
   void selectAnswer(OptionIndex choice) {
+    throw UnimplementedError();
     if (state.questionDepleted ||
         state.loadingStatus != FormzSubmissionStatus.success) {
       return;
@@ -69,7 +70,12 @@ class QuizCubit extends Cubit<QuizState> {
     ));
   }
 
+  void confirmAnswer() {
+    throw UnimplementedError();
+  }
+
   void continueQuiz() {
+    throw UnimplementedError();
     if (state.status == QuizStatus.complete) {
       return;
     }
@@ -105,6 +111,7 @@ class QuizCubit extends Cubit<QuizState> {
   }
 
   void terminateTime() {
+    throw UnimplementedError();
     if (state.questionDepleted) {
       return;
     }

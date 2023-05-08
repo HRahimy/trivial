@@ -294,6 +294,37 @@ void main() {
       });
     });
 
+    group('[confirmAnswer()]', () {
+      final nonSelectedStatuses = AnswerStatus.values
+          .where((element) => element != AnswerStatus.selected)
+          .toList();
+      for (var status in nonSelectedStatuses) {
+        blocTest(
+          'given current `answerStatus` is ${status.toString()}, does nothing',
+          seed: () => successLoadedSeedState.copyWith(answerStatus: status),
+          build: () => cubit,
+          act: (contextCubit) => contextCubit.confirmAnswer(),
+          expect: () => <QuizState>[],
+        );
+      }
+
+      blocTest(
+        'given current `answerStatus` is selected, emits new state with confirmed `answerStatus`',
+        seed: () => successLoadedSeedState.copyWith(
+          answerStatus: AnswerStatus.selected,
+          selectedOption: OptionIndex.B,
+        ),
+        build: () => cubit,
+        act: (contextCubit) => contextCubit.confirmAnswer(),
+        expect: () => <QuizState>[
+          successLoadedSeedState.copyWith(
+            answerStatus: AnswerStatus.confirmed,
+            selectedOption: OptionIndex.B,
+          )
+        ],
+      );
+    });
+
     group('[continueQuestion()]', () {
       blocTest(
         'given quiz is complete, does nothing',
