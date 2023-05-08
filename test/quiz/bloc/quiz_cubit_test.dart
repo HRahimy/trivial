@@ -308,21 +308,45 @@ void main() {
         );
       }
 
-      blocTest(
-        'given current `answerStatus` is selected, emits new state with confirmed `answerStatus`',
-        seed: () => successLoadedSeedState.copyWith(
-          answerStatus: AnswerStatus.selected,
-          selectedOption: OptionIndex.B,
-        ),
-        build: () => cubit,
-        act: (contextCubit) => contextCubit.confirmAnswer(),
-        expect: () => <QuizState>[
-          successLoadedSeedState.copyWith(
-            answerStatus: AnswerStatus.confirmed,
-            selectedOption: OptionIndex.B,
-          )
-        ],
-      );
+      group('with current `answerStatus` being selected', () {
+        blocTest(
+          'given selected choice was the correct option, emits new state with new score and confirmed `answerStatus`',
+          seed: () => successLoadedSeedState.copyWith(
+            answerStatus: AnswerStatus.selected,
+            selectedOption:
+                successLoadedSeedState.currentQuestion.correctOption,
+          ),
+          build: () => cubit,
+          act: (contextCubit) => contextCubit.confirmAnswer(),
+          expect: () => <QuizState>[
+            successLoadedSeedState.copyWith(
+              answerStatus: AnswerStatus.confirmed,
+              selectedOption:
+                  successLoadedSeedState.currentQuestion.correctOption,
+              score: successLoadedSeedState.score +
+                  successLoadedSeedState.currentQuestion.points,
+            ),
+          ],
+        );
+
+        final incorrectChoice = OptionIndex.values.firstWhere((element) =>
+            element != successLoadedSeedState.currentQuestion.correctOption);
+        blocTest(
+          'given selected choice was not the correct option, emits new state with same score confirmed `answerStatus`',
+          seed: () => successLoadedSeedState.copyWith(
+            answerStatus: AnswerStatus.selected,
+            selectedOption: incorrectChoice,
+          ),
+          build: () => cubit,
+          act: (contextCubit) => contextCubit.confirmAnswer(),
+          expect: () => <QuizState>[
+            successLoadedSeedState.copyWith(
+              answerStatus: AnswerStatus.confirmed,
+              selectedOption: incorrectChoice,
+            )
+          ],
+        );
+      });
     });
 
     group('[continueQuestion()]', () {
@@ -334,6 +358,8 @@ void main() {
         act: (contextCubit) => contextCubit.continueQuiz(),
         expect: () => <QuizState>[],
       );
+
+      // given current status is not confirmed or depleted, does nothing
 
       blocTest(
         'given choice not selected and question not depleted, does nothing',
