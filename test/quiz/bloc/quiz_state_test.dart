@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:formz/formz.dart';
 import 'package:repositories/repositories.dart';
@@ -16,6 +18,48 @@ void main() {
   group('[QuizState]', () {
     test('supports value comparisons', () {
       expect(const QuizState(), const QuizState());
+    });
+
+    group('[selectedOption] property', () {
+      test(
+          'given `answerStatus` is initial and random choice passed to constructor property, returns null',
+          () {
+        final randomChoice =
+            OptionIndex.values[Random().nextInt(OptionIndex.values.length)];
+        final state = QuizState(
+          answerStatus: AnswerStatus.initial,
+          selectedOption: randomChoice,
+        );
+        expect(state.selectedOption, isNull);
+      });
+      test('given `answerStatus` is selected, returns current choice', () {
+        final randomChoice =
+            OptionIndex.values[Random().nextInt(OptionIndex.values.length)];
+        final state = QuizState(
+          selectedOption: randomChoice,
+          answerStatus: AnswerStatus.selected,
+        );
+        expect(state.selectedOption, equals(randomChoice));
+      });
+      test('given `answerStatus` is confirmed, returns current choice', () {
+        final randomChoice =
+            OptionIndex.values[Random().nextInt(OptionIndex.values.length)];
+        final state = QuizState(
+          selectedOption: randomChoice,
+          answerStatus: AnswerStatus.confirmed,
+        );
+        expect(state.selectedOption, equals(randomChoice));
+      });
+
+      test('given `answerStatus` is depleted, returns null', () {
+        final randomChoice =
+            OptionIndex.values[Random().nextInt(OptionIndex.values.length)];
+        final state = QuizState(
+          selectedOption: randomChoice,
+          answerStatus: AnswerStatus.depleted,
+        );
+        expect(state.selectedOption, isNull);
+      });
     });
 
     group('[CopyWith]', () {
@@ -86,6 +130,15 @@ void main() {
           );
         },
       );
+
+      test(
+          'given [answerStatus] param passed, returns object with updated answerStatus',
+          () {
+        expect(
+          const QuizState().copyWith(answerStatus: AnswerStatus.confirmed),
+          const QuizState(answerStatus: AnswerStatus.confirmed),
+        );
+      });
 
       test(
         'given [selectedOption] param passed, returns object with updated selectedOption',

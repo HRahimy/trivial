@@ -188,7 +188,7 @@ class _TimerState extends State<_Timer> with TickerProviderStateMixin {
 
   void listener(AnimationStatus status) {
     if (controller!.isDismissed) {
-      context.read<QuizCubit>().depleteQuestion();
+      context.read<QuizCubit>().terminateTime();
     }
   }
 

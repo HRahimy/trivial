@@ -188,7 +188,7 @@ void main() {
 
         await tester.pumpAndSettle();
 
-        verify(() => cubit.depleteQuestion()).called(1);
+        verify(() => cubit.terminateTime()).called(1);
       });
 
       testWidgets('timer is 15 seconds ', (tester) async {

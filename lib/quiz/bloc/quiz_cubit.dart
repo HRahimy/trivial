@@ -104,7 +104,7 @@ class QuizCubit extends Cubit<QuizState> {
     emit(newState);
   }
 
-  void depleteQuestion() {
+  void terminateTime() {
     if (state.questionDepleted) {
       return;
     }
