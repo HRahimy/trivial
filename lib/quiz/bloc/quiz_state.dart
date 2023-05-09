@@ -39,7 +39,10 @@ class QuizState extends Equatable {
   }
 
   OptionIndex? get selectedOption {
-    return choiceSelected ? _selectedOption : null;
+    return answerStatus == AnswerStatus.selected ||
+            answerStatus == AnswerStatus.confirmed
+        ? _selectedOption
+        : null;
   }
 
   QuizState copyWith({

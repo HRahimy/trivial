@@ -58,66 +58,95 @@ class QuizCubit extends Cubit<QuizState> {
   }
 
   void selectAnswer(OptionIndex choice) {
-    throw UnimplementedError();
-    if (state.questionDepleted ||
-        state.loadingStatus != FormzSubmissionStatus.success) {
-      return;
-    }
+    if (state.loadingStatus != FormzSubmissionStatus.success) return;
 
-    emit(state.copyWith(
-      selectedOption: choice,
-      choiceSelected: true,
-    ));
+    switch (state.answerStatus) {
+      case AnswerStatus.confirmed:
+        return;
+      case AnswerStatus.depleted:
+        return;
+      default:
+        emit(state.copyWith(
+          selectedOption: choice,
+          answerStatus: AnswerStatus.selected,
+        ));
+    }
   }
 
   void confirmAnswer() {
-    throw UnimplementedError();
+    switch (state.answerStatus) {
+      case AnswerStatus.initial:
+        return;
+      case AnswerStatus.selected:
+        bool optionCorrect =
+            state.selectedOption == state.currentQuestion.correctOption;
+        if (optionCorrect) {
+          emit(state.copyWith(
+            answerStatus: AnswerStatus.confirmed,
+            score: state.score + state.currentQuestion.points,
+          ));
+        } else {
+          emit(state.copyWith(
+            answerStatus: AnswerStatus.confirmed,
+          ));
+        }
+        return;
+      case AnswerStatus.confirmed:
+        return;
+      case AnswerStatus.depleted:
+        return;
+    }
   }
 
   void continueQuiz() {
-    throw UnimplementedError();
-    if (state.status == QuizStatus.complete) {
-      return;
-    }
+    if (state.status == QuizStatus.complete) return;
 
-    if (!state.questionDepleted && !state.choiceSelected) {
-      return;
-    }
-
-    QuizState newState = state;
-    if (state.selectedOption == state.currentQuestion.correctOption) {
-      newState = newState.copyWith(
-        score: state.score + state.currentQuestion.points,
-      );
+    switch (state.answerStatus) {
+      case AnswerStatus.initial:
+        return;
+      case AnswerStatus.selected:
+        return;
+      default:
+        break;
     }
 
     if (!state.quizQuestions
         .any((element) => element.sequenceIndex > state.questionIndex)) {
-      emit(newState.copyWith(
-        status: QuizStatus.complete,
-        choiceSelected: false,
-        questionDepleted: false,
-      ));
-      return;
-    }
-
-    newState = newState.copyWith(
-      questionIndex: state.questionIndex + 1,
-      choiceSelected: false,
-      questionDepleted: false,
-    );
-
-    emit(newState);
-  }
-
-  void terminateTime() {
-    throw UnimplementedError();
-    if (state.questionDepleted) {
+      emit(state.copyWith(status: QuizStatus.complete));
       return;
     }
 
     emit(state.copyWith(
-      questionDepleted: true,
+      questionIndex: state.questionIndex + 1,
+      answerStatus: AnswerStatus.initial,
     ));
+  }
+
+  void terminateTime() {
+    switch (state.answerStatus) {
+      case AnswerStatus.initial:
+        emit(state.copyWith(
+          answerStatus: AnswerStatus.depleted,
+        ));
+        return;
+      case AnswerStatus.selected:
+        bool optionCorrect =
+            state.selectedOption == state.currentQuestion.correctOption;
+        if (optionCorrect) {
+          emit(state.copyWith(
+            answerStatus: AnswerStatus.confirmed,
+            score: state.score + state.currentQuestion.points,
+          ));
+        } else {
+          emit(state.copyWith(
+            answerStatus: AnswerStatus.confirmed,
+          ));
+        }
+        return;
+      case AnswerStatus.confirmed:
+        return;
+      case AnswerStatus.depleted:
+        return;
+    }
   }
 }

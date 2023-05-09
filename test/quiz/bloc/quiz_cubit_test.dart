@@ -249,7 +249,9 @@ void main() {
 
       blocTest(
         'given question depleted, does nothing',
-        seed: () => successLoadedSeedState.copyWith(questionDepleted: true),
+        seed: () => successLoadedSeedState.copyWith(
+          answerStatus: AnswerStatus.depleted,
+        ),
         build: () => cubit,
         act: (contextCubit) => contextCubit.selectAnswer(OptionIndex.C),
         expect: () => <QuizState>[],
@@ -257,7 +259,9 @@ void main() {
 
       blocTest(
         'given question confirmed, does nothing',
-        seed: () => successLoadedSeedState.copyWith(questionDepleted: true),
+        seed: () => successLoadedSeedState.copyWith(
+          answerStatus: AnswerStatus.confirmed,
+        ),
         build: () => cubit,
         act: (contextCubit) => contextCubit.selectAnswer(OptionIndex.C),
         expect: () => <QuizState>[],
