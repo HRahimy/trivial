@@ -329,10 +329,14 @@ void main() {
           ],
         );
 
-        final incorrectChoice = OptionIndex.values.firstWhere((element) =>
-            element != successLoadedSeedState.currentQuestion.correctOption);
+        final incorrectChoices = OptionIndex.values
+            .where((element) =>
+                element != successLoadedSeedState.currentQuestion.correctOption)
+            .toList();
+        final incorrectChoice =
+            incorrectChoices[Random().nextInt(incorrectChoices.length)];
         blocTest(
-          'given selected choice was not the correct option, emits new state with same score confirmed `answerStatus`',
+          'given selected choice was not the correct option, emits new state with same score and confirmed `answerStatus`',
           seed: () => successLoadedSeedState.copyWith(
             answerStatus: AnswerStatus.selected,
             selectedOption: incorrectChoice,
@@ -424,6 +428,9 @@ void main() {
         for (var status in possibleStatuses) {
           blocTest(
             'with status being ${status.toString()}, does nothing',
+            seed: () => successLoadedSeedState.copyWith(
+              answerStatus: status,
+            ),
             build: () => cubit,
             act: (contextCubit) => contextCubit.terminateTime(),
             expect: () => <QuizState>[],
@@ -433,17 +440,55 @@ void main() {
 
       blocTest(
         'given current status is initial, depletes question',
-        build: () => cubit,
-      );
-
-      blocTest(
-        'given question not depleted, emits new state with marking question depleted',
-        seed: () => successLoadedSeedState,
+        seed: () => successLoadedSeedState.copyWith(
+          answerStatus: AnswerStatus.initial,
+        ),
         build: () => cubit,
         act: (contextCubit) => contextCubit.terminateTime(),
         expect: () => <QuizState>[
           successLoadedSeedState.copyWith(
-            questionDepleted: true,
+            answerStatus: AnswerStatus.depleted,
+          ),
+        ],
+      );
+
+      final correctChoice =
+          successLoadedSeedState.currentQuestion.correctOption;
+      final incorrectChoices = OptionIndex.values
+          .where((element) => element != correctChoice)
+          .toList();
+      final incorrectChoice =
+          incorrectChoices[Random().nextInt(incorrectChoices.length)];
+      blocTest(
+        'given `answerStatus` is selected and correct choice selected, emits new state with `answerStatus` confirmed and updated points',
+        seed: () => successLoadedSeedState.copyWith(
+          answerStatus: AnswerStatus.selected,
+          selectedOption: correctChoice,
+        ),
+        build: () => cubit,
+        act: (contextCubit) => contextCubit.terminateTime(),
+        expect: () => <QuizState>[
+          successLoadedSeedState.copyWith(
+            answerStatus: AnswerStatus.confirmed,
+            score: successLoadedSeedState.score +
+                successLoadedSeedState.currentQuestion.points,
+            selectedOption: correctChoice,
+          ),
+        ],
+      );
+
+      blocTest(
+        'given `answerStatus` is selected and incorrect choice selected, emits new state with confirmed `answerStatus` and same points',
+        seed: () => successLoadedSeedState.copyWith(
+          answerStatus: AnswerStatus.selected,
+          selectedOption: incorrectChoice,
+        ),
+        build: () => cubit,
+        act: (contextCubit) => contextCubit.terminateTime(),
+        expect: () => <QuizState>[
+          successLoadedSeedState.copyWith(
+            answerStatus: AnswerStatus.confirmed,
+            selectedOption: incorrectChoice,
           ),
         ],
       );
