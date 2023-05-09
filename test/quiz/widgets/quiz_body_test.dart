@@ -303,46 +303,93 @@ void main() {
         expect(dFinder, findsOneWidget);
       });
 
-      group('[OptionAButton]', () {
-        testWidgets('contains text and is correct', (tester) async {
+      Finder buttonFinder(OptionIndex option, String id) {
+        switch (option) {
+          case OptionIndex.A:
+            return find.byKey(QuizKeys.optionAButton(id));
+          case OptionIndex.B:
+            return find.byKey(QuizKeys.optionBButton(id));
+          case OptionIndex.C:
+            return find.byKey(QuizKeys.optionCButton(id));
+          case OptionIndex.D:
+            return find.byKey(QuizKeys.optionDButton(id));
+        }
+      }
+
+      Finder buttonTextFinder(OptionIndex option, String id) {
+        switch (option) {
+          case OptionIndex.A:
+            return find.descendant(
+              of: find.byKey(QuizKeys.optionAButton(id)),
+              matching: find.byKey(QuizKeys.optionAButtonText(id)),
+            );
+          case OptionIndex.B:
+            return find.descendant(
+              of: find.byKey(QuizKeys.optionBButton(id)),
+              matching: find.byKey(QuizKeys.optionBButtonText(id)),
+            );
+          case OptionIndex.C:
+            return find.descendant(
+              of: find.byKey(QuizKeys.optionCButton(id)),
+              matching: find.byKey(QuizKeys.optionCButtonText(id)),
+            );
+          case OptionIndex.D:
+            return find.descendant(
+              of: find.byKey(QuizKeys.optionDButton(id)),
+              matching: find.byKey(QuizKeys.optionDButtonText(id)),
+            );
+        }
+      }
+
+      String textPrefix(OptionIndex option) {
+        switch (option) {
+          case OptionIndex.A:
+            return 'A)';
+          case OptionIndex.B:
+            return 'B)';
+          case OptionIndex.C:
+            return 'C)';
+          case OptionIndex.D:
+            return 'D)';
+        }
+      }
+
+      for (var option in OptionIndex.values) {
+        testWidgets('${option.toString()} button contains text and is correct',
+            (tester) async {
           when(() => cubit.state).thenReturn(loadedState);
 
           await tester.pumpWidget(LoadedQuizScreenFixture(
             quizCubit: cubit,
           ));
 
-          final buttonFinder = find.byKey(
-              QuizKeys.optionAButton('${loadedState.currentQuestion.id}'));
-          final textFinder = find.descendant(
-            of: buttonFinder,
-            matching: find.byKey(QuizKeys.optionAButtonText(
-                '${loadedState.currentQuestion.id}')),
-          );
-          final textWidget = tester.widget(textFinder) as Text;
+          final textFinder =
+              buttonTextFinder(option, '${loadedState.currentQuestion.id}');
+          final textWidget = tester.widget(textFinder);
 
           expect(textFinder, findsOneWidget);
+          expect(textWidget.runtimeType, equals(Text));
           expect(
-            textWidget.data,
-            equals('A) ${loadedState.currentQuestion.options[OptionIndex.A]}'),
+            (textWidget as Text).data,
+            equals(
+                '${textPrefix(option)} ${loadedState.currentQuestion.options[option]}'),
           );
         });
 
-        testWidgets('given option A is selected, button is highlighted',
+        testWidgets(
+            'given ${option.toString()} is selected, button is highlighted',
             (tester) async {
           when(() => cubit.state).thenReturn(loadedState.copyWith(
-            choiceSelected: true,
-            selectedOption: OptionIndex.A,
+            answerStatus: AnswerStatus.selected,
+            selectedOption: option,
           ));
 
           await tester.pumpWidget(LoadedQuizScreenFixture(
             quizCubit: cubit,
           ));
 
-          final buttonFinder = find.byKey(
-            QuizKeys.optionAButton('${loadedState.currentQuestion.id}'),
-          );
           final materialFinder = find.descendant(
-            of: buttonFinder,
+            of: buttonFinder(option, '${loadedState.currentQuestion.id}'),
             matching: find.byType(Material),
           );
 
@@ -351,7 +398,9 @@ void main() {
           final materialWidget = tester.widget(materialFinder) as Material;
           expect(materialWidget.color, equals(AppTheme.complementaryColor));
         });
+      }
 
+      group('[OptionAButton]', () {
         testWidgets(
             'given option A is selected and question is depleted, button is highlighted',
             (tester) async {
@@ -444,54 +493,6 @@ void main() {
       });
 
       group('[OptionBButton]', () {
-        testWidgets('contains text and is correct', (tester) async {
-          when(() => cubit.state).thenReturn(loadedState);
-
-          await tester.pumpWidget(LoadedQuizScreenFixture(
-            quizCubit: cubit,
-          ));
-
-          final buttonFinder = find.byKey(
-              QuizKeys.optionBButton('${loadedState.currentQuestion.id}'));
-          final textFinder = find.descendant(
-            of: buttonFinder,
-            matching: find.byKey(QuizKeys.optionBButtonText(
-                '${loadedState.currentQuestion.id}')),
-          );
-          final textWidget = tester.widget(textFinder) as Text;
-
-          expect(textFinder, findsOneWidget);
-          expect(
-            textWidget.data,
-            equals('B) ${loadedState.currentQuestion.options[OptionIndex.B]}'),
-          );
-        });
-
-        testWidgets('given option B is selected, button is highlighted',
-            (tester) async {
-          when(() => cubit.state).thenReturn(loadedState.copyWith(
-            choiceSelected: true,
-            selectedOption: OptionIndex.B,
-          ));
-
-          await tester.pumpWidget(LoadedQuizScreenFixture(
-            quizCubit: cubit,
-          ));
-
-          final buttonFinder = find.byKey(
-            QuizKeys.optionBButton('${loadedState.currentQuestion.id}'),
-          );
-          final materialFinder = find.descendant(
-            of: buttonFinder,
-            matching: find.byType(Material),
-          );
-
-          expect(materialFinder, findsOneWidget);
-
-          final materialWidget = tester.widget(materialFinder) as Material;
-          expect(materialWidget.color, equals(AppTheme.complementaryColor));
-        });
-
         testWidgets(
             'given option B is selected and question is depleted, button is highlighted',
             (tester) async {
@@ -584,54 +585,6 @@ void main() {
       });
 
       group('[OptionCButton]', () {
-        testWidgets('contains text and is correct', (tester) async {
-          when(() => cubit.state).thenReturn(loadedState);
-
-          await tester.pumpWidget(LoadedQuizScreenFixture(
-            quizCubit: cubit,
-          ));
-
-          final buttonFinder = find.byKey(
-              QuizKeys.optionCButton('${loadedState.currentQuestion.id}'));
-          final textFinder = find.descendant(
-            of: buttonFinder,
-            matching: find.byKey(QuizKeys.optionCButtonText(
-                '${loadedState.currentQuestion.id}')),
-          );
-          final textWidget = tester.widget(textFinder) as Text;
-
-          expect(textFinder, findsOneWidget);
-          expect(
-            textWidget.data,
-            equals('C) ${loadedState.currentQuestion.options[OptionIndex.C]}'),
-          );
-        });
-
-        testWidgets('given option C is selected, button is highlighted',
-            (tester) async {
-          when(() => cubit.state).thenReturn(loadedState.copyWith(
-            choiceSelected: true,
-            selectedOption: OptionIndex.C,
-          ));
-
-          await tester.pumpWidget(LoadedQuizScreenFixture(
-            quizCubit: cubit,
-          ));
-
-          final buttonFinder = find.byKey(
-            QuizKeys.optionCButton('${loadedState.currentQuestion.id}'),
-          );
-          final materialFinder = find.descendant(
-            of: buttonFinder,
-            matching: find.byType(Material),
-          );
-
-          expect(materialFinder, findsOneWidget);
-
-          final materialWidget = tester.widget(materialFinder) as Material;
-          expect(materialWidget.color, equals(AppTheme.complementaryColor));
-        });
-
         testWidgets(
             'given option C is selected and question is depleted, button is highlighted',
             (tester) async {
@@ -724,54 +677,6 @@ void main() {
       });
 
       group('[OptionDButton]', () {
-        testWidgets('contains text and is correct', (tester) async {
-          when(() => cubit.state).thenReturn(loadedState);
-
-          await tester.pumpWidget(LoadedQuizScreenFixture(
-            quizCubit: cubit,
-          ));
-
-          final buttonFinder = find.byKey(
-              QuizKeys.optionDButton('${loadedState.currentQuestion.id}'));
-          final textFinder = find.descendant(
-            of: buttonFinder,
-            matching: find.byKey(QuizKeys.optionDButtonText(
-                '${loadedState.currentQuestion.id}')),
-          );
-          final textWidget = tester.widget(textFinder) as Text;
-
-          expect(textFinder, findsOneWidget);
-          expect(
-            textWidget.data,
-            equals('D) ${loadedState.currentQuestion.options[OptionIndex.D]}'),
-          );
-        });
-
-        testWidgets('given option D is selected, button is highlighted',
-            (tester) async {
-          when(() => cubit.state).thenReturn(loadedState.copyWith(
-            choiceSelected: true,
-            selectedOption: OptionIndex.D,
-          ));
-
-          await tester.pumpWidget(LoadedQuizScreenFixture(
-            quizCubit: cubit,
-          ));
-
-          final buttonFinder = find.byKey(
-            QuizKeys.optionDButton('${loadedState.currentQuestion.id}'),
-          );
-          final materialFinder = find.descendant(
-            of: buttonFinder,
-            matching: find.byType(Material),
-          );
-
-          expect(materialFinder, findsOneWidget);
-
-          final materialWidget = tester.widget(materialFinder) as Material;
-          expect(materialWidget.color, equals(AppTheme.complementaryColor));
-        });
-
         testWidgets(
             'given option D is selected and question is depleted, button is highlighted',
             (tester) async {
