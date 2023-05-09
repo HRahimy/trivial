@@ -360,143 +360,55 @@ void main() {
       );
 
       // given current status is not confirmed or depleted, does nothing
+      final nonCompleteStatus = AnswerStatus.values
+          .where((element) =>
+              element != AnswerStatus.confirmed &&
+              element != AnswerStatus.depleted)
+          .toList();
+      for (var status in nonCompleteStatus) {
+        blocTest(
+          'given current status is ${status.toString()}, does nothing',
+          seed: () => successLoadedSeedState.copyWith(answerStatus: status),
+          build: () => cubit,
+          act: (contextCubit) => contextCubit.continueQuiz(),
+          expect: () => <QuizState>[],
+        );
+      }
 
-      blocTest(
-        'given choice not selected and question not depleted, does nothing',
-        seed: () => successLoadedSeedState,
-        build: () => cubit,
-        act: (contextCubit) => contextCubit.continueQuiz(),
-        expect: () => <QuizState>[],
-      );
-
-      blocTest(
-        'given correct choice selected, emits state with updated question and score',
-        seed: () => successLoadedSeedState.copyWith(
-          selectedOption: successLoadedSeedState.currentQuestion.correctOption,
-          choiceSelected: true,
-        ),
-        build: () => cubit,
-        act: (contextCubit) => contextCubit.continueQuiz(),
-        expect: () => <QuizState>[
-          successLoadedSeedState.copyWith(
-            questionIndex: successLoadedSeedState.questionIndex + 1,
-            score: successLoadedSeedState.score +
-                successLoadedSeedState.currentQuestion.points,
-            selectedOption:
-                successLoadedSeedState.currentQuestion.correctOption,
+      // given current status is confirmed or depleted, increments to next question
+      final completeStatus = [
+        AnswerStatus.confirmed,
+        AnswerStatus.depleted,
+      ];
+      for (var status in completeStatus) {
+        blocTest(
+          'given current status is ${status.toString()}, increments to next question',
+          seed: () => successLoadedSeedState.copyWith(
+            answerStatus: status,
           ),
-        ],
-      );
-
-      blocTest(
-        'given incorrect choice selected, emits state with new question and same score',
-        seed: () => successLoadedSeedState.copyWith(
-          selectedOption: OptionIndex.C,
-          choiceSelected: true,
-        ),
-        build: () => cubit,
-        act: (contextCubit) => contextCubit.continueQuiz(),
-        expect: () => <QuizState>[
-          successLoadedSeedState.copyWith(
-            questionIndex: successLoadedSeedState.questionIndex + 1,
-            selectedOption: OptionIndex.C,
-          ),
-        ],
-      );
-
-      blocTest(
-        'given correct choice and quiz depleted, emits state with new question and updated score',
-        seed: () => successLoadedSeedState.copyWith(
-          selectedOption: successLoadedSeedState.currentQuestion.correctOption,
-          choiceSelected: true,
-          questionDepleted: true,
-        ),
-        build: () => cubit,
-        act: (contextCubit) => contextCubit.continueQuiz(),
-        expect: () => <QuizState>[
-          successLoadedSeedState.copyWith(
-            questionIndex: successLoadedSeedState.questionIndex + 1,
-            score: successLoadedSeedState.score +
-                successLoadedSeedState.currentQuestion.points,
-            selectedOption:
-                successLoadedSeedState.currentQuestion.correctOption,
-          ),
-        ],
-      );
-
-      blocTest(
-        'given no choice selected and quiz depleted, emits new question with same score',
-        seed: () => successLoadedSeedState.copyWith(questionDepleted: true),
-        build: () => cubit,
-        act: (contextCubit) => contextCubit.continueQuiz(),
-        expect: () => <QuizState>[
-          successLoadedSeedState.copyWith(
-            questionIndex: successLoadedSeedState.questionIndex + 1,
-          ),
-        ],
-      );
-
-      blocTest(
-        'given incorrect choice and quiz depleted, emits new question with same score',
-        seed: () => successLoadedSeedState.copyWith(
-          selectedOption: OptionIndex.C,
-          choiceSelected: true,
-          questionDepleted: true,
-        ),
-        build: () => cubit,
-        act: (contextCubit) => contextCubit.continueQuiz(),
-        expect: () => <QuizState>[
-          successLoadedSeedState.copyWith(
-            questionIndex: successLoadedSeedState.questionIndex + 1,
-            selectedOption: OptionIndex.C,
-          ),
-        ],
-      );
+          build: () => cubit,
+          act: (contextCubit) => contextCubit.continueQuiz(),
+          expect: () => <QuizState>[
+            successLoadedSeedState.copyWith(
+              questionIndex: successLoadedSeedState.questionIndex + 1,
+              answerStatus: AnswerStatus.initial,
+            )
+          ],
+        );
+      }
 
       blocTest(
         'given last question, ends quiz',
         seed: () => successLoadedSeedState.copyWith(
           questionIndex: lastQuestionIndex,
-          questionDepleted: true,
+          answerStatus: AnswerStatus.confirmed,
         ),
         build: () => cubit,
         act: (contextCubit) => contextCubit.continueQuiz(),
         expect: () => <QuizState>[
           successLoadedSeedState.copyWith(
             questionIndex: lastQuestionIndex,
-            status: QuizStatus.complete,
-          ),
-        ],
-      );
-
-      blocTest(
-        'given last question and correct choice selected, ends quiz with updated score',
-        seed: () => lastQuestionWithCorrectChoiceSelected,
-        build: () => cubit,
-        act: (contextCubit) => contextCubit.continueQuiz(),
-        expect: () => <QuizState>[
-          lastQuestionWithCorrectChoiceSelected.copyWith(
-            score: lastQuestionWithCorrectChoiceSelected.score +
-                lastQuestionWithCorrectChoiceSelected.currentQuestion.points,
-            status: QuizStatus.complete,
-            choiceSelected: false,
-          ),
-        ],
-      );
-
-      blocTest(
-        'given last question and incorrect choice selected, ends quiz with same score',
-        seed: () => successLoadedSeedState.copyWith(
-          questionIndex: lastQuestionIndex,
-          selectedOption: OptionIndex.C,
-          choiceSelected: true,
-        ),
-        build: () => cubit,
-        act: (contextCubit) => contextCubit.continueQuiz(),
-        expect: () => <QuizState>[
-          successLoadedSeedState.copyWith(
-            questionIndex: lastQuestionIndex,
-            selectedOption: OptionIndex.C,
+            answerStatus: AnswerStatus.confirmed,
             status: QuizStatus.complete,
           ),
         ],
