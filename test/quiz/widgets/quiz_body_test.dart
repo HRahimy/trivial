@@ -398,375 +398,123 @@ void main() {
           final materialWidget = tester.widget(materialFinder) as Material;
           expect(materialWidget.color, equals(AppTheme.complementaryColor));
         });
+
+        testWidgets(
+            'given ${option.toString()} is confirmed, button is highlighted',
+            (tester) async {
+          when(() => cubit.state).thenReturn(loadedState.copyWith(
+            answerStatus: AnswerStatus.confirmed,
+            selectedOption: option,
+          ));
+
+          await tester.pumpWidget(LoadedQuizScreenFixture(
+            quizCubit: cubit,
+          ));
+
+          final materialFinder = find.descendant(
+            of: buttonFinder(option, '${loadedState.currentQuestion.id}'),
+            matching: find.byType(Material),
+          );
+
+          expect(materialFinder, findsOneWidget);
+
+          final materialWidget = tester.widget(materialFinder) as Material;
+          expect(materialWidget.color, equals(AppTheme.complementaryColor));
+        });
+
+        testWidgets(
+            'given question is confirmed or depleted, pressing ${option.toString()} button DOES NOT trigger select event in state',
+            (tester) async {
+          final statuses = [AnswerStatus.confirmed, AnswerStatus.depleted];
+
+          for (var status in statuses) {
+            when(() => cubit.state).thenReturn(loadedState.copyWith(
+              answerStatus: status,
+            ));
+
+            await tester.pumpWidget(LoadedQuizScreenFixture(
+              quizCubit: cubit,
+            ));
+            final materialFinder = find.descendant(
+              of: buttonFinder(option, '${cubit.state.currentQuestion.id}'),
+              matching: find.byType(Material),
+            );
+            final inkwellFinder = find.descendant(
+              of: materialFinder,
+              matching: find.byType(InkWell),
+            );
+
+            expect(materialFinder, findsOneWidget);
+            expect(inkwellFinder, findsOneWidget);
+
+            await tester.tap(inkwellFinder);
+            verifyNever(() => cubit.selectAnswer(option));
+          }
+        });
+
+        testWidgets(
+            'given question is not confirmed or depleted, pressing ${option.toString()} button triggers select event in state',
+            (tester) async {
+          final statuses = AnswerStatus.values
+              .where((e) =>
+                  e != AnswerStatus.confirmed && e != AnswerStatus.depleted)
+              .toList();
+
+          for (var status in statuses) {
+            when(() => cubit.state).thenReturn(loadedState.copyWith(
+              answerStatus: status,
+            ));
+
+            await tester.pumpWidget(LoadedQuizScreenFixture(
+              quizCubit: cubit,
+            ));
+            final materialFinder = find.descendant(
+              of: buttonFinder(option, '${cubit.state.currentQuestion.id}'),
+              matching: find.byType(Material),
+            );
+            final inkwellFinder = find.descendant(
+              of: materialFinder,
+              matching: find.byType(InkWell),
+            );
+
+            expect(materialFinder, findsOneWidget);
+            expect(inkwellFinder, findsOneWidget);
+
+            await tester.tap(inkwellFinder);
+            verify(() => cubit.selectAnswer(option)).called(1);
+          }
+        });
+
+        testWidgets(
+            'given question is depleted, ${option.toString()} button is greyed and disabled',
+            (tester) async {
+          when(() => cubit.state).thenReturn(loadedState.copyWith(
+            answerStatus: AnswerStatus.depleted,
+          ));
+
+          await tester.pumpWidget(LoadedQuizScreenFixture(
+            quizCubit: cubit,
+          ));
+
+          final materialFinder = find.descendant(
+            of: buttonFinder(option, '${loadedState.currentQuestion.id}'),
+            matching: find.byType(Material),
+          );
+          final inkwellFinder = find.descendant(
+            of: materialFinder,
+            matching: find.byType(InkWell),
+          );
+
+          expect(materialFinder, findsOneWidget);
+          expect(inkwellFinder, findsOneWidget);
+
+          final materialWidget = tester.widget(materialFinder) as Material;
+          expect(materialWidget.color, equals(Colors.grey[300]));
+
+          await tester.tap(inkwellFinder);
+          verifyNever(() => cubit.selectAnswer(option));
+        });
       }
-
-      group('[OptionAButton]', () {
-        testWidgets(
-            'given option A is selected and question is depleted, button is highlighted',
-            (tester) async {
-          when(() => cubit.state).thenReturn(loadedState.copyWith(
-            choiceSelected: true,
-            selectedOption: OptionIndex.A,
-            questionDepleted: true,
-          ));
-
-          await tester.pumpWidget(LoadedQuizScreenFixture(
-            quizCubit: cubit,
-          ));
-
-          final buttonFinder = find.byKey(
-            QuizKeys.optionAButton('${loadedState.currentQuestion.id}'),
-          );
-          final materialFinder = find.descendant(
-            of: buttonFinder,
-            matching: find.byType(Material),
-          );
-
-          expect(materialFinder, findsOneWidget);
-
-          final materialWidget = tester.widget(materialFinder) as Material;
-          expect(materialWidget.color, equals(AppTheme.complementaryColor));
-        });
-
-        testWidgets(
-            'given question is NOT depleted, pressing button triggers select event in state',
-            (tester) async {
-          when(() => cubit.state).thenReturn(loadedState.copyWith(
-            questionDepleted: false,
-          ));
-
-          await tester.pumpWidget(LoadedQuizScreenFixture(
-            quizCubit: cubit,
-          ));
-
-          final buttonFinder = find.byKey(
-            QuizKeys.optionAButton('${loadedState.currentQuestion.id}'),
-          );
-          final materialFinder = find.descendant(
-            of: buttonFinder,
-            matching: find.byType(Material),
-          );
-          final inkwellFinder = find.descendant(
-            of: materialFinder,
-            matching: find.byType(InkWell),
-          );
-
-          expect(materialFinder, findsOneWidget);
-          expect(inkwellFinder, findsOneWidget);
-
-          await tester.tap(inkwellFinder);
-          verify(() => cubit.selectAnswer(OptionIndex.A)).called(1);
-        });
-
-        testWidgets(
-            'given option A is NOT selected and question is depleted, button is greyed and disabled',
-            (tester) async {
-          when(() => cubit.state).thenReturn(loadedState.copyWith(
-            questionDepleted: true,
-          ));
-
-          await tester.pumpWidget(LoadedQuizScreenFixture(
-            quizCubit: cubit,
-          ));
-
-          final buttonFinder = find.byKey(
-            QuizKeys.optionAButton('${loadedState.currentQuestion.id}'),
-          );
-          final materialFinder = find.descendant(
-            of: buttonFinder,
-            matching: find.byType(Material),
-          );
-          final inkwellFinder = find.descendant(
-            of: materialFinder,
-            matching: find.byType(InkWell),
-          );
-
-          expect(materialFinder, findsOneWidget);
-          expect(inkwellFinder, findsOneWidget);
-
-          final materialWidget = tester.widget(materialFinder) as Material;
-          expect(materialWidget.color, equals(Colors.grey[300]));
-
-          await tester.tap(inkwellFinder);
-          verifyNever(() => cubit.selectAnswer(OptionIndex.A));
-        });
-      });
-
-      group('[OptionBButton]', () {
-        testWidgets(
-            'given option B is selected and question is depleted, button is highlighted',
-            (tester) async {
-          when(() => cubit.state).thenReturn(loadedState.copyWith(
-            choiceSelected: true,
-            selectedOption: OptionIndex.B,
-            questionDepleted: true,
-          ));
-
-          await tester.pumpWidget(LoadedQuizScreenFixture(
-            quizCubit: cubit,
-          ));
-
-          final buttonFinder = find.byKey(
-            QuizKeys.optionBButton('${loadedState.currentQuestion.id}'),
-          );
-          final materialFinder = find.descendant(
-            of: buttonFinder,
-            matching: find.byType(Material),
-          );
-
-          expect(materialFinder, findsOneWidget);
-
-          final materialWidget = tester.widget(materialFinder) as Material;
-          expect(materialWidget.color, equals(AppTheme.complementaryColor));
-        });
-
-        testWidgets(
-            'given question is NOT depleted, pressing button triggers select event in state',
-            (tester) async {
-          when(() => cubit.state).thenReturn(loadedState.copyWith(
-            questionDepleted: false,
-          ));
-
-          await tester.pumpWidget(LoadedQuizScreenFixture(
-            quizCubit: cubit,
-          ));
-
-          final buttonFinder = find.byKey(
-            QuizKeys.optionBButton('${loadedState.currentQuestion.id}'),
-          );
-          final materialFinder = find.descendant(
-            of: buttonFinder,
-            matching: find.byType(Material),
-          );
-          final inkwellFinder = find.descendant(
-            of: materialFinder,
-            matching: find.byType(InkWell),
-          );
-
-          expect(materialFinder, findsOneWidget);
-          expect(inkwellFinder, findsOneWidget);
-
-          await tester.tap(inkwellFinder);
-          verify(() => cubit.selectAnswer(OptionIndex.B)).called(1);
-        });
-
-        testWidgets(
-            'given option B is NOT selected and question is depleted, button is greyed and disabled',
-            (tester) async {
-          when(() => cubit.state).thenReturn(loadedState.copyWith(
-            questionDepleted: true,
-          ));
-
-          await tester.pumpWidget(LoadedQuizScreenFixture(
-            quizCubit: cubit,
-          ));
-
-          final buttonFinder = find.byKey(
-            QuizKeys.optionBButton('${loadedState.currentQuestion.id}'),
-          );
-          final materialFinder = find.descendant(
-            of: buttonFinder,
-            matching: find.byType(Material),
-          );
-          final inkwellFinder = find.descendant(
-            of: materialFinder,
-            matching: find.byType(InkWell),
-          );
-
-          expect(materialFinder, findsOneWidget);
-          expect(inkwellFinder, findsOneWidget);
-
-          final materialWidget = tester.widget(materialFinder) as Material;
-          expect(materialWidget.color, equals(Colors.grey[300]));
-
-          await tester.tap(inkwellFinder);
-          verifyNever(() => cubit.selectAnswer(OptionIndex.B));
-        });
-      });
-
-      group('[OptionCButton]', () {
-        testWidgets(
-            'given option C is selected and question is depleted, button is highlighted',
-            (tester) async {
-          when(() => cubit.state).thenReturn(loadedState.copyWith(
-            choiceSelected: true,
-            selectedOption: OptionIndex.C,
-            questionDepleted: true,
-          ));
-
-          await tester.pumpWidget(LoadedQuizScreenFixture(
-            quizCubit: cubit,
-          ));
-
-          final buttonFinder = find.byKey(
-            QuizKeys.optionCButton('${loadedState.currentQuestion.id}'),
-          );
-          final materialFinder = find.descendant(
-            of: buttonFinder,
-            matching: find.byType(Material),
-          );
-
-          expect(materialFinder, findsOneWidget);
-
-          final materialWidget = tester.widget(materialFinder) as Material;
-          expect(materialWidget.color, equals(AppTheme.complementaryColor));
-        });
-
-        testWidgets(
-            'given question is NOT depleted, pressing button triggers select event in state',
-            (tester) async {
-          when(() => cubit.state).thenReturn(loadedState.copyWith(
-            questionDepleted: false,
-          ));
-
-          await tester.pumpWidget(LoadedQuizScreenFixture(
-            quizCubit: cubit,
-          ));
-
-          final buttonFinder = find.byKey(
-            QuizKeys.optionCButton('${loadedState.currentQuestion.id}'),
-          );
-          final materialFinder = find.descendant(
-            of: buttonFinder,
-            matching: find.byType(Material),
-          );
-          final inkwellFinder = find.descendant(
-            of: materialFinder,
-            matching: find.byType(InkWell),
-          );
-
-          expect(materialFinder, findsOneWidget);
-          expect(inkwellFinder, findsOneWidget);
-
-          await tester.tap(inkwellFinder);
-          verify(() => cubit.selectAnswer(OptionIndex.C)).called(1);
-        });
-
-        testWidgets(
-            'given option C is NOT selected and question is depleted, button is greyed and disabled',
-            (tester) async {
-          when(() => cubit.state).thenReturn(loadedState.copyWith(
-            questionDepleted: true,
-          ));
-
-          await tester.pumpWidget(LoadedQuizScreenFixture(
-            quizCubit: cubit,
-          ));
-
-          final buttonFinder = find.byKey(
-            QuizKeys.optionCButton('${loadedState.currentQuestion.id}'),
-          );
-          final materialFinder = find.descendant(
-            of: buttonFinder,
-            matching: find.byType(Material),
-          );
-          final inkwellFinder = find.descendant(
-            of: materialFinder,
-            matching: find.byType(InkWell),
-          );
-
-          expect(materialFinder, findsOneWidget);
-          expect(inkwellFinder, findsOneWidget);
-
-          final materialWidget = tester.widget(materialFinder) as Material;
-          expect(materialWidget.color, equals(Colors.grey[300]));
-
-          await tester.tap(inkwellFinder);
-          verifyNever(() => cubit.selectAnswer(OptionIndex.C));
-        });
-      });
-
-      group('[OptionDButton]', () {
-        testWidgets(
-            'given option D is selected and question is depleted, button is highlighted',
-            (tester) async {
-          when(() => cubit.state).thenReturn(loadedState.copyWith(
-            choiceSelected: true,
-            selectedOption: OptionIndex.D,
-            questionDepleted: true,
-          ));
-
-          await tester.pumpWidget(LoadedQuizScreenFixture(
-            quizCubit: cubit,
-          ));
-
-          final buttonFinder = find.byKey(
-            QuizKeys.optionDButton('${loadedState.currentQuestion.id}'),
-          );
-          final materialFinder = find.descendant(
-            of: buttonFinder,
-            matching: find.byType(Material),
-          );
-
-          expect(materialFinder, findsOneWidget);
-
-          final materialWidget = tester.widget(materialFinder) as Material;
-          expect(materialWidget.color, equals(AppTheme.complementaryColor));
-        });
-
-        testWidgets(
-            'given question is NOT depleted, pressing button triggers select event in state',
-            (tester) async {
-          when(() => cubit.state).thenReturn(loadedState.copyWith(
-            questionDepleted: false,
-          ));
-
-          await tester.pumpWidget(LoadedQuizScreenFixture(
-            quizCubit: cubit,
-          ));
-
-          final buttonFinder = find.byKey(
-            QuizKeys.optionDButton('${loadedState.currentQuestion.id}'),
-          );
-          final materialFinder = find.descendant(
-            of: buttonFinder,
-            matching: find.byType(Material),
-          );
-          final inkwellFinder = find.descendant(
-            of: materialFinder,
-            matching: find.byType(InkWell),
-          );
-
-          expect(materialFinder, findsOneWidget);
-          expect(inkwellFinder, findsOneWidget);
-
-          await tester.tap(inkwellFinder);
-          verify(() => cubit.selectAnswer(OptionIndex.D)).called(1);
-        });
-
-        testWidgets(
-            'given option D is NOT selected and question is depleted, button is greyed and disabled',
-            (tester) async {
-          when(() => cubit.state).thenReturn(loadedState.copyWith(
-            questionDepleted: true,
-          ));
-
-          await tester.pumpWidget(LoadedQuizScreenFixture(
-            quizCubit: cubit,
-          ));
-
-          final buttonFinder = find.byKey(
-            QuizKeys.optionDButton('${loadedState.currentQuestion.id}'),
-          );
-          final materialFinder = find.descendant(
-            of: buttonFinder,
-            matching: find.byType(Material),
-          );
-          final inkwellFinder = find.descendant(
-            of: materialFinder,
-            matching: find.byType(InkWell),
-          );
-
-          expect(materialFinder, findsOneWidget);
-          expect(inkwellFinder, findsOneWidget);
-
-          final materialWidget = tester.widget(materialFinder) as Material;
-          expect(materialWidget.color, equals(Colors.grey[300]));
-
-          await tester.tap(inkwellFinder);
-          verifyNever(() => cubit.selectAnswer(OptionIndex.D));
-        });
-      });
     });
 
     group('[ContinueButton]', () {
