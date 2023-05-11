@@ -437,24 +437,43 @@ class _ContinueControls extends StatelessWidget {
           previous.answerStatus != current.answerStatus,
       builder: (context, state) {
         final questionId = '${state.currentQuestion.id}';
+        final continueButton = IconButton(
+          key: QuizKeys.continueActionButton(questionId),
+          onPressed: () => context.read<QuizCubit>().continueQuiz(),
+          iconSize: 40,
+          color: Colors.black,
+          highlightColor: Colors.white,
+          icon: Icon(
+            Icons.arrow_right_rounded,
+            key: QuizKeys.continueActionButtonIcon(questionId),
+          ),
+        );
         switch (state.answerStatus) {
           case AnswerStatus.initial:
             return ListTile(
+              tileColor: AppTheme().analogousLowerSwatch[300],
               title: Text(
                 'Select an answer!',
+                textAlign: TextAlign.center,
+                style: const TextStyle(fontWeight: FontWeight.bold),
                 key: QuizKeys.selectMessage(questionId),
               ),
             );
           case AnswerStatus.selected:
             return ListTile(
               key: QuizKeys.confirmTile(questionId),
+              tileColor: AppTheme().analogousLowerSwatch[300],
               title: Text(
                 'Are you sure?',
+                style: const TextStyle(fontWeight: FontWeight.bold),
                 key: QuizKeys.confirmTileTitle(questionId),
               ),
               trailing: IconButton(
                 key: QuizKeys.confirmTileActionButton(questionId),
                 onPressed: () => context.read<QuizCubit>().confirmAnswer(),
+                iconSize: 30,
+                color: Colors.black,
+                highlightColor: Colors.white,
                 icon: Icon(
                   Icons.check_rounded,
                   key: QuizKeys.confirmTileActionButtonIcon(questionId),
@@ -467,57 +486,42 @@ class _ContinueControls extends StatelessWidget {
             return answerCorrect
                 ? ListTile(
                     key: QuizKeys.continueTile(questionId),
+                    tileColor: AppTheme().triadicLowerSwatch[100],
                     title: Text(
                       'Correct!',
+                      style: const TextStyle(fontWeight: FontWeight.bold),
                       key: QuizKeys.continueTileCorrectTitle(questionId),
                     ),
                     subtitle: Text(
                       'You earned ${state.currentQuestion.points} levels',
                       key: QuizKeys.continueTileCorrectScore(questionId),
                     ),
-                    trailing: IconButton(
-                      key: QuizKeys.continueActionButton(questionId),
-                      onPressed: () => context.read<QuizCubit>().continueQuiz(),
-                      icon: Icon(
-                        Icons.arrow_right_rounded,
-                        key: QuizKeys.continueActionButtonIcon(questionId),
-                      ),
-                    ),
+                    trailing: continueButton,
                   )
                 : ListTile(
                     key: QuizKeys.continueTile(questionId),
+                    tileColor: AppTheme().analogousUpperSwatch[200],
                     title: Text(
                       'Incorrect!',
+                      style: const TextStyle(fontWeight: FontWeight.bold),
                       key: QuizKeys.continueTileIncorrectTitle(questionId),
                     ),
                     subtitle: Text(
                       'Better luck next time',
                       key: QuizKeys.continueTileIncorrectMessage(questionId),
                     ),
-                    trailing: IconButton(
-                      key: QuizKeys.continueActionButton(questionId),
-                      onPressed: () => context.read<QuizCubit>().continueQuiz(),
-                      icon: Icon(
-                        Icons.arrow_right_rounded,
-                        key: QuizKeys.continueActionButtonIcon(questionId),
-                      ),
-                    ),
+                    trailing: continueButton,
                   );
           case AnswerStatus.depleted:
             return ListTile(
               key: QuizKeys.continueDepletedTile(questionId),
+              tileColor: AppTheme().analogousUpperSwatch[300],
               title: Text(
                 'Out of time!',
+                style: const TextStyle(fontWeight: FontWeight.bold),
                 key: QuizKeys.continueDepletedTileTitle(questionId),
               ),
-              trailing: IconButton(
-                key: QuizKeys.continueActionButton(questionId),
-                onPressed: () => context.read<QuizCubit>().continueQuiz(),
-                icon: Icon(
-                  Icons.arrow_right_rounded,
-                  key: QuizKeys.continueActionButtonIcon(questionId),
-                ),
-              ),
+              trailing: continueButton,
             );
         }
       },
