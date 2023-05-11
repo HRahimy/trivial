@@ -519,7 +519,7 @@ void main() {
       }
     });
 
-    group('[ContinueButton]', () {
+    group('[ContinueControls]', () {
       testWidgets(
           'given `answerStatus` is initial, select message is presented',
           (tester) async {
@@ -727,6 +727,70 @@ void main() {
           (tester) async {
         when(() => cubit.state).thenReturn(loadedState.copyWith(
           answerStatus: AnswerStatus.confirmed,
+        ));
+        await tester.pumpWidget(LoadedQuizScreenFixture(
+          quizCubit: cubit,
+        ));
+
+        final btnFinder = find.byKey(
+            QuizKeys.continueActionButton('${loadedState.currentQuestion.id}'));
+
+        await tester.tap(btnFinder);
+        await tester.pumpAndSettle();
+
+        verify(() => cubit.continueQuiz()).called(1);
+      });
+
+      testWidgets(
+          'given `answerStatus` is depleted, presents depleted tile with appropriate message and controls',
+          (tester) async {
+        when(() => cubit.state).thenReturn(loadedState.copyWith(
+          answerStatus: AnswerStatus.depleted,
+        ));
+        await tester.pumpWidget(LoadedQuizScreenFixture(
+          quizCubit: cubit,
+        ));
+
+        final id = '${loadedState.currentQuestion.id}';
+        final tileFinder = find.byKey(QuizKeys.continueDepletedTile(id));
+        final titleFinder = find.descendant(
+          of: tileFinder,
+          matching: find.byKey(QuizKeys.continueDepletedTileTitle(id)),
+        );
+        final btnFinder = find.descendant(
+          of: tileFinder,
+          matching: find.byKey(QuizKeys.continueActionButton(id)),
+        );
+        final btnIconFinder = find.descendant(
+          of: btnFinder,
+          matching: find.byKey(QuizKeys.continueActionButtonIcon(id)),
+        );
+
+        final tileWidget = tester.widget(tileFinder);
+        final titleWidget = tester.widget(titleFinder);
+        final btnWidget = tester.widget(btnFinder);
+        final btnIconWidget = tester.widget(btnIconFinder);
+
+        expect(tileFinder, findsOneWidget);
+        expect(tileWidget.runtimeType, equals(ListTile));
+
+        expect(titleFinder, findsOneWidget);
+        expect(titleWidget.runtimeType, equals(Text));
+        expect((titleWidget as Text).data, equals('Out of time!'));
+
+        expect(btnFinder, findsOneWidget);
+        expect(btnWidget.runtimeType, equals(IconButton));
+
+        expect(btnIconFinder, findsOneWidget);
+        expect(btnIconWidget.runtimeType, equals(Icon));
+        expect((btnIconWidget as Icon).icon, equals(Icons.arrow_right_rounded));
+      });
+
+      testWidgets(
+          'given `answerStatus` is depleted, tapping continue button triggers `continueQuiz()` in cubit',
+          (tester) async {
+        when(() => cubit.state).thenReturn(loadedState.copyWith(
+          answerStatus: AnswerStatus.depleted,
         ));
         await tester.pumpWidget(LoadedQuizScreenFixture(
           quizCubit: cubit,
