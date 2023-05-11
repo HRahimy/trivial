@@ -106,20 +106,29 @@ class QuizKeys {
   static Function(String) get continueTile =>
       (String id) => Key('__continueTile_${id}__');
 
+  static Function(String) get continueDepletedTile =>
+      (String id) => Key('__continueDepletedTile_${id}__');
+
+  static Function(String) get continueDepletedTileTitle =>
+      (String id) => Key('__continueDepletedTileTitle_${id}__');
+
   static Function(String) get continueTileCorrectTitle =>
-      (String id) => Key('__correctMessage_${id}__');
+      (String id) => Key('__continueTileCorrectTitle_${id}__');
 
   static Function(String) get continueTileCorrectScore =>
-      (String id) => Key('__correctScoreMessage_${id}__');
+      (String id) => Key('__continueTileCorrectScore_${id}__');
 
   static Function(String) get continueTileIncorrectTitle =>
-      (String id) => Key('__incorrectMessage_${id}__');
+      (String id) => Key('__continueTileIncorrectTitle_${id}__');
 
-  static Function(String) get continueTileActionButton =>
-      (String id) => Key('__continueButton_${id}__');
+  static Function(String) get continueTileIncorrectMessage =>
+      (String id) => Key('__continueTileIncorrectMessage_${id}__');
 
-  static Function(String) get continueTileActionButtonIcon =>
-      (String id) => Key('__continueButtonIcon_${id}__');
+  static Function(String) get continueActionButton =>
+      (String id) => Key('__continueActionButton_${id}__');
+
+  static Function(String) get continueActionButtonIcon =>
+      (String id) => Key('__continueActionButtonIcon_${id}__');
 
   //endregion
 

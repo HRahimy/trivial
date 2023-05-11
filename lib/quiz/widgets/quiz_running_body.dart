@@ -434,7 +434,7 @@ class _ContinueButton extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 32),
               child: ElevatedButton(
-                key: QuizKeys.continueTileActionButton('${state.currentQuestion.id}'),
+                key: QuizKeys.continueActionButton('${state.currentQuestion.id}'),
                 onPressed: canPress
                     ? () => context.read<QuizCubit>().continueQuiz()
                     : null,

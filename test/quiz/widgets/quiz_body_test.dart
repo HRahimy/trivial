@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:formz/formz.dart';
@@ -597,6 +599,146 @@ void main() {
         await tester.pumpAndSettle();
 
         verify(() => cubit.confirmAnswer()).called(1);
+      });
+
+      testWidgets(
+          'given `answerStatus` is confirmed and correct answer, presents continue tile with appropriate message',
+          (tester) async {
+        when(() => cubit.state).thenReturn(loadedState.copyWith(
+          answerStatus: AnswerStatus.confirmed,
+          selectedOption: loadedState.currentQuestion.correctOption,
+        ));
+        await tester.pumpWidget(LoadedQuizScreenFixture(
+          quizCubit: cubit,
+        ));
+
+        final id = '${loadedState.currentQuestion.id}';
+        final tileFinder = find.byKey(QuizKeys.continueTile(id));
+        final titleFinder = find.descendant(
+          of: tileFinder,
+          matching: find.byKey(QuizKeys.continueTileCorrectTitle(id)),
+        );
+        final scoreFinder = find.descendant(
+          of: tileFinder,
+          matching: find.byKey(QuizKeys.continueTileCorrectScore(id)),
+        );
+        final btnFinder = find.descendant(
+          of: tileFinder,
+          matching: find.byKey(QuizKeys.continueActionButton(id)),
+        );
+        final btnIconFinder = find.descendant(
+          of: btnFinder,
+          matching: find.byKey(QuizKeys.continueActionButtonIcon(id)),
+        );
+
+        final tileWidget = tester.widget(tileFinder);
+        final titleWidget = tester.widget(titleFinder);
+        final scoreWidget = tester.widget(scoreFinder);
+        final btnWidget = tester.widget(btnFinder);
+        final btnIconWidget = tester.widget(btnIconFinder);
+
+        expect(tileFinder, findsOneWidget);
+        expect(tileWidget.runtimeType, equals(ListTile));
+
+        expect(titleFinder, findsOneWidget);
+        expect(titleWidget.runtimeType, equals(Text));
+        expect((titleWidget as Text).data, equals('Correct!'));
+
+        expect(scoreFinder, findsOneWidget);
+        expect(scoreWidget.runtimeType, equals(Text));
+        expect(
+          (scoreWidget as Text).data,
+          equals('You earned ${loadedState.currentQuestion.points} levels'),
+        );
+
+        expect(btnFinder, findsOneWidget);
+        expect(btnWidget.runtimeType, equals(IconButton));
+
+        expect(btnIconFinder, findsOneWidget);
+        expect(btnIconWidget.runtimeType, equals(Icon));
+        expect((btnIconWidget as Icon).icon, equals(Icons.arrow_right_rounded));
+      });
+
+      testWidgets(
+          'given `answerStatus` is confirmed and incorrect answer, presents continue tile with appropriate message',
+          (tester) async {
+        final incorrectOptions = OptionIndex.values
+            .where((e) => e != loadedState.currentQuestion.correctOption)
+            .toList();
+        final randomOption =
+            incorrectOptions[Random().nextInt(incorrectOptions.length)];
+        when(() => cubit.state).thenReturn(loadedState.copyWith(
+          answerStatus: AnswerStatus.confirmed,
+          selectedOption: randomOption,
+        ));
+        await tester.pumpWidget(LoadedQuizScreenFixture(
+          quizCubit: cubit,
+        ));
+
+        final id = '${loadedState.currentQuestion.id}';
+        final tileFinder = find.byKey(QuizKeys.continueTile(id));
+        final titleFinder = find.descendant(
+          of: tileFinder,
+          matching: find.byKey(QuizKeys.continueTileIncorrectTitle(id)),
+        );
+        final msgFinder = find.descendant(
+          of: tileFinder,
+          matching: find.byKey(QuizKeys.continueTileIncorrectMessage(id)),
+        );
+        final btnFinder = find.descendant(
+          of: tileFinder,
+          matching: find.byKey(QuizKeys.continueActionButton(id)),
+        );
+        final btnIconFinder = find.descendant(
+          of: btnFinder,
+          matching: find.byKey(QuizKeys.continueActionButtonIcon(id)),
+        );
+
+        final tileWidget = tester.widget(tileFinder);
+        final titleWidget = tester.widget(titleFinder);
+        final msgWidget = tester.widget(msgFinder);
+        final btnWidget = tester.widget(btnFinder);
+        final btnIconWidget = tester.widget(btnIconFinder);
+
+        expect(tileFinder, findsOneWidget);
+        expect(tileWidget.runtimeType, equals(ListTile));
+
+        expect(titleFinder, findsOneWidget);
+        expect(titleWidget.runtimeType, equals(Text));
+        expect((titleWidget as Text).data, equals('Incorrect!'));
+
+        expect(msgFinder, findsOneWidget);
+        expect(msgWidget.runtimeType, equals(Text));
+        expect(
+          (msgWidget as Text).data,
+          equals('Better luck next time'),
+        );
+
+        expect(btnFinder, findsOneWidget);
+        expect(btnWidget.runtimeType, equals(IconButton));
+
+        expect(btnIconFinder, findsOneWidget);
+        expect(btnIconWidget.runtimeType, equals(Icon));
+        expect((btnIconWidget as Icon).icon, equals(Icons.arrow_right_rounded));
+      });
+
+      testWidgets(
+          'given `answerStatus` is confirmed, tapping continue button triggers `continueQuiz()` in cubit',
+          (tester) async {
+        when(() => cubit.state).thenReturn(loadedState.copyWith(
+          answerStatus: AnswerStatus.confirmed,
+        ));
+        await tester.pumpWidget(LoadedQuizScreenFixture(
+          quizCubit: cubit,
+        ));
+
+        final btnFinder = find.byKey(
+            QuizKeys.continueActionButton('${loadedState.currentQuestion.id}'));
+
+        await tester.tap(btnFinder);
+        await tester.pumpAndSettle();
+
+        verify(() => cubit.continueQuiz()).called(1);
       });
     });
   });
