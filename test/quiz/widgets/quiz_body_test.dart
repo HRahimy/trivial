@@ -210,6 +210,34 @@ void main() {
         expect(controller.duration, isNotNull);
         expect(controller.duration!.inSeconds, equals(15));
       });
+
+      testWidgets('timer is stopped if `answerStatus` becomes confirmed',
+          (tester) async {
+        final confState = loadedState.copyWith(
+          answerStatus: AnswerStatus.confirmed,
+        );
+        when(() => cubit.state).thenReturn(confState);
+        when(() => cubit.stream).thenAnswer(
+          (_) => Stream<QuizState>.fromIterable([
+            loadedState,
+            confState,
+          ]),
+        );
+        await tester.pumpWidget(LoadedQuizScreenFixture(
+          quizCubit: cubit,
+        ));
+
+        await tester.pump(const Duration(seconds: 5));
+
+        final animationWidget = tester.widget(find.descendant(
+          of: find.byKey(
+              QuizKeys.questionTimer('${loadedState.currentQuestion.id}')),
+          matching: find.byType(AnimatedBuilder),
+        )) as AnimatedBuilder;
+        final controller = animationWidget.listenable as AnimationController;
+
+        expect(controller.isAnimating, equals(false));
+      });
     });
 
     group('[ScorePanel]', () {
@@ -422,6 +450,38 @@ void main() {
 
           final materialWidget = tester.widget(materialFinder) as Material;
           expect(materialWidget.color, equals(AppTheme.complementaryColor));
+        });
+
+        testWidgets(
+            'given ${option.toString()} is not confirmed, button is greyed and disabled',
+            (tester) async {
+          final otherOptions =
+              OptionIndex.values.where((e) => e != option).toList();
+          final otherOption =
+              otherOptions[Random().nextInt(otherOptions.length)];
+          when(() => cubit.state).thenReturn(loadedState.copyWith(
+            answerStatus: AnswerStatus.confirmed,
+            selectedOption: otherOption,
+          ));
+
+          await tester.pumpWidget(LoadedQuizScreenFixture(
+            quizCubit: cubit,
+          ));
+
+          final materialFinder = find.descendant(
+            of: buttonFinder(option, '${loadedState.currentQuestion.id}'),
+            matching: find.byType(Material),
+          );
+          final inkwellFinder = find.descendant(
+            of: materialFinder,
+            matching: find.byType(InkWell),
+          );
+
+          expect(materialFinder, findsOneWidget);
+          expect(inkwellFinder, findsOneWidget);
+
+          final materialWidget = tester.widget(materialFinder) as Material;
+          expect(materialWidget.color, equals(Colors.grey[300]));
         });
 
         testWidgets(
