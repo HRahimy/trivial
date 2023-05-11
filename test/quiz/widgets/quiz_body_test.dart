@@ -518,115 +518,85 @@ void main() {
     });
 
     group('[ContinueButton]', () {
-      testWidgets('widget exists', (tester) async {
-        when(() => cubit.state).thenReturn(loadedState);
-
-        await tester.pumpWidget(LoadedQuizScreenFixture(
-          quizCubit: cubit,
-        ));
-
-        final String buttonId = '${loadedState.currentQuestion.id}';
-
-        expect(
-          find.byKey(QuizKeys.continueButton(buttonId)),
-          findsOneWidget,
-        );
-      });
-
-      testWidgets('text exists and is correct', (tester) async {
-        when(() => cubit.state).thenReturn(loadedState);
-
-        await tester.pumpWidget(LoadedQuizScreenFixture(
-          quizCubit: cubit,
-        ));
-
-        final String buttonId = '${loadedState.currentQuestion.id}';
-
-        final textFinder = find.descendant(
-          of: find.byKey(QuizKeys.continueButton(buttonId)),
-          matching: find.byKey(QuizKeys.continueButtonText(buttonId)),
-        );
-
-        expect(textFinder, findsOneWidget);
-
-        final textWidget = tester.widget(textFinder);
-
-        expect(textWidget.runtimeType, equals(Text));
-        expect((textWidget as Text).data, equals('CONTINUE'));
-      });
-
-      testWidgets('given question is in initial state, button is disabled',
-          (tester) async {
-        when(() => cubit.state).thenReturn(loadedState);
-
-        await tester.pumpWidget(LoadedQuizScreenFixture(
-          quizCubit: cubit,
-        ));
-
-        final String buttonId = '${loadedState.currentQuestion.id}';
-
-        final button =
-            tester.widget(find.byKey(QuizKeys.continueButton(buttonId)))
-                as ElevatedButton;
-
-        expect(button.enabled, equals(false));
-      });
-
-      testWidgets('given option is selected, button is enabled',
+      testWidgets(
+          'given `answerStatus` is initial, select message is presented',
           (tester) async {
         when(() => cubit.state).thenReturn(loadedState.copyWith(
-          choiceSelected: true,
-          selectedOption: OptionIndex.C,
+          answerStatus: AnswerStatus.initial,
         ));
-
         await tester.pumpWidget(LoadedQuizScreenFixture(
           quizCubit: cubit,
         ));
 
-        final String buttonId = '${loadedState.currentQuestion.id}';
+        final messageFinder = find
+            .byKey(QuizKeys.selectMessage('${loadedState.currentQuestion.id}'));
+        final messageWidget = tester.widget(messageFinder);
 
-        final button =
-            tester.widget(find.byKey(QuizKeys.continueButton(buttonId)))
-                as ElevatedButton;
-
-        expect(button.enabled, equals(true));
-      });
-
-      testWidgets('given question is depleted, button is enabled',
-          (tester) async {
-        when(() => cubit.state).thenReturn(loadedState.copyWith(
-          questionDepleted: true,
-        ));
-
-        await tester.pumpWidget(LoadedQuizScreenFixture(
-          quizCubit: cubit,
-        ));
-
-        final String buttonId = '${loadedState.currentQuestion.id}';
-
-        final button =
-            tester.widget(find.byKey(QuizKeys.continueButton(buttonId)))
-                as ElevatedButton;
-
-        expect(button.enabled, equals(true));
+        expect(messageFinder, findsOneWidget);
+        expect(messageWidget.runtimeType, equals(Text));
+        expect((messageWidget as Text).data, equals('Select an answer!'));
       });
 
       testWidgets(
-          'given button is enabled, pressing button triggers continue event in state',
+          'given `answerStatus` is selected, confirm tile is presented with components',
           (tester) async {
         when(() => cubit.state).thenReturn(loadedState.copyWith(
-          questionDepleted: true,
+          answerStatus: AnswerStatus.selected,
         ));
-
         await tester.pumpWidget(LoadedQuizScreenFixture(
           quizCubit: cubit,
         ));
 
-        final String buttonId = '${loadedState.currentQuestion.id}';
-        final buttonFinder = find.byKey(QuizKeys.continueButton(buttonId));
+        final id = '${loadedState.currentQuestion.id}';
+        final tileFinder = find.byKey(QuizKeys.confirmTile(id));
+        final titleFinder = find.descendant(
+          of: tileFinder,
+          matching: QuizKeys.confirmTileTitle(id),
+        );
+        final buttonFinder = find.descendant(
+          of: tileFinder,
+          matching: QuizKeys.confirmTileActionButton(id),
+        );
+        final buttonIconFinder = find.descendant(
+          of: buttonFinder,
+          matching: QuizKeys.confirmTileActionButtonIcon(id),
+        );
+        final tileWidget = tester.widget(tileFinder);
+        final titleWidget = tester.widget(titleFinder);
+        final buttonWidget = tester.widget(buttonFinder);
+        final buttonIconWidget = tester.widget(buttonIconFinder);
+
+        expect(tileFinder, findsOneWidget);
+        expect(tileWidget.runtimeType, equals(ListTile));
+
+        expect(titleFinder, findsOneWidget);
+        expect(titleWidget.runtimeType, equals(Text));
+        expect((titleWidget as Text).data, equals('Are you sure?'));
+
+        expect(buttonFinder, findsOneWidget);
+        expect(buttonWidget.runtimeType, equals(IconButton));
+
+        expect(buttonIconFinder, findsOneWidget);
+        expect(buttonIconWidget.runtimeType, equals(Icon));
+        expect((buttonIconWidget as Icon).icon, equals(Icons.check_rounded));
+      });
+
+      testWidgets('pressing confirm button triggers `confirmAnswer()` in cubit',
+          (tester) async {
+        when(() => cubit.state).thenReturn(loadedState.copyWith(
+          answerStatus: AnswerStatus.selected,
+        ));
+        await tester.pumpWidget(LoadedQuizScreenFixture(
+          quizCubit: cubit,
+        ));
+
+        final id = '${loadedState.currentQuestion.id}';
+        final buttonFinder = find.byKey(QuizKeys.confirmTileActionButton(id));
 
         await tester.tap(buttonFinder);
-        verify(() => cubit.continueQuiz()).called(1);
+        await tester.pumpAndSettle();
+
+        verify(() => cubit.confirmAnswer()).called(1);
       });
     });
   });

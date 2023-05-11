@@ -434,7 +434,7 @@ class _ContinueButton extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 32),
               child: ElevatedButton(
-                key: QuizKeys.continueButton('${state.currentQuestion.id}'),
+                key: QuizKeys.continueTileActionButton('${state.currentQuestion.id}'),
                 onPressed: canPress
                     ? () => context.read<QuizCubit>().continueQuiz()
                     : null,
@@ -443,8 +443,8 @@ class _ContinueButton extends StatelessWidget {
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                   ),
-                  key: QuizKeys.continueButtonText(
-                      '${state.currentQuestion.id}'),
+                  // key: QuizKeys.continueButtonText(
+                  //     '${state.currentQuestion.id}'),
                 ),
               ),
             ),

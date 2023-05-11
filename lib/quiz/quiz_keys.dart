@@ -88,22 +88,38 @@ class QuizKeys {
   static Function(String) get answerControlsSection =>
       (String id) => Key('__answerControlsSection_${id}__');
 
-  static const Key selectMessage = Key('__selectMessage__');
-  static const Key correctMessage = Key('__correctMessage__');
-  static const Key correctScoreMessage = Key('__correctScoreMessage__');
-  static const Key incorrectMessage = Key('__incorrectMessage__');
+  static Function(String) get selectMessage =>
+      (String id) => Key('__selectMessage_${id}__');
 
-  static Function(String) get confirmButton =>
+  static Function(String) get confirmTile =>
+      (String id) => Key('__confirmTile_${id}__');
+
+  static Function(String) get confirmTileTitle =>
+      (String id) => Key('__confirmMessage_${id}__');
+
+  static Function(String) get confirmTileActionButton =>
       (String id) => Key('__confirmButton_${id}__');
 
-  static Function(String) get confirmButtonText =>
-          (String id) => Key('__confirmButtonText_${id}__');
+  static Function(String) get confirmTileActionButtonIcon =>
+      (String id) => Key('__confirmButtonIcon_${id}__');
 
-  static Function(String) get continueButton =>
+  static Function(String) get continueTile =>
+      (String id) => Key('__continueTile_${id}__');
+
+  static Function(String) get continueTileCorrectTitle =>
+      (String id) => Key('__correctMessage_${id}__');
+
+  static Function(String) get continueTileCorrectScore =>
+      (String id) => Key('__correctScoreMessage_${id}__');
+
+  static Function(String) get continueTileIncorrectTitle =>
+      (String id) => Key('__incorrectMessage_${id}__');
+
+  static Function(String) get continueTileActionButton =>
       (String id) => Key('__continueButton_${id}__');
 
-  static Function(String) get continueButtonText =>
-      (String id) => Key('__continueButtonText_${id}__');
+  static Function(String) get continueTileActionButtonIcon =>
+      (String id) => Key('__continueButtonIcon_${id}__');
 
   //endregion
 
