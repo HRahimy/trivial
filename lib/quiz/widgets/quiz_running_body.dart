@@ -106,10 +106,6 @@ class _Layout extends StatelessWidget {
           thickness: 2,
           height: 0,
         ),
-        const Expanded(
-          flex: 2,
-          child: _ContinueButton(),
-        ),
       ],
     );
   }
@@ -239,9 +235,14 @@ class _OptionsGrid extends StatelessWidget {
       buildWhen: (previous, current) =>
           previous.questionIndex != current.questionIndex ||
           previous.selectedOption != current.selectedOption ||
-          previous.questionDepleted != current.questionDepleted,
+          previous.answerStatus != current.answerStatus,
       builder: (context, state) {
         final question = state.currentQuestion;
+        final bool canTap = state.answerStatus != AnswerStatus.confirmed &&
+            state.answerStatus != AnswerStatus.depleted;
+        final bool questionClosed =
+            state.answerStatus == AnswerStatus.depleted ||
+                state.answerStatus == AnswerStatus.confirmed;
         return Column(
           key: QuizKeys.optionsPanel('${state.currentQuestion.id}'),
           children: [
@@ -254,12 +255,12 @@ class _OptionsGrid extends StatelessWidget {
                       option: OptionIndex.A,
                       questionId: '${question.id}',
                       key: QuizKeys.optionAButton('${question.id}'),
-                      onTap: !state.questionDepleted
+                      onTap: canTap
                           ? () => cubit.selectAnswer(OptionIndex.A)
                           : null,
                       status: state.selectedOption == OptionIndex.A
                           ? _OptionButtonStatus.selected
-                          : state.questionDepleted
+                          : questionClosed
                               ? _OptionButtonStatus.disabled
                               : _OptionButtonStatus.initial,
                     ),
@@ -274,12 +275,12 @@ class _OptionsGrid extends StatelessWidget {
                       option: OptionIndex.B,
                       questionId: '${question.id}',
                       key: QuizKeys.optionBButton('${question.id}'),
-                      onTap: !state.questionDepleted
+                      onTap: canTap
                           ? () => cubit.selectAnswer(OptionIndex.B)
                           : null,
                       status: state.selectedOption == OptionIndex.B
                           ? _OptionButtonStatus.selected
-                          : state.questionDepleted
+                          : questionClosed
                               ? _OptionButtonStatus.disabled
                               : _OptionButtonStatus.initial,
                     ),
@@ -300,12 +301,12 @@ class _OptionsGrid extends StatelessWidget {
                       option: OptionIndex.C,
                       questionId: '${question.id}',
                       key: QuizKeys.optionCButton('${question.id}'),
-                      onTap: !state.questionDepleted
+                      onTap: canTap
                           ? () => cubit.selectAnswer(OptionIndex.C)
                           : null,
                       status: state.selectedOption == OptionIndex.C
                           ? _OptionButtonStatus.selected
-                          : state.questionDepleted
+                          : questionClosed
                               ? _OptionButtonStatus.disabled
                               : _OptionButtonStatus.initial,
                     ),
@@ -320,12 +321,12 @@ class _OptionsGrid extends StatelessWidget {
                       option: OptionIndex.D,
                       questionId: '${question.id}',
                       key: QuizKeys.optionDButton('${question.id}'),
-                      onTap: !state.questionDepleted
+                      onTap: canTap
                           ? () => cubit.selectAnswer(OptionIndex.D)
                           : null,
                       status: state.selectedOption == OptionIndex.D
                           ? _OptionButtonStatus.selected
-                          : state.questionDepleted
+                          : questionClosed
                               ? _OptionButtonStatus.disabled
                               : _OptionButtonStatus.initial,
                     ),
@@ -412,45 +413,6 @@ class _OptionButton extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-}
-
-class _ContinueButton extends StatelessWidget {
-  const _ContinueButton({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<QuizCubit, QuizState>(
-      buildWhen: (previous, current) =>
-          previous.choiceSelected != current.choiceSelected ||
-          previous.questionDepleted != current.questionDepleted,
-      builder: (context, state) {
-        final bool canPress = state.choiceSelected || state.questionDepleted;
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 32),
-              child: ElevatedButton(
-                key: QuizKeys.continueActionButton('${state.currentQuestion.id}'),
-                onPressed: canPress
-                    ? () => context.read<QuizCubit>().continueQuiz()
-                    : null,
-                child: Text(
-                  'CONTINUE',
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
-                  // key: QuizKeys.continueButtonText(
-                  //     '${state.currentQuestion.id}'),
-                ),
-              ),
-            ),
-          ],
-        );
-      },
     );
   }
 }

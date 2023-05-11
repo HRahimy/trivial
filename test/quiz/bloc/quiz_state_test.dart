@@ -112,26 +112,6 @@ void main() {
       );
 
       test(
-        'given [choiceSelected] param passed, returns object with updated choiceSelected',
-        () {
-          expect(
-            const QuizState().copyWith(choiceSelected: true),
-            const QuizState(choiceSelected: true),
-          );
-        },
-      );
-
-      test(
-        'given [questionDepleted] param passed, returns object with updated questionDepleted',
-        () {
-          expect(
-            const QuizState().copyWith(questionDepleted: true),
-            const QuizState(questionDepleted: true),
-          );
-        },
-      );
-
-      test(
           'given [answerStatus] param passed, returns object with updated answerStatus',
           () {
         expect(

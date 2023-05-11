@@ -41,7 +41,7 @@ void main() {
     selectedOption: successLoadedSeedState.quizQuestions
         .firstWhere((element) => element.sequenceIndex == lastQuestionIndex)
         .correctOption,
-    choiceSelected: true,
+    answerStatus: AnswerStatus.confirmed,
   );
 
   QuizState failLoadedSeedState = QuizState(

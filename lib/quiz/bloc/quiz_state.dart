@@ -11,8 +11,6 @@ class QuizState extends Equatable {
     this.answers = const {},
     this.score = 0,
     this.questionIndex = 0,
-    this.choiceSelected = false,
-    this.questionDepleted = false,
     this.answerStatus = AnswerStatus.initial,
     OptionIndex? selectedOption = OptionIndex.A,
     this.status = QuizStatus.initial,
@@ -25,8 +23,6 @@ class QuizState extends Equatable {
   final Map<int, OptionIndex> answers;
   final int score;
   final int questionIndex;
-  final bool choiceSelected;
-  final bool questionDepleted;
   final AnswerStatus answerStatus;
   final OptionIndex _selectedOption;
   final QuizStatus status;
@@ -51,8 +47,6 @@ class QuizState extends Equatable {
     Map<int, OptionIndex>? answers,
     int? score,
     int? questionIndex,
-    bool? choiceSelected,
-    bool? questionDepleted,
     AnswerStatus? answerStatus,
     OptionIndex? selectedOption,
     QuizStatus? status,
@@ -65,8 +59,6 @@ class QuizState extends Equatable {
       answers: answers ?? this.answers,
       score: score ?? this.score,
       questionIndex: questionIndex ?? this.questionIndex,
-      choiceSelected: choiceSelected ?? this.choiceSelected,
-      questionDepleted: questionDepleted ?? this.questionDepleted,
       answerStatus: answerStatus ?? this.answerStatus,
       selectedOption: selectedOption ?? _selectedOption,
       status: status ?? this.status,
@@ -82,8 +74,6 @@ class QuizState extends Equatable {
         answers,
         score,
         questionIndex,
-        choiceSelected,
-        questionDepleted,
         answerStatus,
         _selectedOption,
         status,
