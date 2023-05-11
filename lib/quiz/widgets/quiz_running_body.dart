@@ -190,15 +190,24 @@ class _TimerState extends State<_Timer> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: controller!,
-      builder: (context, child) {
-        return LinearProgressIndicator(
-          value: controller!.value,
-          minHeight: 16,
-          backgroundColor: AppTheme().primarySwatch.withOpacity(0.3),
-        );
+    return BlocListener<QuizCubit, QuizState>(
+      listenWhen: (previous, current) =>
+          previous.answerStatus != current.answerStatus,
+      listener: (context, state) {
+        if (state.answerStatus == AnswerStatus.confirmed) {
+          controller?.stop();
+        }
       },
+      child: AnimatedBuilder(
+        animation: controller!,
+        builder: (context, child) {
+          return LinearProgressIndicator(
+            value: controller!.value,
+            minHeight: 16,
+            backgroundColor: AppTheme().primarySwatch.withOpacity(0.3),
+          );
+        },
+      ),
     );
   }
 }
