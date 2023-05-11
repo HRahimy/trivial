@@ -613,15 +613,15 @@ void main() {
         final tileFinder = find.byKey(QuizKeys.confirmTile(id));
         final titleFinder = find.descendant(
           of: tileFinder,
-          matching: QuizKeys.confirmTileTitle(id),
+          matching: find.byKey(QuizKeys.confirmTileTitle(id)),
         );
         final buttonFinder = find.descendant(
           of: tileFinder,
-          matching: QuizKeys.confirmTileActionButton(id),
+          matching: find.byKey(QuizKeys.confirmTileActionButton(id)),
         );
         final buttonIconFinder = find.descendant(
           of: buttonFinder,
-          matching: QuizKeys.confirmTileActionButtonIcon(id),
+          matching: find.byKey(QuizKeys.confirmTileActionButtonIcon(id)),
         );
         final tileWidget = tester.widget(tileFinder);
         final titleWidget = tester.widget(titleFinder);

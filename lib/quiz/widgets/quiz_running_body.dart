@@ -106,6 +106,7 @@ class _Layout extends StatelessWidget {
           thickness: 2,
           height: 0,
         ),
+        const _ContinueControls(),
       ],
     );
   }
@@ -422,6 +423,104 @@ class _OptionButton extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class _ContinueControls extends StatelessWidget {
+  const _ContinueControls();
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<QuizCubit, QuizState>(
+      buildWhen: (previous, current) =>
+          previous.answerStatus != current.answerStatus,
+      builder: (context, state) {
+        final questionId = '${state.currentQuestion.id}';
+        switch (state.answerStatus) {
+          case AnswerStatus.initial:
+            return ListTile(
+              title: Text(
+                'Select an answer!',
+                key: QuizKeys.selectMessage(questionId),
+              ),
+            );
+          case AnswerStatus.selected:
+            return ListTile(
+              key: QuizKeys.confirmTile(questionId),
+              title: Text(
+                'Are you sure?',
+                key: QuizKeys.confirmTileTitle(questionId),
+              ),
+              trailing: IconButton(
+                key: QuizKeys.confirmTileActionButton(questionId),
+                onPressed: () => context.read<QuizCubit>().confirmAnswer(),
+                icon: Icon(
+                  Icons.check_rounded,
+                  key: QuizKeys.confirmTileActionButtonIcon(questionId),
+                ),
+              ),
+            );
+          case AnswerStatus.confirmed:
+            final bool answerCorrect =
+                state.currentQuestion.correctOption == state.selectedOption;
+            return answerCorrect
+                ? ListTile(
+                    key: QuizKeys.continueTile(questionId),
+                    title: Text(
+                      'Correct!',
+                      key: QuizKeys.continueTileCorrectTitle(questionId),
+                    ),
+                    subtitle: Text(
+                      'You earned ${state.currentQuestion.points} levels',
+                      key: QuizKeys.continueTileCorrectScore(questionId),
+                    ),
+                    trailing: IconButton(
+                      key: QuizKeys.continueActionButton(questionId),
+                      onPressed: () => context.read<QuizCubit>().continueQuiz(),
+                      icon: Icon(
+                        Icons.arrow_right_rounded,
+                        key: QuizKeys.continueActionButtonIcon(questionId),
+                      ),
+                    ),
+                  )
+                : ListTile(
+                    key: QuizKeys.continueTile(questionId),
+                    title: Text(
+                      'Incorrect!',
+                      key: QuizKeys.continueTileIncorrectTitle(questionId),
+                    ),
+                    subtitle: Text(
+                      'Better luck next time',
+                      key: QuizKeys.continueTileIncorrectMessage(questionId),
+                    ),
+                    trailing: IconButton(
+                      key: QuizKeys.continueActionButton(questionId),
+                      onPressed: () => context.read<QuizCubit>().continueQuiz(),
+                      icon: Icon(
+                        Icons.arrow_right_rounded,
+                        key: QuizKeys.continueActionButtonIcon(questionId),
+                      ),
+                    ),
+                  );
+          case AnswerStatus.depleted:
+            return ListTile(
+              key: QuizKeys.continueDepletedTile(questionId),
+              title: Text(
+                'Out of time!',
+                key: QuizKeys.continueDepletedTileTitle(questionId),
+              ),
+              trailing: IconButton(
+                key: QuizKeys.continueActionButton(questionId),
+                onPressed: () => context.read<QuizCubit>().continueQuiz(),
+                icon: Icon(
+                  Icons.arrow_right_rounded,
+                  key: QuizKeys.continueActionButtonIcon(questionId),
+                ),
+              ),
+            );
+        }
+      },
     );
   }
 }
