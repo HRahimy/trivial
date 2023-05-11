@@ -84,7 +84,21 @@ class QuizKeys {
 
   //endregion
 
-  //region Continue button
+  //region Answer controls section
+  static Function(String) get answerControlsSection =>
+      (String id) => Key('__answerControlsSection_${id}__');
+
+  static const Key selectMessage = Key('__selectMessage__');
+  static const Key correctMessage = Key('__correctMessage__');
+  static const Key correctScoreMessage = Key('__correctScoreMessage__');
+  static const Key incorrectMessage = Key('__incorrectMessage__');
+
+  static Function(String) get confirmButton =>
+      (String id) => Key('__confirmButton_${id}__');
+
+  static Function(String) get confirmButtonText =>
+          (String id) => Key('__confirmButtonText_${id}__');
+
   static Function(String) get continueButton =>
       (String id) => Key('__continueButton_${id}__');
 
