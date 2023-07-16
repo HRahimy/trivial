@@ -44,10 +44,10 @@ void main() {
     answerStatus: AnswerStatus.confirmed,
   );
 
-  QuizState failLoadedSeedState = QuizState(
-    loadingStatus: FormzSubmissionStatus.failure,
-    error: getQuizFailedException.toString(),
-  );
+  // QuizState failLoadedSeedState = QuizState(
+  //   loadingStatus: FormzSubmissionStatus.failure,
+  //   error: getQuizFailedException.toString(),
+  // );
 
   setUpAll(() {
     registerFallbackValue(FakeQuizState());

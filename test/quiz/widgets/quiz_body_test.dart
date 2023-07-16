@@ -12,11 +12,11 @@ import 'package:trivial/quiz/widgets/quiz_running_body.dart';
 import 'package:trivial/theme.dart';
 
 import '../../mocks/quiz_cubit_mock.dart';
-import '../../tests_navigator_observer.dart';
+// import '../../tests_navigator_observer.dart';
 import '../fixtures/loaded_quiz_screen_fixture.dart';
 
 void main() {
-  late TestsNavigatorObserver navObserver;
+  // late TestsNavigatorObserver navObserver;
   late QuizCubit cubit;
   const QuizState loadedState = QuizState(
     quiz: SeedData.wowQuiz,
@@ -27,7 +27,7 @@ void main() {
   );
   setUp(() {
     cubit = QuizCubitMock();
-    navObserver = TestsNavigatorObserver();
+    // navObserver = TestsNavigatorObserver();
   });
 
   group('[QuizBody] while running ', () {
