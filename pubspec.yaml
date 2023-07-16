@@ -44,7 +44,6 @@ dependencies:
   repositories:
     path: packages/repositories
   firebase_core: ^2.8.0
-  flutter_icons: ^1.1.0
 
 dev_dependencies:
   flutter_test:
