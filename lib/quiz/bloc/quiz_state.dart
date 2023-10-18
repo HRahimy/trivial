@@ -14,12 +14,9 @@ class QuizState extends Equatable {
     this.answerStatus = AnswerStatus.initial,
     OptionIndex? selectedOption = OptionIndex.A,
     this.status = QuizStatus.initial,
-    this.quickestAnswer = const Duration(seconds: 0),
-    Duration? quizDuration,
     this.loadingStatus = FormzSubmissionStatus.initial,
     this.error = '',
-  })  : _selectedOption = selectedOption ?? OptionIndex.A,
-        _quizDuration = quizDuration ?? const Duration(seconds: 0);
+  }) : _selectedOption = selectedOption ?? OptionIndex.A;
 
   final Quiz quiz;
   final List<QuizQuestion> quizQuestions;
@@ -29,8 +26,6 @@ class QuizState extends Equatable {
   final AnswerStatus answerStatus;
   final OptionIndex _selectedOption;
   final QuizStatus status;
-  final Duration quickestAnswer;
-  final Duration _quizDuration;
   final FormzSubmissionStatus loadingStatus;
   final String error;
 
@@ -46,10 +41,6 @@ class QuizState extends Equatable {
         : null;
   }
 
-  Duration? get quizDuration {
-    throw UnimplementedError();
-  }
-
   QuizState copyWith({
     Quiz? quiz,
     List<QuizQuestion>? quizQuestions,
@@ -59,8 +50,6 @@ class QuizState extends Equatable {
     AnswerStatus? answerStatus,
     OptionIndex? selectedOption,
     QuizStatus? status,
-    Duration? quickestAnswer,
-    Duration? quizDuration,
     FormzSubmissionStatus? loadingStatus,
     String? error,
   }) {
@@ -73,8 +62,6 @@ class QuizState extends Equatable {
       answerStatus: answerStatus ?? this.answerStatus,
       selectedOption: selectedOption ?? _selectedOption,
       status: status ?? this.status,
-      quickestAnswer: quickestAnswer ?? this.quickestAnswer,
-      quizDuration: quizDuration ?? _quizDuration,
       loadingStatus: loadingStatus ?? this.loadingStatus,
       error: error ?? this.error,
     );
@@ -90,8 +77,6 @@ class QuizState extends Equatable {
         answerStatus,
         _selectedOption,
         status,
-        quickestAnswer,
-        _quizDuration,
         loadingStatus,
         error,
       ];

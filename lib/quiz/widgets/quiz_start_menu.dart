@@ -8,12 +8,12 @@ class QuizStartMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       body: Padding(
-        padding: EdgeInsets.all(32),
+        padding: const EdgeInsets.all(32),
         child: Flex(
           direction: Axis.vertical,
-          children: [
+          children: const [
             Expanded(
               flex: 4,
               child: _TextSection(),
