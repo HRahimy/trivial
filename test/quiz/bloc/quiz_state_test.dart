@@ -141,27 +141,7 @@ void main() {
       );
 
       test(
-          'given [quickestAnswer] param passed, returns object with updated quickestAnswer',
-          () {
-        final duration = Duration(seconds: Random().nextInt(50));
-        expect(
-          const QuizState().copyWith(quickestAnswer: duration),
-          QuizState(quickestAnswer: duration),
-        );
-      });
-
-      test(
-          'given [quizDuration] param passed, returns object with updated quizDuration',
-          () {
-        final duration = Duration(seconds: Random().nextInt(150));
-        expect(
-          const QuizState().copyWith(quizDuration: duration),
-          QuizState(quizDuration: duration),
-        );
-      });
-
-      test(
-        'given [loadingStatus] param passed, returns object with updated loadingStatus',
+        'given [status] param passed, returns object with updated status',
         () {
           expect(
             const QuizState()
@@ -181,29 +161,6 @@ void main() {
           );
         },
       );
-    });
-
-    group('[quizDuration] property', () {
-      group('given `quizStatus` is not complete', () {
-        final List<QuizStatus> statuses =
-            QuizStatus.values.where((e) => e != QuizStatus.complete).toList();
-        for (var status in statuses) {
-          test('with `quizStatus=${status.toString()}`, returns null', () {
-            final duration = Duration(seconds: Random().nextInt(150));
-            final state = QuizState(status: status, quizDuration: duration);
-            expect(state.quizDuration, isNull);
-          });
-        }
-      });
-
-      test('given `quizStatus` is complete, returns private value', () {
-        final duration = Duration(seconds: Random().nextInt(150));
-        final state = QuizState(
-          status: QuizStatus.complete,
-          quizDuration: duration,
-        );
-        expect(state.answerStatus, equals(duration));
-      });
     });
   });
 }
