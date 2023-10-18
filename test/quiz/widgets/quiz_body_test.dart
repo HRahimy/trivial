@@ -12,7 +12,6 @@ import 'package:trivial/quiz/widgets/quiz_running_body.dart';
 import 'package:trivial/theme.dart';
 
 import '../../mocks/quiz_cubit_mock.dart';
-import '../../tests_navigator_observer.dart';
 import '../fixtures/loaded_quiz_screen_fixture.dart';
 
 void main() {
