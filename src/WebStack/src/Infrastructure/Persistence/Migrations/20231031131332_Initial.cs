@@ -109,6 +109,25 @@ namespace Trivial.Infrastructure.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "quizzes",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    name = table.Column<string>(type: "text", nullable: false),
+                    description = table.Column<string>(type: "text", nullable: true),
+                    difficulty = table.Column<int>(type: "integer", nullable: false),
+                    created = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    created_by = table.Column<string>(type: "text", nullable: true),
+                    last_modified = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    last_modified_by = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_quizzes", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "todo_lists",
                 columns: table => new
                 {
@@ -233,6 +252,31 @@ namespace Trivial.Infrastructure.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "quiz_questions",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    quiz_id = table.Column<int>(type: "integer", nullable: false),
+                    question = table.Column<string>(type: "text", nullable: false),
+                    sequence_index = table.Column<int>(type: "integer", nullable: false),
+                    created = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    created_by = table.Column<string>(type: "text", nullable: true),
+                    last_modified = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    last_modified_by = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_quiz_questions", x => x.id);
+                    table.ForeignKey(
+                        name: "fk_quiz_questions_quizzes_quiz_id",
+                        column: x => x.quiz_id,
+                        principalTable: "quizzes",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "todo_items",
                 columns: table => new
                 {
@@ -256,6 +300,32 @@ namespace Trivial.Infrastructure.Persistence.Migrations
                         name: "fk_todo_items_todo_lists_list_id",
                         column: x => x.list_id,
                         principalTable: "todo_lists",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "question_options",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    quiz_question_id = table.Column<int>(type: "integer", nullable: false),
+                    value = table.Column<int>(type: "integer", nullable: false),
+                    description = table.Column<string>(type: "text", nullable: false),
+                    is_answer = table.Column<bool>(type: "boolean", nullable: false),
+                    created = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    created_by = table.Column<string>(type: "text", nullable: true),
+                    last_modified = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    last_modified_by = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_question_options", x => x.id);
+                    table.ForeignKey(
+                        name: "fk_question_options_quiz_questions_quiz_question_id",
+                        column: x => x.quiz_question_id,
+                        principalTable: "quiz_questions",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -334,6 +404,16 @@ namespace Trivial.Infrastructure.Persistence.Migrations
                 columns: new[] { "subject_id", "session_id", "type" });
 
             migrationBuilder.CreateIndex(
+                name: "ix_question_options_quiz_question_id",
+                table: "question_options",
+                column: "quiz_question_id");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_quiz_questions_quiz_id",
+                table: "quiz_questions",
+                column: "quiz_id");
+
+            migrationBuilder.CreateIndex(
                 name: "ix_todo_items_list_id",
                 table: "todo_items",
                 column: "list_id");
@@ -367,6 +447,9 @@ namespace Trivial.Infrastructure.Persistence.Migrations
                 name: "persisted_grants");
 
             migrationBuilder.DropTable(
+                name: "question_options");
+
+            migrationBuilder.DropTable(
                 name: "todo_items");
 
             migrationBuilder.DropTable(
@@ -376,7 +459,13 @@ namespace Trivial.Infrastructure.Persistence.Migrations
                 name: "asp_net_users");
 
             migrationBuilder.DropTable(
+                name: "quiz_questions");
+
+            migrationBuilder.DropTable(
                 name: "todo_lists");
+
+            migrationBuilder.DropTable(
+                name: "quizzes");
         }
     }
 }

@@ -12,7 +12,7 @@ using Trivial.Infrastructure.Persistence;
 namespace Trivial.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231019124722_Initial")]
+    [Migration("20231031131332_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -371,6 +371,148 @@ namespace Trivial.Infrastructure.Persistence.Migrations
                     b.ToTable("asp_net_user_tokens", (string)null);
                 });
 
+            modelBuilder.Entity("Trivial.Domain.Entities.QuestionOption", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("created");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("text")
+                        .HasColumnName("created_by");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("description");
+
+                    b.Property<bool>("IsAnswer")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_answer");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("last_modified");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("text")
+                        .HasColumnName("last_modified_by");
+
+                    b.Property<int>("QuizQuestionId")
+                        .HasColumnType("integer")
+                        .HasColumnName("quiz_question_id");
+
+                    b.Property<int>("Value")
+                        .HasColumnType("integer")
+                        .HasColumnName("value");
+
+                    b.HasKey("Id")
+                        .HasName("pk_question_options");
+
+                    b.HasIndex("QuizQuestionId")
+                        .HasDatabaseName("ix_question_options_quiz_question_id");
+
+                    b.ToTable("question_options", (string)null);
+                });
+
+            modelBuilder.Entity("Trivial.Domain.Entities.Quiz", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("created");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("text")
+                        .HasColumnName("created_by");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text")
+                        .HasColumnName("description");
+
+                    b.Property<int>("Difficulty")
+                        .HasColumnType("integer")
+                        .HasColumnName("difficulty");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("last_modified");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("text")
+                        .HasColumnName("last_modified_by");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("name");
+
+                    b.HasKey("Id")
+                        .HasName("pk_quizzes");
+
+                    b.ToTable("quizzes", (string)null);
+                });
+
+            modelBuilder.Entity("Trivial.Domain.Entities.QuizQuestion", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("created");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("text")
+                        .HasColumnName("created_by");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("last_modified");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("text")
+                        .HasColumnName("last_modified_by");
+
+                    b.Property<string>("Question")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("question");
+
+                    b.Property<int>("QuizId")
+                        .HasColumnType("integer")
+                        .HasColumnName("quiz_id");
+
+                    b.Property<int>("SequenceIndex")
+                        .HasColumnType("integer")
+                        .HasColumnName("sequence_index");
+
+                    b.HasKey("Id")
+                        .HasName("pk_quiz_questions");
+
+                    b.HasIndex("QuizId")
+                        .HasDatabaseName("ix_quiz_questions_quiz_id");
+
+                    b.ToTable("quiz_questions", (string)null);
+                });
+
             modelBuilder.Entity("Trivial.Domain.Entities.TodoItem", b =>
                 {
                     b.Property<int>("Id")
@@ -605,6 +747,30 @@ namespace Trivial.Infrastructure.Persistence.Migrations
                         .HasConstraintName("fk_asp_net_user_tokens_asp_net_users_user_id");
                 });
 
+            modelBuilder.Entity("Trivial.Domain.Entities.QuestionOption", b =>
+                {
+                    b.HasOne("Trivial.Domain.Entities.QuizQuestion", "QuizQuestion")
+                        .WithMany("Options")
+                        .HasForeignKey("QuizQuestionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_question_options_quiz_questions_quiz_question_id");
+
+                    b.Navigation("QuizQuestion");
+                });
+
+            modelBuilder.Entity("Trivial.Domain.Entities.QuizQuestion", b =>
+                {
+                    b.HasOne("Trivial.Domain.Entities.Quiz", "Quiz")
+                        .WithMany("Question")
+                        .HasForeignKey("QuizId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_quiz_questions_quizzes_quiz_id");
+
+                    b.Navigation("Quiz");
+                });
+
             modelBuilder.Entity("Trivial.Domain.Entities.TodoItem", b =>
                 {
                     b.HasOne("Trivial.Domain.Entities.TodoList", "List")
@@ -642,6 +808,16 @@ namespace Trivial.Infrastructure.Persistence.Migrations
 
                     b.Navigation("Colour")
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Trivial.Domain.Entities.Quiz", b =>
+                {
+                    b.Navigation("Question");
+                });
+
+            modelBuilder.Entity("Trivial.Domain.Entities.QuizQuestion", b =>
+                {
+                    b.Navigation("Options");
                 });
 
             modelBuilder.Entity("Trivial.Domain.Entities.TodoList", b =>
