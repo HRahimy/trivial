@@ -526,22 +526,37 @@
           "description": {
             "type": "string",
             "nullable": true
+          },
+          "duration": {
+            "type": "string",
+            "format": "duration"
           }
         }
       },
       "CreateQuizCommand": {
         "type": "object",
         "additionalProperties": false,
+        "required": [
+          "name",
+          "difficulty"
+        ],
         "properties": {
           "name": {
-            "type": "string"
+            "type": "string",
+            "minLength": 1,
+            "nullable": false
           },
           "description": {
             "type": "string",
             "nullable": true
           },
           "difficulty": {
+            "nullable": false,
             "$ref": "#/components/schemas/QuizDifficulty"
+          },
+          "duration": {
+            "type": "string",
+            "format": "duration"
           }
         }
       },

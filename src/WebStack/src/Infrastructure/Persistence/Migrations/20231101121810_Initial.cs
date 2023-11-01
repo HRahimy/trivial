@@ -117,6 +117,7 @@ namespace Trivial.Infrastructure.Persistence.Migrations
                     name = table.Column<string>(type: "text", nullable: false),
                     description = table.Column<string>(type: "text", nullable: true),
                     difficulty = table.Column<int>(type: "integer", nullable: false),
+                    duration = table.Column<long>(type: "bigint", nullable: false),
                     created = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     created_by = table.Column<string>(type: "text", nullable: true),
                     last_modified = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),

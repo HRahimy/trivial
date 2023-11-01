@@ -9,9 +9,10 @@ using Trivial.Domain.Events;
 namespace Trivial.Application.Quizzes.Commands.CreateQuiz;
 public record CreateQuizCommand : IRequest<QuizDto>
 {
-    public string Name { get; init; }
+    public required string Name { get; init; }
     public string? Description { get; init; }
-    public QuizDifficulty Difficulty { get; init; }
+    public required QuizDifficulty Difficulty { get; init; }
+    public required TimeSpan Duration { get; init; }
 }
 
 public class CreateQuizCommandHandler : IRequestHandler<CreateQuizCommand, QuizDto>

@@ -444,6 +444,10 @@ namespace Trivial.Infrastructure.Persistence.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("difficulty");
 
+                    b.Property<long>("Duration")
+                        .HasColumnType("bigint")
+                        .HasColumnName("duration");
+
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("timestamp without time zone")
                         .HasColumnName("last_modified");

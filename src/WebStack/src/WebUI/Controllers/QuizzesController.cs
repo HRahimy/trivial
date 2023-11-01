@@ -6,7 +6,6 @@ namespace Trivial.WebUI.Controllers;
 
 public class QuizzesController : ApiControllerBase
 {
-
     [HttpPost]
     public async Task<ActionResult<QuizDto>> Create(CreateQuizCommand command)
     {

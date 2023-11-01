@@ -754,6 +754,7 @@ export class QuizDto implements IQuizDto {
     id?: number;
     name?: string;
     description?: string | undefined;
+    duration?: string;
 
     constructor(data?: IQuizDto) {
         if (data) {
@@ -769,6 +770,7 @@ export class QuizDto implements IQuizDto {
             this.id = _data["id"];
             this.name = _data["name"];
             this.description = _data["description"];
+            this.duration = _data["duration"];
         }
     }
 
@@ -784,6 +786,7 @@ export class QuizDto implements IQuizDto {
         data["id"] = this.id;
         data["name"] = this.name;
         data["description"] = this.description;
+        data["duration"] = this.duration;
         return data;
     }
 }
@@ -792,12 +795,14 @@ export interface IQuizDto {
     id?: number;
     name?: string;
     description?: string | undefined;
+    duration?: string;
 }
 
 export class CreateQuizCommand implements ICreateQuizCommand {
-    name?: string;
+    name!: string;
     description?: string | undefined;
-    difficulty?: QuizDifficulty;
+    difficulty!: QuizDifficulty;
+    duration?: string;
 
     constructor(data?: ICreateQuizCommand) {
         if (data) {
@@ -813,6 +818,7 @@ export class CreateQuizCommand implements ICreateQuizCommand {
             this.name = _data["name"];
             this.description = _data["description"];
             this.difficulty = _data["difficulty"];
+            this.duration = _data["duration"];
         }
     }
 
@@ -828,14 +834,16 @@ export class CreateQuizCommand implements ICreateQuizCommand {
         data["name"] = this.name;
         data["description"] = this.description;
         data["difficulty"] = this.difficulty;
+        data["duration"] = this.duration;
         return data;
     }
 }
 
 export interface ICreateQuizCommand {
-    name?: string;
+    name: string;
     description?: string | undefined;
-    difficulty?: QuizDifficulty;
+    difficulty: QuizDifficulty;
+    duration?: string;
 }
 
 export enum QuizDifficulty {

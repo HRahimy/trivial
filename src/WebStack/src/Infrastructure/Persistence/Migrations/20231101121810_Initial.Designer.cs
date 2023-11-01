@@ -12,7 +12,7 @@ using Trivial.Infrastructure.Persistence;
 namespace Trivial.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231031131332_Initial")]
+    [Migration("20231101121810_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -446,6 +446,10 @@ namespace Trivial.Infrastructure.Persistence.Migrations
                     b.Property<int>("Difficulty")
                         .HasColumnType("integer")
                         .HasColumnName("difficulty");
+
+                    b.Property<long>("Duration")
+                        .HasColumnType("bigint")
+                        .HasColumnName("duration");
 
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("timestamp without time zone")
