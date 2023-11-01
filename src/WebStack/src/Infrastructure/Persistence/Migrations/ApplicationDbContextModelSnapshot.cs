@@ -763,7 +763,7 @@ namespace Trivial.Infrastructure.Persistence.Migrations
             modelBuilder.Entity("Trivial.Domain.Entities.QuizQuestion", b =>
                 {
                     b.HasOne("Trivial.Domain.Entities.Quiz", "Quiz")
-                        .WithMany("Question")
+                        .WithMany("Questions")
                         .HasForeignKey("QuizId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
@@ -813,7 +813,7 @@ namespace Trivial.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("Trivial.Domain.Entities.Quiz", b =>
                 {
-                    b.Navigation("Question");
+                    b.Navigation("Questions");
                 });
 
             modelBuilder.Entity("Trivial.Domain.Entities.QuizQuestion", b =>

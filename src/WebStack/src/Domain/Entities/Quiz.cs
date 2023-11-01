@@ -10,5 +10,5 @@ public class Quiz : BaseAuditableEntity
     public QuizDifficulty Difficulty { get; set; }
     public TimeSpan Duration { get; set; }
 
-    public IList<QuizQuestion> Question { get; private set; } = new List<QuizQuestion>();
+    public IList<QuizQuestion> Questions { get; private set; } = new List<QuizQuestion>();
 }

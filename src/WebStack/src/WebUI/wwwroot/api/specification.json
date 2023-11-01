@@ -538,7 +538,8 @@
         "additionalProperties": false,
         "required": [
           "name",
-          "difficulty"
+          "difficulty",
+          "duration"
         ],
         "properties": {
           "name": {
@@ -548,6 +549,7 @@
           },
           "description": {
             "type": "string",
+            "minLength": 5,
             "nullable": true
           },
           "difficulty": {
@@ -556,7 +558,9 @@
           },
           "duration": {
             "type": "string",
-            "format": "duration"
+            "format": "duration",
+            "minLength": 1,
+            "nullable": false
           }
         }
       },

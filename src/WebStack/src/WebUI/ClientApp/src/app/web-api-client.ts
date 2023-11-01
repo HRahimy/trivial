@@ -802,7 +802,7 @@ export class CreateQuizCommand implements ICreateQuizCommand {
     name!: string;
     description?: string | undefined;
     difficulty!: QuizDifficulty;
-    duration?: string;
+    duration!: string;
 
     constructor(data?: ICreateQuizCommand) {
         if (data) {
@@ -843,7 +843,7 @@ export interface ICreateQuizCommand {
     name: string;
     description?: string | undefined;
     difficulty: QuizDifficulty;
-    duration?: string;
+    duration: string;
 }
 
 export enum QuizDifficulty {

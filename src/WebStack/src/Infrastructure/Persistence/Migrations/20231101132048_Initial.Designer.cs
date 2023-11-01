@@ -12,7 +12,7 @@ using Trivial.Infrastructure.Persistence;
 namespace Trivial.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231101121810_Initial")]
+    [Migration("20231101132048_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -766,7 +766,7 @@ namespace Trivial.Infrastructure.Persistence.Migrations
             modelBuilder.Entity("Trivial.Domain.Entities.QuizQuestion", b =>
                 {
                     b.HasOne("Trivial.Domain.Entities.Quiz", "Quiz")
-                        .WithMany("Question")
+                        .WithMany("Questions")
                         .HasForeignKey("QuizId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
@@ -816,7 +816,7 @@ namespace Trivial.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("Trivial.Domain.Entities.Quiz", b =>
                 {
-                    b.Navigation("Question");
+                    b.Navigation("Questions");
                 });
 
             modelBuilder.Entity("Trivial.Domain.Entities.QuizQuestion", b =>
