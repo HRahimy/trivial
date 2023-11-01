@@ -99,7 +99,7 @@ public class ApplicationDbContextInitialiser
             {
                 Name = "World of Warcraft",
                 Description = "Test your knowledge of the World of Warcraft lore. For beginners to the universe.",
-                Duration = new TimeSpan(0, 15, 30),
+                Duration = new TimeSpan(0, 0, 15, 30),
                 Difficulty = QuizDifficulty.Normal,
                 Questions =
                 {
