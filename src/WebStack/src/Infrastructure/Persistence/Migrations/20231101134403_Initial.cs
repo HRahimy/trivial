@@ -261,6 +261,7 @@ namespace Trivial.Infrastructure.Persistence.Migrations
                     quiz_id = table.Column<int>(type: "integer", nullable: false),
                     question = table.Column<string>(type: "text", nullable: false),
                     sequence_index = table.Column<int>(type: "integer", nullable: false),
+                    points = table.Column<int>(type: "integer", nullable: false),
                     created = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     created_by = table.Column<string>(type: "text", nullable: true),
                     last_modified = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),

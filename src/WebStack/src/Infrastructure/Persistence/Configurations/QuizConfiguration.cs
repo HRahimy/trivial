@@ -9,6 +9,6 @@ public class QuizConfiguration : IEntityTypeConfiguration<Quiz>
     public void Configure(EntityTypeBuilder<Quiz> builder)
     {
         builder.Property(e => e.Duration)
-            .HasConversion(new TimeSpanToTicksConverter());
+            .HasConversion<long>();
     }
 }

@@ -492,6 +492,10 @@ namespace Trivial.Infrastructure.Persistence.Migrations
                         .HasColumnType("text")
                         .HasColumnName("last_modified_by");
 
+                    b.Property<int>("Points")
+                        .HasColumnType("integer")
+                        .HasColumnName("points");
+
                     b.Property<string>("Question")
                         .IsRequired()
                         .HasColumnType("text")

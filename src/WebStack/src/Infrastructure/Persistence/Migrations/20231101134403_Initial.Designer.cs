@@ -12,7 +12,7 @@ using Trivial.Infrastructure.Persistence;
 namespace Trivial.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231101132048_Initial")]
+    [Migration("20231101134403_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -494,6 +494,10 @@ namespace Trivial.Infrastructure.Persistence.Migrations
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("text")
                         .HasColumnName("last_modified_by");
+
+                    b.Property<int>("Points")
+                        .HasColumnType("integer")
+                        .HasColumnName("points");
 
                     b.Property<string>("Question")
                         .IsRequired()
