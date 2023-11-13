@@ -32,6 +32,7 @@ public class CreateQuizCommandHandler : IRequestHandler<CreateQuizCommand, QuizD
             Name = request.Name,
             Description = request.Description,
             Difficulty = request.Difficulty,
+            Duration = request.Duration,
         };
 
         entity.AddDomainEvent(new QuizCreatedEvent(entity));
