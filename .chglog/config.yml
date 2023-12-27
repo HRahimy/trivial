@@ -1,0 +1,34 @@
+style: github
+template: CHANGELOG.tpl.md
+info:
+  title: CHANGELOG
+  repository_url: https://github.com/HRahimy/trivial
+options:
+  commits:
+    filters:
+      Type:
+        - feat
+        - enh
+        - fix
+        - perf
+        - refactor
+        - mgmt
+        - qa
+  commit_groups:
+    title_maps:
+      feat: Features
+      enh: Feature Improvements and Enhancements
+      fix: Bug Fixes
+      perf: Performance Improvements
+      refactor: Code Refactoring
+      mgmt: Project Management
+      qa: Testing and Quality Assurance
+  header:
+    pattern: "^(\\w*)(?:\\(([\\w\\$\\.\\-\\*\\s]*)\\))?\\:\\s(.*)$"
+    pattern_maps:
+      - Type
+      - Scope
+      - Subject
+  notes:
+    keywords:
+      - BREAKING CHANGE
