@@ -1,6 +1,4 @@
-﻿using FluentValidation;
-using MediatR;
-using ValidationException = Trivial.Application.Common.Exceptions.ValidationException;
+﻿using ValidationException = Trivial.Application.Common.Exceptions.ValidationException;
 
 namespace Trivial.Application.Common.Behaviours;
 

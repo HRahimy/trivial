@@ -1,0 +1,223 @@
+{
+  "x-generator": "NSwag v14.0.0.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))",
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Trivial API",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/api/Quizzes": {
+      "get": {
+        "tags": [
+          "Quizzes"
+        ],
+        "operationId": "Get",
+        "parameters": [
+          {
+            "name": "PageNumber",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          },
+          {
+            "name": "PageSize",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 2
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedListOfQuizDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Quizzes"
+        ],
+        "operationId": "Create",
+        "requestBody": {
+          "x-name": "command",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateQuizCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QuizDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/WeatherForecasts": {
+      "get": {
+        "tags": [
+          "WeatherForecasts"
+        ],
+        "operationId": "GetWeatherForecasts",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WeatherForecast"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "PaginatedListOfQuizDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/QuizDto"
+            }
+          },
+          "pageNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "hasPreviousPage": {
+            "type": "boolean"
+          },
+          "hasNextPage": {
+            "type": "boolean"
+          }
+        }
+      },
+      "QuizDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "duration": {
+            "type": "string",
+            "format": "duration"
+          }
+        }
+      },
+      "CreateQuizCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "name",
+          "difficulty",
+          "duration"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 3
+          },
+          "description": {
+            "type": "string",
+            "minLength": 5,
+            "nullable": true
+          },
+          "difficulty": {
+            "$ref": "#/components/schemas/QuizDifficulty"
+          },
+          "duration": {
+            "type": "string",
+            "format": "duration"
+          }
+        }
+      },
+      "QuizDifficulty": {
+        "type": "integer",
+        "description": "",
+        "x-enumNames": [
+          "Easy",
+          "Normal",
+          "Hard"
+        ],
+        "enum": [
+          0,
+          1,
+          2
+        ]
+      },
+      "WeatherForecast": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "temperatureC": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "temperatureF": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "summary": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      }
+    }
+  }
+}

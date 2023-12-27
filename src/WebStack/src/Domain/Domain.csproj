@@ -1,15 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <TargetFramework>net7.0</TargetFramework>
-        <RootNamespace>Trivial.Domain</RootNamespace>
-        <AssemblyName>Trivial.Domain</AssemblyName>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
-    </PropertyGroup>
+  <PropertyGroup>
+    <RootNamespace>Trivial.Domain</RootNamespace>
+    <AssemblyName>Trivial.Domain</AssemblyName>
+  </PropertyGroup>
 
-    <ItemGroup>
-      <PackageReference Include="MediatR" Version="12.0.1" />
-    </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="MediatR" />
+  </ItemGroup>
 
 </Project>

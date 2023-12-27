@@ -1,7 +1,4 @@
-﻿using AutoMapper;
-using AutoMapper.QueryableExtensions;
-using Trivial.Application.Common.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Trivial.Application.Common.Models;
 
 namespace Trivial.Application.Common.Mappings;
 

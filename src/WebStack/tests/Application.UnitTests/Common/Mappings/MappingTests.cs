@@ -1,7 +1,9 @@
-﻿using System.Runtime.Serialization;
+﻿using System.Reflection;
+using System.Runtime.Serialization;
 using AutoMapper;
-using Trivial.Application.Common.Mappings;
+using Trivial.Application.Common.Interfaces;
 using Trivial.Application.Common.Models;
+using Trivial.Application.TodoItems.Queries.GetTodoItemsWithPagination;
 using Trivial.Application.TodoLists.Queries.GetTodos;
 using Trivial.Domain.Entities;
 using NUnit.Framework;
@@ -16,7 +18,7 @@ public class MappingTests
     public MappingTests()
     {
         _configuration = new MapperConfiguration(config => 
-            config.AddProfile<MappingProfile>());
+            config.AddMaps(Assembly.GetAssembly(typeof(IApplicationDbContext))));
 
         _mapper = _configuration.CreateMapper();
     }
@@ -32,6 +34,7 @@ public class MappingTests
     [TestCase(typeof(TodoItem), typeof(TodoItemDto))]
     [TestCase(typeof(TodoList), typeof(LookupDto))]
     [TestCase(typeof(TodoItem), typeof(LookupDto))]
+    [TestCase(typeof(TodoItem), typeof(TodoItemBriefDto))]
     public void ShouldSupportMappingFromSourceToDestination(Type source, Type destination)
     {
         var instance = GetInstanceOf(source);
@@ -45,6 +48,9 @@ public class MappingTests
             return Activator.CreateInstance(type)!;
 
         // Type without parameterless constructor
+        // TODO: Figure out an alternative approach to the now obsolete `FormatterServices.GetUninitializedObject` method.
+#pragma warning disable SYSLIB0050 // Type or member is obsolete
         return FormatterServices.GetUninitializedObject(type);
+#pragma warning restore SYSLIB0050 // Type or member is obsolete
     }
 }

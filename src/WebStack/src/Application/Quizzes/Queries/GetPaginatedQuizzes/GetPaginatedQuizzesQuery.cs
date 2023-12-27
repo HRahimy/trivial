@@ -1,11 +1,7 @@
-﻿using AutoMapper;
-using AutoMapper.QueryableExtensions;
-using MediatR;
-using Trivial.Application.Common.Interfaces;
+﻿using Trivial.Application.Common.Interfaces;
 using Trivial.Application.Common.Mappings;
 using Trivial.Application.Common.Models;
 using Trivial.Application.Quizzes.Models;
-using Trivial.Application.TodoItems.Queries.GetTodoItemsWithPagination;
 
 namespace Trivial.Application.Quizzes.Queries.GetPaginatedQuizzes;
 public record GetPaginatedQuizzesQuery : IRequest<PaginatedList<QuizDto>>

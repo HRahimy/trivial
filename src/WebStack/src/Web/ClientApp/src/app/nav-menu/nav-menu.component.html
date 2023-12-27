@@ -1,0 +1,22 @@
+<mat-sidenav-container class="main-container">
+  <mat-sidenav mode="side" opened>
+    <mat-toolbar>
+      <span>Trivial</span>
+    </mat-toolbar>
+    <mat-divider></mat-divider>
+    <mat-nav-list>
+      <a mat-list-item
+         *ngFor="let link of links"
+         [href]="link.route"
+         [target]="link.type === linkTypes.ExternalLink ? '_blank' : ''"
+         [activated]="link.isActive">
+        {{ link.name }}
+      </a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <main #target class="container">
+      <router-outlet></router-outlet>
+    </main>
+  </mat-sidenav-content>
+</mat-sidenav-container>

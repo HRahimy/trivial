@@ -1,6 +1,4 @@
-﻿using MediatR;
-
-namespace Trivial.Application.WeatherForecasts.Queries.GetWeatherForecasts;
+﻿namespace Trivial.Application.WeatherForecasts.Queries.GetWeatherForecasts;
 
 public record GetWeatherForecastsQuery : IRequest<IEnumerable<WeatherForecast>>;
 
